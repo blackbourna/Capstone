@@ -133,21 +133,22 @@ CapstoneProject_BlackbournA.start = function(){
     // key events    
 	var key_event = function (e) {
 		var sum = goog.math.Coordinate.sum;
+		var keyevents = goog.events.KeyCodes;
         var msg = '';
 		switch (e.keyCode) {
             // Bot Directions
             // Forward
-			case goog.events.KeyCodes.UP:
+			case keyevents.UP:
                 msg = 'Moved forward.';
 				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_UP));
 			break;
             // Back
-			case goog.events.KeyCodes.DOWN:
+			case keyevents.DOWN:
                 msg = 'Moved back.';
 				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_DOWN));
 			break;
             // Turn Right
-			case goog.events.KeyCodes.RIGHT:
+			case keyevents.RIGHT:
                 msg = 'Turned right.';
 				bot.sprite.runAction(new lime.animation.Sequence(
 					new lime.animation.ScaleTo(1.2).setDuration(.2),
@@ -157,7 +158,7 @@ CapstoneProject_BlackbournA.start = function(){
 				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_RIGHT));
 			break;
             // Turn Left
-			case goog.events.KeyCodes.LEFT:
+			case keyevents.LEFT:
                 msg = 'Turned left.';
 				bot.sprite.runAction(new lime.animation.Sequence(
 					new lime.animation.ScaleTo(1.2).setDuration(.2),
@@ -168,33 +169,33 @@ CapstoneProject_BlackbournA.start = function(){
 				//new lime.animation.ScaleTo(1),
 			break;
             // Camera zoom
-			case goog.events.KeyCodes.A:
+			case keyevents.A:
 				scene.runAction(new lime.animation.ScaleTo(scene.getScale().x * 2));
 			break;
-			case goog.events.KeyCodes.Z:
+			case keyevents.Z:
 				console.log("Z");
 				scene.runAction(new lime.animation.ScaleTo(scene.getScale().x / 2));
 			break;
             // Sprint forward
-            case goog.events.KeyCodes.SPACE:
+            case keyevents.SPACE:
                 msg = 'Sprinted forward.';
             break;
             // Rotate
-            case goog.events.KeyCodes.CTRL:
+            case keyevents.CTRL:
                 msg = 'Turned 180 degrees.';
             break;
             // Look
-            case goog.events.KeyCodes.SHIFT:
+            case keyevents.SHIFT:
             break;
             // Scan
-            case goog.events.KeyCodes.ENTER:
+            case keyevents.ENTER:
                 msg = 'Scanned for energy.';
             break;
-            case goog.events.KeyCodes.MAC_ENTER:
+            case keyevents.MAC_ENTER:
                 msg = 'Scanned for energy.';
             break;
             // Pick up recharger
-            case goog.events.KeyCodes.BACKSLASH:
+            case keyevents.BACKSLASH:
                 msg = 'Picked up energy.';
             break;
 		}
