@@ -70,6 +70,23 @@ function Bot() {
         var coord = new goog.math.Coordinate(TOP_CORNER.x + this.position.x, TOP_CORNER.y + this.position.y);
         return coord;
     }
+	this.goForward = function() {}
+	this.goBack = function() {}
+	this.goRight = function() {}
+	this.goLeft = function() {}
+	
+	this.lookForward = function() {}
+	this.lookBack = function() {}
+	this.lookRight = function() {}
+	this.lookLeft = function() {}
+	
+	this.lookFar = function() {}
+	
+	this.sprint = function() {}
+	this.oneEighty = function() {}
+	
+	this.scan = function() {}
+	this.pickUp = function() {}
 }
 
 // Game entrypoint
@@ -133,32 +150,36 @@ CapstoneProject_BlackbournA.start = function(){
     // key events    
 	var key_event = function (e) {
 		var sum = goog.math.Coordinate.sum;
-		var keyevents = goog.events.KeyCodes;
+		var keyCodes = goog.events.KeyCodes;
         var msg = '';
 		switch (e.keyCode) {
             // Bot Directions
             // Forward
-			case keyevents.UP:
+			case keyCodes.UP:
                 msg = 'Moved forward.';
 				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_UP));
 			break;
             // Back
-			case keyevents.DOWN:
+			case keyCodes.DOWN:
                 msg = 'Moved back.';
 				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_DOWN));
 			break;
             // Turn Right
-			case keyevents.RIGHT:
-                msg = 'Turned right.';
-				bot.sprite.runAction(new lime.animation.Sequence(
-					new lime.animation.ScaleTo(1.2).setDuration(.2),
-					new lime.animation.RotateBy(-90),
-					new lime.animation.ScaleTo(1).setDuration(.2)
-				));
-				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_RIGHT));
+			case keyCodes.RIGHT:
+				if (e.event_.shiftKey) {
+					msg = 'Looked right.';
+				} else {
+					msg = 'Turned right.';
+					bot.sprite.runAction(new lime.animation.Sequence(
+						new lime.animation.ScaleTo(1.2).setDuration(.2),
+						new lime.animation.RotateBy(-90),
+						new lime.animation.ScaleTo(1).setDuration(.2)
+					));
+					bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_RIGHT));
+				}
 			break;
             // Turn Left
-			case keyevents.LEFT:
+			case keyCodes.LEFT:
                 msg = 'Turned left.';
 				bot.sprite.runAction(new lime.animation.Sequence(
 					new lime.animation.ScaleTo(1.2).setDuration(.2),
@@ -169,41 +190,40 @@ CapstoneProject_BlackbournA.start = function(){
 				//new lime.animation.ScaleTo(1),
 			break;
             // Camera zoom
-			case keyevents.A:
+			case keyCodes.A:
 				scene.runAction(new lime.animation.ScaleTo(scene.getScale().x * 2));
 			break;
-			case keyevents.Z:
+			case keyCodes.Z:
 				console.log("Z");
 				scene.runAction(new lime.animation.ScaleTo(scene.getScale().x / 2));
 			break;
             // Sprint forward
-            case keyevents.SPACE:
+            case keyCodes.SPACE:
                 msg = 'Sprinted forward.';
             break;
             // Rotate
-            case keyevents.CTRL:
+            case keyCodes.CTRL:
                 msg = 'Turned 180 degrees.';
             break;
-            // Look
-            case keyevents.SHIFT:
-            break;
             // Scan
-            case keyevents.ENTER:
+            case keyCodes.ENTER:
                 msg = 'Scanned for energy.';
             break;
-            case keyevents.MAC_ENTER:
+            case keyCodes.MAC_ENTER:
                 msg = 'Scanned for energy.';
             break;
             // Pick up recharger
-            case keyevents.BACKSLASH:
+            case keyCodes.BACKSLASH:
                 msg = 'Picked up energy.';
             break;
 		}
-		console.log('keyCode: ' + e.keyCode +
+		console.log(
+			'keyCode: ' + e.keyCode +
 			', charCode: ' + e.charCode +
 			', repeat: ' + e.repeat +
 			', target: ' + e.target +
 			', native event: ' + e.getBrowserEvent().type);
+		console.log(e);
 	}
 	goog.events.listen(new goog.events.KeyHandler(document), 'key', key_event);
 
