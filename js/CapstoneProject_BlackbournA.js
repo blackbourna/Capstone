@@ -130,9 +130,8 @@ CapstoneProject_BlackbournA.start = function(){
     var backgroundGradient = new lime.fill.LinearGradient();
     backgroundGradient.addColorStop(0, '#ABCDEF');
     backgroundGradient.addColorStop(APP_W_PX, '#BADA55');
-    var background = new lime.Sprite().setSize(APP_W_PX, APP_H_PX).setFill(backgroundGradient).setAnchorPoint(0, 0)
+    var background = new lime.Sprite().setSize(APP_W_PX + 100, APP_H_PX + 100).setFill(backgroundGradient).setAnchorPoint(0, 0)
     scene.appendChild(background);
-    
     
     // HUD
     
