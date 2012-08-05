@@ -32,13 +32,13 @@ goog.require('goog.json');
 
 function Maze() {
     var self = this; //  private functions lose THIS reference - see http://css.dzone.com/news/object-oriented-javascript-und
-    self.width = MAZE_W;
-    self.height = MAZE_H;
-	self.maze = null;
-	self.goal = null;
-	self.recharger = null;
-    self.get = function(x, y) {
-        return self.maze[x][y];
+    this.width = MAZE_W;
+    this.height = MAZE_H;
+	this.maze = null;
+	this.goal = null;
+	this.recharger = null;
+    this.get = function(x, y) {
+        return this.maze[x][y];
     }
     var parseMaze = function() {
 		var request = new goog.net.XhrIo();
@@ -58,18 +58,20 @@ function Maze() {
 	parseMaze();
 }
 
-function Bot() {
+function Bot(position, direction) {
     var self = this;
     this.initializeSprite = function(x, y) {
-        self.position =  new goog.math.Coordinate(x, y);
-        self.sprite = new lime.Sprite().setFill(IMG_ASSETS + 'bot.png').setAnchorPoint(0, 0);
-        alert(self.getScreenPosition());
-        self.sprite.setPosition(this.getScreenPosition());
+        this.position =  new goog.math.Coordinate(x, y);
+        this.sprite = new lime.Sprite().setFill(IMG_ASSETS + 'bot.png').setAnchorPoint(0, 0);
+        alert(this.getScreenPosition());
+        this.sprite.setPosition(this.getScreenPosition());
     }
     this.getScreenPosition = function() {
         var coord = new goog.math.Coordinate(TOP_CORNER.x + this.position.x, TOP_CORNER.y + this.position.y);
         return coord;
     }
+    this.position = position;
+    this.direction = direction;
 	this.goForward = function() {}
 	this.goBack = function() {}
 	this.goRight = function() {}
@@ -182,7 +184,7 @@ CapstoneProject_BlackbournA.start = function(){
                 msg = 'Turned left.';
 				bot.sprite.runAction(new lime.animation.Sequence(
 					new lime.animation.ScaleTo(1.2).setDuration(.2),
-					new lime.animation.RotateBy(90),
+					new li033me.animation.RotateBy(90),
 					new lime.animation.ScaleTo(1).setDuration(.2)
 				));
 				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_LEFT));
