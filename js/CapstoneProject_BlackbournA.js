@@ -3,6 +3,10 @@ goog.provide('CapstoneProject_BlackbournA');
 
 //get requirements
 
+// my classes
+goog.require('CapstoneProject_BlackbournA.Bot');
+goog.require('CapstoneProject_BlackbournA.Maze');
+
 // basics
 goog.require('lime.Director');
 goog.require('lime.Scene');
@@ -17,7 +21,7 @@ goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.MoveTo');
 goog.require('lime.animation.RotateBy');
 
-// fill efects
+// fill effects
 goog.require('lime.fill.LinearGradient');
 
 //events/keyhandlers
@@ -29,67 +33,6 @@ goog.require('goog.math.Coordinate');
 //ajax stuff
 goog.require('goog.net.XhrIo');
 goog.require('goog.json');
-
-function Maze() {
-    var self = this; //  private functions lose THIS reference - see http://css.dzone.com/news/object-oriented-javascript-und
-    this.width = MAZE_W;
-    this.height = MAZE_H;
-	this.maze = null;
-	this.goal = null;
-	this.recharger = null;
-    this.get = function(x, y) {
-        return this.maze[x][y];
-    }
-    var parseMaze = function() {
-		var request = new goog.net.XhrIo();
-
-		goog.events.listen(request, 'complete', function(){
-		//request complete
-		if(request.isSuccess()){
-			var data = request.getResponseJson();
-			console.log(data);
-		} else {
-			//error
-		}
-		});
-		request.send('./mazeloader.php');
-    }
-	
-	parseMaze();
-}
-
-function Bot(position, direction) {
-    var self = this;
-    this.initializeSprite = function(x, y) {
-        this.position =  new goog.math.Coordinate(x, y);
-        this.sprite = new lime.Sprite().setFill(IMG_ASSETS + 'bot.png').setAnchorPoint(0, 0);
-        alert(this.getScreenPosition());
-        this.sprite.setPosition(this.getScreenPosition());
-    }
-    this.getScreenPosition = function() {
-        var coord = new goog.math.Coordinate(TOP_CORNER.x + this.position.x, TOP_CORNER.y + this.position.y);
-        return coord;
-    }
-    this.position = position;
-    this.direction = direction;
-	this.goForward = function() {}
-	this.goBack = function() {}
-	this.goRight = function() {}
-	this.goLeft = function() {}
-	
-	this.lookForward = function() {}
-	this.lookBack = function() {}
-	this.lookRight = function() {}
-	this.lookLeft = function() {}
-	
-	this.lookFar = function() {}
-	
-	this.sprint = function() {}
-	this.oneEighty = function() {}
-	
-	this.scan = function() {}
-	this.pickUp = function() {}
-}
 
 // Game entrypoint
 CapstoneProject_BlackbournA.start = function(){
