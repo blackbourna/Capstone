@@ -30,13 +30,11 @@ goog.require('goog.events.KeyCodes');
 goog.require('goog.events.KeyHandler');
 goog.require('goog.math.Coordinate');
 
-//ajax stuff
-goog.require('goog.net.XhrIo');
-goog.require('goog.json');
 
 // Game entrypoint
 CapstoneProject_BlackbournA.start = function(){
 
+    Point = goog.math.Coordinate;
     // Define global constants
     
     IMG_ASSETS = 'assets/sprites/';
@@ -51,8 +49,6 @@ CapstoneProject_BlackbournA.start = function(){
 
     MAZE_W_PX = CELL_W * MAZE_W;
     MAZE_H_PX = CELL_H * MAZE_H;
-    
-    MAZE_CORNER = null;
 
     DIR_UP = new goog.math.Coordinate(0, -CELL_H);
     DIR_DOWN = new goog.math.Coordinate(0, CELL_H);
@@ -64,116 +60,120 @@ CapstoneProject_BlackbournA.start = function(){
     
     TOP_CORNER = new goog.math.Coordinate(APP_W_PX - MAZE_W_PX - 25, 35);
     
-    // Define globals
-    bot = new Bot();
+    // startup code prior to Maze ajax call
+    this.startup = function() {
+        // Setup visuals
+        var director = new lime.Director(document.body, APP_W_PX, APP_H_PX);
+        var scene = new lime.Scene();
+        
+        // Background
+        var backgroundGradient = new lime.fill.LinearGradient();
+        backgroundGradient.addColorStop(0, '#ABCDEF');
+        backgroundGradient.addColorStop(APP_W_PX, '#BADA55');
+        var background = new lime.Sprite().setSize(APP_W_PX + 100, APP_H_PX + 100).setFill(backgroundGradient).setAnchorPoint(0, 0)
+        scene.appendChild(background);
+        
+        // HUD
+        
+        // Eternal Darkness
+        var seeminglyEndlessUndiscoveredBlackness = new lime.Sprite().setSize(MAZE_W_PX, MAZE_H_PX).setFill('#000000').setAnchorPoint(0, 0).setPosition(TOP_CORNER);
+        scene.appendChild(seeminglyEndlessUndiscoveredBlackness);
+    }
     
-    // Setup visuals
-	var director = new lime.Director(document.body, APP_W_PX, APP_H_PX);
-	var scene = new lime.Scene();
-    
-    // Background
-    var backgroundGradient = new lime.fill.LinearGradient();
-    backgroundGradient.addColorStop(0, '#ABCDEF');
-    backgroundGradient.addColorStop(APP_W_PX, '#BADA55');
-    var background = new lime.Sprite().setSize(APP_W_PX + 100, APP_H_PX + 100).setFill(backgroundGradient).setAnchorPoint(0, 0)
-    scene.appendChild(background);
-    
-    // HUD
-    
-    // Eternal Darkness
-    var seeminglyEndlessUndiscoveredBlackness = new lime.Sprite().setSize(MAZE_W_PX, MAZE_H_PX).setFill('#000000').setAnchorPoint(0, 0).setPosition(TOP_CORNER);
-    scene.appendChild(seeminglyEndlessUndiscoveredBlackness);
-    // Read maze via Ajax
-    maze = new Maze();
-	
-    // Add Bot
-    bot.initializeSprite(0, 0);
-	
-    scene.appendChild(bot.sprite);
-    
-    // key events    
-	var key_event = function (e) {
-		var sum = goog.math.Coordinate.sum;
-		var keyCodes = goog.events.KeyCodes;
-        var msg = '';
-		switch (e.keyCode) {
-            // Bot Directions
-            // Forward
-			case keyCodes.UP:
-                msg = 'Moved forward.';
-				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_UP));
-			break;
-            // Back
-			case keyCodes.DOWN:
-                msg = 'Moved back.';
-				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_DOWN));
-			break;
-            // Turn Right
-			case keyCodes.RIGHT:
-				if (e.event_.shiftKey) {
-					msg = 'Looked right.';
-				} else {
-					msg = 'Turned right.';
-					bot.sprite.runAction(new lime.animation.Sequence(
-						new lime.animation.ScaleTo(1.2).setDuration(.2),
-						new lime.animation.RotateBy(-90),
-						new lime.animation.ScaleTo(1).setDuration(.2)
-					));
-					bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_RIGHT));
-				}
-			break;
-            // Turn Left
-			case keyCodes.LEFT:
-                msg = 'Turned left.';
-				bot.sprite.runAction(new lime.animation.Sequence(
-					new lime.animation.ScaleTo(1.2).setDuration(.2),
-					new li033me.animation.RotateBy(90),
-					new lime.animation.ScaleTo(1).setDuration(.2)
-				));
-				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_LEFT));
-				//new lime.animation.ScaleTo(1),
-			break;
-            // Camera zoom
-			case keyCodes.A:
-				scene.runAction(new lime.animation.ScaleTo(scene.getScale().x * 2));
-			break;
-			case keyCodes.Z:
-				console.log("Z");
-				scene.runAction(new lime.animation.ScaleTo(scene.getScale().x / 2));
-			break;
-            // Sprint forward
-            case keyCodes.SPACE:
-                msg = 'Sprinted forward.';
-            break;
-            // Rotate
-            case keyCodes.CTRL:
-                msg = 'Turned 180 degrees.';
-            break;
-            // Scan
-            case keyCodes.ENTER:
-                msg = 'Scanned for energy.';
-            break;
-            case keyCodes.MAC_ENTER:
-                msg = 'Scanned for energy.';
-            break;
-            // Pick up recharger
-            case keyCodes.BACKSLASH:
-                msg = 'Picked up energy.';
-            break;
-		}
-		console.log(
-			'keyCode: ' + e.keyCode +
-			', charCode: ' + e.charCode +
-			', repeat: ' + e.repeat +
-			', target: ' + e.target +
-			', native event: ' + e.getBrowserEvent().type);
-		console.log(e);
-	}
-	goog.events.listen(new goog.events.KeyHandler(document), 'key', key_event);
+    this.setupAfterAjaxMazeLoad = function() {
+        // there's an issue here while loading the maze via ajax- need to 
+        // Add Bot
+        var bot = new Bot(maze.start);
+        
+        scene.appendChild(bot.sprite);
+        
+        // key events    
+        var key_event = function (e) {
+            var sum = goog.math.Coordinate.sum;
+            var keyCodes = goog.events.KeyCodes;
+            var msg = '';
+            switch (e.keyCode) {
+                // Bot Directions
+                // Forward
+                case keyCodes.UP:
+                    msg = 'Moved forward.';
+                    bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_UP));
+                break;
+                // Back
+                case keyCodes.DOWN:
+                    msg = 'Moved back.';
+                    bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_DOWN));
+                break;
+                // Turn Right
+                case keyCodes.RIGHT:
+                    if (e.event_.shiftKey) {
+                        msg = 'Looked right.';
+                    } else {
+                        msg = 'Turned right.';
+                        bot.sprite.runAction(new lime.animation.Sequence(
+                            new lime.animation.ScaleTo(1.2).setDuration(.2),
+                            new lime.animation.RotateBy(-90),
+                            new lime.animation.ScaleTo(1).setDuration(.2)
+                        ));
+                        bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_RIGHT));
+                    }
+                break;
+                // Turn Left
+                case keyCodes.LEFT:
+                    msg = 'Turned left.';
+                    bot.sprite.runAction(new lime.animation.Sequence(
+                        new lime.animation.ScaleTo(1.2).setDuration(.2),
+                        new li033me.animation.RotateBy(90),
+                        new lime.animation.ScaleTo(1).setDuration(.2)
+                    ));
+                    bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_LEFT));
+                    //new lime.animation.ScaleTo(1),
+                break;
+                // Camera zoom
+                case keyCodes.A:
+                    scene.runAction(new lime.animation.ScaleTo(scene.getScale().x * 2));
+                break;
+                case keyCodes.Z:
+                    console.log("Z");
+                    scene.runAction(new lime.animation.ScaleTo(scene.getScale().x / 2));
+                break;
+                // Sprint forward
+                case keyCodes.SPACE:
+                    msg = 'Sprinted forward.';
+                break;
+                // Rotate
+                case keyCodes.CTRL:
+                    msg = 'Turned 180 degrees.';
+                break;
+                // Scan
+                case keyCodes.ENTER:
+                    msg = 'Scanned for energy.';
+                break;
+                case keyCodes.MAC_ENTER:
+                    msg = 'Scanned for energy.';
+                break;
+                // Pick up recharger
+                case keyCodes.BACKSLASH:
+                    msg = 'Picked up energy.';
+                break;
+            }
+            console.log(
+                'keyCode: ' + e.keyCode +
+                ', charCode: ' + e.charCode +
+                ', repeat: ' + e.repeat +
+                ', target: ' + e.target +
+                ', native event: ' + e.getBrowserEvent().type);
+            console.log(e);
+        }
+        goog.events.listen(new goog.events.KeyHandler(document), 'key', key_event);
 
-	// set current scene active
-	director.replaceScene(scene);
-
+        // set current scene active
+        director.replaceScene(scene);
+    }
+    this.startup();
+    // Maze
+    console.log(this.setupAfterAjaxMazeLoad);
+    maze = new Maze(this.setupAfterAjaxMazeLoad);
 }
 
 

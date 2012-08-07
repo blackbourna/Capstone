@@ -35,7 +35,7 @@ class MazeReader {
         $start = explode(',', $mazetext[45]);
         $start = get_coordinates($start);
         add_coordinates($maze, "start", $start);
-        $maze->start->dir = $start[2];
+        $maze->start->dir = preg_replace('/\)/i', '', $start[2]);
         
         //goal
         $goal = explode(',', $mazetext[46]);
