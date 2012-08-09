@@ -1,6 +1,6 @@
-goog.provide('CapstoneProject_BlackbournA.Bot');
+goog.provide('Bot');
 
-function Bot(position, direction) {
+Bot = function (position, direction) {
     var self = this;
     this.position = position;
     console.log(this);
