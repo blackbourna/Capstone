@@ -1,4 +1,4 @@
-goog.provide('CapstoneProject_BlackbournA.KeyEvents');
+goog.provide('Game.KeyEvents');
 
 function KeyEvents(e) {
     var sum = goog.math.Coordinate.sum;
