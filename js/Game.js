@@ -1,9 +1,8 @@
 //set main namespace
-goog.provide('CapstoneProject_BlackbournA.Game');
+goog.provide('Game');
 
 Game.getScene = function() {
 // Setup visuals
-    var director = new lime.Director(document.body, Constants.APP_W_PX, Constants.APP_H_PX);
     var scene = new lime.Scene();
     
     // Background
@@ -26,5 +25,5 @@ Game.getScene = function() {
     goog.events.listen(new goog.events.KeyHandler(document), 'key', key_event);
 
     // set current scene active
-    director.replaceScene(scene);
+    return scene;
 }

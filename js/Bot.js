@@ -1,6 +1,6 @@
 goog.provide('Bot');
 
-Bot = function (position, direction) {
+Bot = function (startInfo) {
     var self = this;
     this.position = position;
     console.log(this);

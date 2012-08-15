@@ -4,6 +4,7 @@ goog.provide('CapstoneProject_BlackbournA');
 //get requirements
 
 // my classes
+goog.require('GameMenu');
 goog.require('Bot');
 goog.require('Maze');
 goog.require('Constants');
@@ -41,10 +42,9 @@ goog.require('goog.json');
 CapstoneProject_BlackbournA.start = function(){
     Point = goog.math.Coordinate;
 
-    var director = new lime.Director(document.body, 100, 100);
-    // Need to 
-    var scene = new lime.Scene();
-    director.replaceScene(scene);
+    var director = new lime.Director(document.body, Constants.APP_W_PX, Constants.APP_H_PX);
+    var gameMenu = new GameMenu();
+    director.replaceScene(gameMenu.getScene());
 };
 
 //this is required for outside access after code is compiled in ADVANCED_COMPILATIONS mode
