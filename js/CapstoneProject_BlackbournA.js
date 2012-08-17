@@ -43,8 +43,7 @@ CapstoneProject_BlackbournA.start = function(){
     Point = goog.math.Coordinate;
 
     var director = new lime.Director(document.body, Constants.APP_W_PX, Constants.APP_H_PX);
-    var gameMenu = new GameMenu();
-    director.replaceScene(gameMenu.getScene());
+    new GameMenu(director).showMenu();
 };
 
 //this is required for outside access after code is compiled in ADVANCED_COMPILATIONS mode
