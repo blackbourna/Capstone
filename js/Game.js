@@ -1,7 +1,7 @@
 //set main namespace
 goog.provide('Game');
 
-Game.getScene = function() {
+Game = function(maze) {
 // Setup visuals
     var scene = new lime.Scene();
     
