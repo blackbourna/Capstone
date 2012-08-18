@@ -1,8 +1,8 @@
 goog.provide('BotEnums');
 // JS doesn't have enums, so use strings just in case these have to be output for debugging
 MOVE = {
-	FORWARD: 'MOVE.FORWARD'
-	BACKWARD: 'MOVE.BACKWARD',
+	FORWARD: 'MOVE.FORWARD',
+	BACKWARD: 'MOVE.BACKWARD'
 }
 TURN = {
 	NONE: 'TURN.NONE',

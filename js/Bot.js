@@ -25,9 +25,9 @@ Bot = function (maze) {
     // USE ENUM STYLE FOR THIS
     // public functions
 	this.move = function(dir) {
-		switch(dir) {
-			
-		}
+		//switch(dir) {
+		//	
+		//}
 	}
 	this.turn = function() {}
 	this.look = function() {}
