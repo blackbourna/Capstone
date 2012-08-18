@@ -5,13 +5,13 @@ ini_set('display_errors', '1');
 function strip_non_numeric($x) {
     return preg_replace('/\D/', '', $x);
 }
-
+// used for parsing out the commas and parentheses
 function get_coordinates($x) {
     $x[0] = strip_non_numeric($x[0]);
     $x[1] = strip_non_numeric($x[1]);
     return $x;
 }
-
+// append the variables to the object, this function does NOT sum two points!
 function add_coordinates(&$maze, $var, $array) {
     $maze->$var->x = $array[0];
     $maze->$var->y = $array[1];
