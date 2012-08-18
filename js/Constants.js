@@ -20,7 +20,7 @@ Constants.Maze = {
 Constants.Graphics = {
 	APP_W_PX: 1024,
     APP_H_PX: 768,
-    TOP_CORNER: new Point(this.APP_W_PX - this.MAZE_W_PX - 25, 35),
+    TOP_CORNER: new Point(100, 35),
 	
 	// cell size in px
 	CELL_W: 16,

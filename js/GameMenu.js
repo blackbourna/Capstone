@@ -12,5 +12,8 @@ GameMenu=function(director) {
 		});
 		scene.appendChild(startGameButton);
 		director.replaceScene(scene);
+
+		// for debugging
+		new MazeLoader(director).getMaze();
 	}
 }

@@ -1,6 +1,6 @@
 goog.provide('Directions');
 
-Directions.get(x) {
+Directions.get = function(x) {
 	switch (x.toUpperCase()) {
 		case 'NORTH':
 			return new Vec2(0, -1);

@@ -1,6 +1,8 @@
 goog.require('Game');
 goog.provide('MazeLoader');
 
+goog.require('Directions');
+
 MazeLoader = function(director) {
 	this.director = director;
 	var self = this;
@@ -18,7 +20,7 @@ MazeLoader = function(director) {
 				maze.goal = new Point(data.goal.x, data.goal.y);
 				maze.recharger = new Point(data.recharger.x, data.recharger.y);
 				maze.start = new Point(data.start.x, data.start.y);
-				maze.startDir = data.start.dir;
+				maze.startDir = Directions.get(data.start.dir);
 				
 				self.director.replaceScene(new Game(maze));
 			} else {
