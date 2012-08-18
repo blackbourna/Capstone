@@ -19,6 +19,7 @@ MazeLoader = function(director) {
 				maze.recharger = new Point(data.recharger.x, data.recharger.y);
 				maze.start = new Point(data.start.x, data.start.y);
 				maze.startDir = data.start.dir;
+				
 				self.director.replaceScene(new Game(maze));
 			} else {
 				//error

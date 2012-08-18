@@ -1,6 +1,8 @@
 //set main namespace
 goog.provide('Game');
 
+goog.require('KeyEvents');
+
 Game = function(maze) {
 // Setup visuals
     var scene = new lime.Scene();
@@ -14,14 +16,17 @@ Game = function(maze) {
     // HUD
     
     // Eternal Darkness
-    var seeminglyEndlessUndiscoveredBlackness = new lime.Sprite().setSize(Constants.MAZE_W_PX, Constants.MAZE_H_PX).setFill('#000000').setAnchorPoint(0, 0).setPosition(Constants.TOP_CORNER);
+    var seeminglyEndlessUndiscoveredBlackness = new lime.Sprite()
+		.setSize(Constants.MAZE_W_PX, Constants.MAZE_H_PX)
+		.setFill('#000000').setAnchorPoint(0, 0)
+		.setPosition(Constants.Graphics.TOP_CORNER);
     scene.appendChild(seeminglyEndlessUndiscoveredBlackness);
     // there's an issue here while loading the maze via ajax- need to 
     // Add Bot
     var bot = new Bot(maze.start, maze.startDir);
     scene.appendChild(bot.sprite);
 
-    //goog.events.listen(new goog.events.KeyHandler(document), 'key', key_event);
+    goog.events.listen(new goog.events.KeyHandler(document), 'key', KeyEvents);
 
     // set current scene active
     return scene;

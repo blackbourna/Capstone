@@ -1,6 +1,6 @@
-goog.provide('Game.KeyEvents');
+goog.provide('KeyEvents');
 
-function KeyEvents(e) {
+KeyEvents = function(e) {
     var sum = goog.math.Coordinate.sum;
     var keyCodes = goog.events.KeyCodes;
     var msg = '';
