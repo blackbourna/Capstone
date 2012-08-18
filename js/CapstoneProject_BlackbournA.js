@@ -25,9 +25,6 @@ goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.MoveTo');
 goog.require('lime.animation.RotateBy');
 
-// fill effects
-goog.require('lime.fill.LinearGradient');
-
 //events/keyhandlers
 goog.require('goog.events');
 goog.require('goog.events.KeyCodes');

@@ -1,7 +1,13 @@
 //set main namespace
 goog.provide('Game');
 
+// my key handler
 goog.require('KeyEvents');
+
+goog.require('Constants');
+// fill effects
+goog.require('lime.fill.LinearGradient');
+goog.require('lime.Sprite');
 
 Game = function(maze) {
 // Setup visuals
@@ -10,20 +16,23 @@ Game = function(maze) {
     // Background
     var backgroundGradient = new lime.fill.LinearGradient();
     backgroundGradient.addColorStop(0, '#ABCDEF');
-    backgroundGradient.addColorStop(Constants.APP_W_PX, '#BADA55');
-    var background = new lime.Sprite().setSize(Constants.APP_W_PX + 100, Constants.APP_H_PX + 100).setFill(backgroundGradient).setAnchorPoint(0, 0).setPosition(0, 0);
-    console.log(background);
+    backgroundGradient.addColorStop(Constants.Graphics.APP_W_PX, '#BADA55');
+    var background = new lime.Sprite()
+		.setSize(Constants.Graphics.APP_W_PX, Constants.Graphics.APP_H_PX)
+		.setFill(backgroundGradient).setPosition(0, 0);
     scene.appendChild(background);
     
     // HUD
     
     // Eternal Darkness
-    //var seeminglyEndlessUndiscoveredBlackness = new lime.Sprite()
-	//	.setSize(Constants.MAZE_W_PX, Constants.MAZE_H_PX)
-	//	.setFill('#000000').setAnchorPoint(0, 0)
-	//	.setPosition(Constants.Graphics.TOP_CORNER);
-    //scene.appendChild(seeminglyEndlessUndiscoveredBlackness);
-    // there's an issue here while loading the maze via ajax- need to 
+    alert(Constants.Graphics.MAZE_H_PX);
+    var seeminglyEndlessUndiscoveredBlackness = new lime.Sprite()
+		.setSize(Constants.Graphics.MAZE_W_PX, Constants.Graphics.MAZE_H_PX)
+		.setFill('#000000')
+	    .setAnchorPoint(0, 0)
+		.setPosition(Constants.Graphics.TOP_CORNER);
+    scene.appendChild(seeminglyEndlessUndiscoveredBlackness);
+
     // Add Bot
     var bot = new Bot(maze.start, maze.startDir);
     scene.appendChild(bot.sprite);

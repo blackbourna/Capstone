@@ -9,7 +9,7 @@ Bot = function (startPos, startDir) {
     var energy = Constants.Bot.ENERGY;
     
     // public variables
-	this.sprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'bot.png').setAnchorPoint(50, 50);    
+	this.sprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'bot.png');
 	
     // private functions
     
