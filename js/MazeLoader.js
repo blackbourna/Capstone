@@ -12,18 +12,14 @@ MazeLoader = function(director) {
 			if (request.isSuccess()){
 				var data = request.getResponseJson();
 				maze = new Maze();
-				maze.width = Constants.MAZE_W;
-				maze.height = Constants.MAZE_H;
-				maze.maze = null;
-				maze.goal = null;
-				maze.recharger = null;
-				maze.start = null;
-				this.director.replaceScene(new Game(data));
-				//self.start = new Point(data.start.x, data.start.y);
-				//// parse goog.math.Vec2
-				//self.start.dir = data.start.dir;
-				//console.log(self);
-				//self.setupAfterAjaxMazeLoad();
+				maze.width = data.maze.length;
+				maze.height = data.maze[0].length;
+				maze.maze = data.mazemaze;
+				maze.goal = new Point(data.goal.x, data.goal.y);
+				maze.recharger = new Point(data.recharger.x, data.recharger.y);
+				maze.start = new Point(data.start.x, data.start.y);
+				maze.startDir = data.start.dir;
+				self.director.replaceScene(new Game(maze));
 			} else {
 				//error
 			}

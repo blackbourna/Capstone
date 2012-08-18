@@ -32,7 +32,6 @@ goog.require('lime.fill.LinearGradient');
 goog.require('goog.events');
 goog.require('goog.events.KeyCodes');
 goog.require('goog.events.KeyHandler');
-goog.require('goog.math.Coordinate');
 
 //ajax stuff
 goog.require('goog.net.XhrIo');
@@ -40,9 +39,7 @@ goog.require('goog.json');
 
 // Game entrypoint
 CapstoneProject_BlackbournA.start = function(){
-    Point = goog.math.Coordinate;
-
-    var director = new lime.Director(document.body, Constants.APP_W_PX, Constants.APP_H_PX);
+    var director = new lime.Director(document.body, Constants.Graphics.APP_W_PX, Constants.Graphics.APP_H_PX);
     new GameMenu(director).showMenu();
 };
 

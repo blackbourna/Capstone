@@ -1,33 +1,37 @@
 goog.provide('Bot');
-
-Bot = function (startInfo) {
+goog.require('Constants');
+Bot = function (startPos, startDir) {
+	// private variables
     var self = this;
-    this.position = position;
-    console.log(this);
-    this.direction = direction;
-	this.goForward = function() {}
-	this.goBack = function() {}
-	this.goRight = function() {}
-	this.goLeft = function() {}
-	
-	this.lookForward = function() {}
-	this.lookBack = function() {}
-	this.lookRight = function() {}
-	this.lookLeft = function() {}
-	
-	this.lookFar = function() {}
-	
-	this.sprint = function() {}
-	this.oneEighty = function() {}
-	
-	this.scan = function() {}
-	this.pickUp = function() {}
+    var position = startPos;
+    var direction = startDir;
+    var energy = Constants.Bot.ENERGY;
     
-    this.sprite = new lime.Sprite().setFill(IMG_ASSETS + 'bot.png').setAnchorPoint(0, 0);
+    // public variables
+	this.sprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'bot.png').setAnchorPoint(0, 0);    
+	
+    // private functions
     
-    this.getScreenPosition = function() {
-        var coord = new goog.math.Coordinate(TOP_CORNER.x + this.position.x, TOP_CORNER.y + this.position.y);
+    getScreenPosition = function() {
+        var coord = new goog.math.Coordinate(Constants.Graphics.TOP_CORNER.x + position.x, Constants.Graphics.TOP_CORNER.y + position.y);
         return coord;
     }
-    this.sprite.setPosition(this.getScreenPosition());
+    
+    // USE ENUM STYLE FOR THIS
+    // public functions
+	this.move = function() {}
+	this.turn = function() {}
+	this.look = function() {}
+	this.lookFarAhead = function() {}
+	
+	
+	this.Sprint = function() {}
+	
+	// 3
+	this.scanForRecharger = function() {}
+	// 1
+	this.pickUpRecharger = function() {}
+    
+    // set up initial position
+    this.sprite.setPosition(getScreenPosition());
 }

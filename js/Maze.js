@@ -10,6 +10,7 @@ Maze = function(maze) {
 	this.goal = null;
 	this.recharger = null;
     this.start = null;
+    this.startDir = null;
     this.get = function(x, y) {
         return this.maze[x][y];
     }

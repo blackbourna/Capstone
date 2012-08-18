@@ -4,7 +4,6 @@ goog.provide('Game');
 Game = function(maze) {
 // Setup visuals
     var scene = new lime.Scene();
-    
     // Background
     var backgroundGradient = new lime.fill.LinearGradient();
     backgroundGradient.addColorStop(0, '#ABCDEF');
@@ -19,10 +18,10 @@ Game = function(maze) {
     scene.appendChild(seeminglyEndlessUndiscoveredBlackness);
     // there's an issue here while loading the maze via ajax- need to 
     // Add Bot
-    var bot = new Bot(maze.start);
+    var bot = new Bot(maze.start, maze.startDir);
     scene.appendChild(bot.sprite);
 
-    goog.events.listen(new goog.events.KeyHandler(document), 'key', key_event);
+    //goog.events.listen(new goog.events.KeyHandler(document), 'key', key_event);
 
     // set current scene active
     return scene;
