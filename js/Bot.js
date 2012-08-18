@@ -5,10 +5,8 @@ goog.require('TURN');
 goog.require('LOOK');
 Bot = function (maze) {
 	// private variables
-	alert(MOVE.FORWARD);
     var self = this;
     var position = maze.start;
-    console.log(position);
     var direction = maze.startDir;
     var energy = Constants.Bot.ENERGY;
     var maze = maze;
@@ -24,15 +22,33 @@ Bot = function (maze) {
         return coord;
     }
     
-    // USE ENUM STYLE FOR THIS
     // public functions
 	this.move = function(dir) {
-		//switch(dir) {
-		//	
-		//}
+		switch(dir) {
+			case MOVE.FORWARD:
+			break;
+			case MOVE.BACKWARD:
+			break;
+		}
 	}
-	this.turn = function() {}
-	this.look = function() {}
+	this.turn = function(dir) {
+		switch(dir) {
+			case TURN.RIGHT:
+			break;
+			case TURN.LEFT:
+			break;
+		}
+	}
+	this.look = function(die) {
+		switch(dir) {
+			case LOOK.AHEAD:
+			break;
+			case LOOK.RIGHT:
+			break;
+			case LOOK.LEFT:
+			break;
+		}
+	}
 	this.lookFarAhead = function() {}
 	
 	
@@ -45,4 +61,11 @@ Bot = function (maze) {
     
     // set up initial position
     this.sprite.setPosition(getScreenPosition());
+	// from old code - move this to new style
+	//bot.sprite.runAction(new lime.animation.Sequence(
+	//	new lime.animation.ScaleTo(1.2).setDuration(.2),
+	//	new lime.animation.RotateBy(-90),
+	//	new lime.animation.ScaleTo(1).setDuration(.2)
+	//));
+	//bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_RIGHT));
 }

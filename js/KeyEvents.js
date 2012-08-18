@@ -8,19 +8,28 @@ KeyEvents = function(b) {
 		var sum = goog.math.Coordinate.sum;
 		var keyCodes = goog.events.KeyCodes;
 		var msg = '';
-		switch (e.keyCode) {
+		var keyCode = e.keyCode;
+		// On the Mac, shift-/ triggers a question mark char code and no key code,
+		// so we synthesize the latter http://closure-library.googlecode.com/svn/docs/closure_goog_events_keyhandler.js.source.html
+		if (goog.userAgent.MAC && charCode == goog.events.KeyCodes.QUESTION_MARK && !keyCode) {
+			keyCode = goog.events.KeyCodes.SLASH;
+		}
+		switch (keyCode) {
 			// Bot Directions
 			// Forward
 			case keyCodes.UP:
-				msg = 'Moved forward.';
-				bot.move(MOVE.FORWARD);
-				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_UP));
+				if (e.event_.shiftKey) {
+					msg = 'Looked ahead.';
+					bot.look(LOOK.AHEAD);
+				} else {
+					msg = 'Moved forward.';
+					bot.move(MOVE.FORWARD);
+				}
 			break;
 			// Back
 			case keyCodes.DOWN:
 				msg = 'Moved back.';
 				bot.move(MOVE.BACKWARD);
-				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_DOWN));
 			break;
 			// Turn Right
 			case keyCodes.RIGHT:
@@ -30,24 +39,17 @@ KeyEvents = function(b) {
 				} else {
 					msg = 'Turned right.';
 					bot.move(MOVE.RIGHT);
-					bot.sprite.runAction(new lime.animation.Sequence(
-						new lime.animation.ScaleTo(1.2).setDuration(.2),
-						new lime.animation.RotateBy(-90),
-						new lime.animation.ScaleTo(1).setDuration(.2)
-					));
-					bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_RIGHT));
 				}
 			break;
 			// Turn Left
 			case keyCodes.LEFT:
-				msg = 'Turned left.';
-				bot.sprite.runAction(new lime.animation.Sequence(
-					new lime.animation.ScaleTo(1.2).setDuration(.2),
-					new li033me.animation.RotateBy(90),
-					new lime.animation.ScaleTo(1).setDuration(.2)
-				));
-				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_LEFT));
-				//new lime.animation.ScaleTo(1),
+				if (e.event_.shiftKey) {
+					msg = 'Looked left.';
+					bot.look(LOOK.LEFT);
+				} else {
+					msg = 'Turned left.';
+					bot.move(MOVE.LEFT);
+				}
 			break;
 			// Camera zoom
 			case keyCodes.A:
@@ -76,6 +78,10 @@ KeyEvents = function(b) {
 			case keyCodes.BACKSLASH:
 				msg = 'Picked up energy.';
 			break;
+			// Look far ahead
+			case keyCodes.SLASH:
+				msg = 'Looked far ahead.';
+			break;
 		}
 		console.log(
 			'keyCode: ' + e.keyCode +
@@ -83,6 +89,6 @@ KeyEvents = function(b) {
 			', repeat: ' + e.repeat +
 			', target: ' + e.target +
 			', native event: ' + e.getBrowserEvent().type);
-		console.log(e);
+		console.log(msg);
 	}
 }
