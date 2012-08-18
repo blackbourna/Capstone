@@ -1,6 +1,8 @@
 goog.provide('Bot');
 goog.require('Constants');
-goog.require('BotEnums');
+goog.require('MOVE');
+goog.require('TURN');
+goog.require('LOOK');
 Bot = function (maze) {
 	// private variables
 	alert(MOVE.FORWARD);

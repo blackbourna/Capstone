@@ -1,5 +1,5 @@
 goog.provide('KeyEvents');
-goog.require('Move');
+goog.require('MOVE');
 
 KeyEvents = function(b) {
 	var bot = b;
