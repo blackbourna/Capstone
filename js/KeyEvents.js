@@ -12,6 +12,7 @@ KeyEvents = function(b) {
 			// Forward
 			case keyCodes.UP:
 				msg = 'Moved forward.';
+				bot.move(MOVE.FORWARD);
 				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_UP));
 			break;
 			// Back

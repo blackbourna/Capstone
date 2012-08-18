@@ -14,7 +14,8 @@ Bot = function (startPos, startDir) {
     // private functions
     
     getScreenPosition = function() {
-        var coord = new goog.math.Coordinate(Constants.Graphics.TOP_CORNER.x + parseInt(position.x), Constants.Graphics.TOP_CORNER.y + parseInt(position.y));
+		// for whatever reason the position.coord vars are detected as strings here... stupid JS
+        var coord = new goog.math.Coordinate(Constants.Graphics.TOP_CORNER.x + position.x*1, Constants.Graphics.TOP_CORNER.y + position.y*1);
         //var coord = goog.math.Coordinate.sum(position, Constants.Graphics.TOP_CORNER);
         return coord;
     }
