@@ -15,3 +15,7 @@ Maze = function(maze) {
         return this.maze[x][y];
     }
 }
+
+Maze.OPEN = '-';
+Maze.BLOCKED = '#';
+Maze.GOAL = '@';

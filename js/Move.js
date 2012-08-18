@@ -1,17 +1,17 @@
 goog.provide('BotEnums');
-// what should these be???
+// JS doesn't have enums, so use strings just in case these have to be output for debugging
 MOVE = {
-	FORWARD:'',
-	BACKWARD:'',
+	FORWARD: 'MOVE.FORWARD'
+	BACKWARD: 'MOVE.BACKWARD',
 }
 TURN = {
-	NONE: '',
-	LEFT: '',
-	RIGHT: '',
-	AROUND: ''
+	NONE: 'TURN.NONE',
+	LEFT: 'TURN.LEFT',
+	RIGHT: 'TURN.RIGHT',
+	AROUND: 'TURN.AROUND'
 }
 LOOK = {
-	LEFT: '',
-	AHEAD: '',
-	RIGHT: ''
+	LEFT: 'LOOK.LEFT',
+	AHEAD: 'LOOK.AHEAD',
+	RIGHT: 'LOOK.RIGHT'
 }

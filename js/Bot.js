@@ -1,13 +1,15 @@
 goog.provide('Bot');
 goog.require('Constants');
-Bot = function (startPos, startDir) {
+goog.require('BotEnums');
+Bot = function (maze) {
 	// private variables
+	alert(MOVE.FORWARD);
     var self = this;
-    var position = startPos;
+    var position = maze.start;
     console.log(position);
-    var direction = startDir;
+    var direction = maze.startDir;
     var energy = Constants.Bot.ENERGY;
-    
+    var maze = maze;
     // public variables
 	this.sprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'bot.png');
 	
@@ -22,13 +24,17 @@ Bot = function (startPos, startDir) {
     
     // USE ENUM STYLE FOR THIS
     // public functions
-	this.move = function() {}
+	this.move = function(dir) {
+		switch(dir) {
+			
+		}
+	}
 	this.turn = function() {}
 	this.look = function() {}
 	this.lookFarAhead = function() {}
 	
 	
-	this.Sprint = function() {}
+	this.sprint = function() {}
 	
 	// 3
 	this.scanForRecharger = function() {}

@@ -33,7 +33,7 @@ Game = function(maze) {
     scene.appendChild(seeminglyEndlessUndiscoveredBlackness);
 
     // Add Bot
-    var bot = new Bot(maze.start, maze.startDir);
+    var bot = new Bot(maze);
     scene.appendChild(bot.sprite);
     goog.events.listen(new goog.events.KeyHandler(document), 'key', new KeyEvents(bot).events);
     // set current scene active

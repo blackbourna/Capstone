@@ -1,4 +1,5 @@
 goog.provide('KeyEvents');
+goog.require('Move');
 
 KeyEvents = function(b) {
 	var bot = b;
@@ -18,14 +19,17 @@ KeyEvents = function(b) {
 			// Back
 			case keyCodes.DOWN:
 				msg = 'Moved back.';
+				bot.move(MOVE.BACKWARD);
 				bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_DOWN));
 			break;
 			// Turn Right
 			case keyCodes.RIGHT:
 				if (e.event_.shiftKey) {
 					msg = 'Looked right.';
+					bot.look(LOOK.RIGHT);
 				} else {
 					msg = 'Turned right.';
+					bot.move(MOVE.RIGHT);
 					bot.sprite.runAction(new lime.animation.Sequence(
 						new lime.animation.ScaleTo(1.2).setDuration(.2),
 						new lime.animation.RotateBy(-90),
