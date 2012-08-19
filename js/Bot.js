@@ -17,7 +17,8 @@ Bot = function (maze) {
     
     getScreenPosition = function() {
 		// for whatever reason the position.coord vars are detected as strings here... stupid JS
-        var coord = new goog.math.Coordinate(Constants.Graphics.TOP_CORNER.x + position.x*1, Constants.Graphics.TOP_CORNER.y + position.y*1);
+        var coord = new goog.math.Coordinate(Constants.Graphics.CELL_W * position.x*1 + Constants.Graphics.TOP_CORNER.x, Constants.Graphics.CELL_H * position.y*1 + Constants.Graphics.TOP_CORNER.y);
+        alert(coord);
         //var coord = goog.math.Coordinate.sum(position, Constants.Graphics.TOP_CORNER);
         return coord;
     }
@@ -60,7 +61,11 @@ Bot = function (maze) {
 	this.pickUpRecharger = function() {}
     
     // set up initial position
+    
+    //AnchorPoint is defined with ‘setAnchorPoint()’ method. The parameters are vector points in 0 to 1 range where (0,0) means top-left and (1,1) bottom right corner. By default all elements are positioned from the center and so have anchor point set to (0.5,0.5).
+	//this.sprite.setAnchorPoint(Constants.Graphics.TOP_CORNER);
     this.sprite.setPosition(getScreenPosition());
+
 	// from old code - move this to new style
 	//bot.sprite.runAction(new lime.animation.Sequence(
 	//	new lime.animation.ScaleTo(1.2).setDuration(.2),
