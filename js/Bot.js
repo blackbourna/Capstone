@@ -17,7 +17,7 @@ Bot = function (maze) {
 	
     // private functions
     updateDirection = function(x) {
-		self.sprite.setAnchorPoint(0.5, 0.5);
+		//self.sprite.setAnchorPoint(0.5, 0.5);
 		self.sprite.runAction(
 			new lime.animation.Sequence(
 				new lime.animation.ScaleTo(1.2).setDuration(.2),
@@ -25,6 +25,8 @@ Bot = function (maze) {
 				new lime.animation.ScaleTo(1).setDuration(.2)
 			)
 		);
+		//self.sprite.setAnchorPoint(0, 0);
+		//updatePosition();
 		//lime.scheduleManager.callAfter(function() {self.sprite.setAnchorPoint(0, 0);}, null, 1)
     }
     updatePosition = function() {
@@ -32,7 +34,9 @@ Bot = function (maze) {
     }
     getScreenPosition = function() {
 		// for whatever reason the position.coord vars are detected as strings here... stupid JS
-        var coord = new goog.math.Coordinate(Constants.Graphics.CELL_W * position.x*1, Constants.Graphics.CELL_H * position.y*1);
+		var width = self.sprite.getSize().width;
+		var height = self.sprite.getSize().height;
+        var coord = new goog.math.Coordinate(Constants.Graphics.CELL_W * position.x*1 + width/2, Constants.Graphics.CELL_H * position.y*1 + height/2);
         //alert(coord);
         //var coord = goog.math.Coordinate.sum(position, Constants.Graphics.TOP_CORNER);
         return coord;
@@ -60,14 +64,13 @@ Bot = function (maze) {
 		console.log(direction);
 		switch(dir) {
 			case TURN.RIGHT:
-				rotate = 90*180/Math.PI;
+				rotate = 90;
 			break;
 			case TURN.LEFT:
-				rotate = -90*180/Math.PI;
+				rotate = -90;
 			break;
 		}
-		direction = direction.rotate(rotate);
-		console.log(direction);
+		direction = direction.rotate(rotate*Math.PI/180);
 		updateDirection(rotate);
 	}
 	this.look = function(die) {
@@ -93,7 +96,7 @@ Bot = function (maze) {
     // set up initial position
     
     //AnchorPoint is defined with ‘setAnchorPoint()’ method. The parameters are vector points in 0 to 1 range where (0,0) means top-left and (1,1) bottom right corner. By default all elements are positioned from the center and so have anchor point set to (0.5,0.5).
-	this.sprite.setAnchorPoint(0, 0);
+	//this.sprite.setAnchorPoint(0, 0);
     updatePosition();
 
 	// from old code - move this to new style
