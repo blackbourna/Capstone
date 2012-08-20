@@ -10,6 +10,7 @@ Bot = function (maze) {
     var direction = maze.startDir;
     var energy = Constants.Bot.ENERGY;
     var maze = maze;
+    var sum = goog.math.Coordinate.sum;
     // public variables
 	this.sprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'bot.png');
 	
@@ -17,8 +18,8 @@ Bot = function (maze) {
     
     getScreenPosition = function() {
 		// for whatever reason the position.coord vars are detected as strings here... stupid JS
-        var coord = new goog.math.Coordinate(Constants.Graphics.CELL_W * position.x*1 + Constants.Graphics.TOP_CORNER.x, Constants.Graphics.CELL_H * position.y*1 + Constants.Graphics.TOP_CORNER.y);
-        alert(coord);
+        var coord = new goog.math.Coordinate(Constants.Graphics.CELL_W * position.x*1, Constants.Graphics.CELL_H * position.y*1);
+        //alert(coord);
         //var coord = goog.math.Coordinate.sum(position, Constants.Graphics.TOP_CORNER);
         return coord;
     }
@@ -27,6 +28,10 @@ Bot = function (maze) {
 	this.move = function(dir) {
 		switch(dir) {
 			case MOVE.FORWARD:
+				if (maze.get(sum(position, direction)) == Constants.Maze.OPEN) {
+					position = sum(position, direction);
+					console.log(position);
+				}
 			break;
 			case MOVE.BACKWARD:
 			break;
@@ -63,7 +68,7 @@ Bot = function (maze) {
     // set up initial position
     
     //AnchorPoint is defined with ‘setAnchorPoint()’ method. The parameters are vector points in 0 to 1 range where (0,0) means top-left and (1,1) bottom right corner. By default all elements are positioned from the center and so have anchor point set to (0.5,0.5).
-	//this.sprite.setAnchorPoint(Constants.Graphics.TOP_CORNER);
+	this.sprite.setAnchorPoint(0, 0);
     this.sprite.setPosition(getScreenPosition());
 
 	// from old code - move this to new style

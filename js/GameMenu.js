@@ -25,7 +25,7 @@ GameMenu=function(director) {
 		});
 		scene.appendChild(highscoreButton);
 
-		director.replaceScene(scene);
+		director.pushScene(scene);
 
 		// for debugging
 		new MazeLoader(director).getMaze();

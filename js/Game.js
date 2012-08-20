@@ -18,24 +18,26 @@ Game = function(maze) {
     backgroundGradient.addColorStop(0, '#ABCDEF');
     backgroundGradient.addColorStop(Constants.Graphics.APP_W_PX, '#BADA55');
     var background = new lime.Sprite()
-		.setSize(Constants.Graphics.APP_W_PX + 1000, Constants.Graphics.APP_H_PX + 1000)
-		.setFill(backgroundGradient).setPosition(0, 0);
+		.setSize(Constants.Graphics.APP_W_PX, Constants.Graphics.APP_H_PX)
+		.setFill(backgroundGradient)
+		.setAnchorPoint(0, 0)
+		.setPosition(0, 0);
     scene.appendChild(background);
     
     // HUD
     
     // Eternal Darkness
-    var seeminglyEndlessUndiscoveredBlackness = new lime.Sprite()
+    var mazeContainer = new lime.Sprite()
 		.setSize(Constants.Graphics.MAZE_W_PX, Constants.Graphics.MAZE_H_PX)
 		.setFill('#000000')
 	    .setAnchorPoint(0, 0)
 		.setPosition(Constants.Graphics.TOP_CORNER);
-    scene.appendChild(seeminglyEndlessUndiscoveredBlackness);
+    scene.appendChild(mazeContainer);
 
     // Add Bot
     var bot = new Bot(maze);
-    scene.appendChild(bot.sprite);
-    goog.events.listen(new goog.events.KeyHandler(document), 'key', new KeyEvents(bot).events);
+    mazeContainer.appendChild(bot.sprite);
+    goog.events.listen(new goog.events.KeyHandler(document), 'key', new KeyEvents(bot, maze, scene, mazeContainer).events);
     // set current scene active
     return scene;
 }

@@ -1,8 +1,11 @@
 goog.provide('KeyEvents');
 goog.require('MOVE');
 
-KeyEvents = function(b) {
-	var bot = b;
+KeyEvents = function(bot, maze, scene, mazeContainer) {
+	var bot = bot;
+	var maze = maze;
+	var scene = scene;
+	var mazeContainer = mazeContainer;
 
 	this.events = function(e) {
 		var sum = goog.math.Coordinate.sum;
@@ -38,7 +41,7 @@ KeyEvents = function(b) {
 					bot.look(LOOK.RIGHT);
 				} else {
 					msg = 'Turned right.';
-					bot.move(MOVE.RIGHT);
+					bot.turn(TURN.RIGHT);
 				}
 			break;
 			// Turn Left
@@ -48,47 +51,67 @@ KeyEvents = function(b) {
 					bot.look(LOOK.LEFT);
 				} else {
 					msg = 'Turned left.';
-					bot.move(MOVE.LEFT);
+					bot.turn(TURN.LEFT);
 				}
 			break;
-			// Camera zoom
+			// Camera zoom - this may be about impossible to actually implement with the framework
 			case keyCodes.A:
-				scene.runAction(new lime.animation.ScaleTo(scene.getScale().x * 2));
+				console.log("Zoom in.");
+				//mazeContainer.runAction(new lime.animation.ScaleTo(mazeContainer.getScale().x * 1.1));
+				scaleMaze(1.1);
+				//scene.runAction(new lime.animation.MoveTo(bot.sprite.getPosition()));
+				//scene.setScale(0.1);
 			break;
 			case keyCodes.Z:
-				console.log("Z");
-				scene.runAction(new lime.animation.ScaleTo(scene.getScale().x / 2));
+				console.log("Zoom out.");
+				//mazeContainer.runAction(new lime.animation.ScaleTo(mazeContainer.getScale().x / 1.1));
+				scaleMaze(0.9);
+				//scene.runAction(new lime.animation.MoveTo(bot.sprite.getPosition()));
 			break;
 			// Sprint forward
 			case keyCodes.SPACE:
 				msg = 'Sprinted forward.';
+				bot.sprint();
 			break;
 			// Rotate
 			case keyCodes.CTRL:
-				msg = 'Turned 180 degrees.';
+				msg = 'Turned 180 degrees.';z
+				bot.turn(TURN.AROUND);
 			break;
 			// Scan
 			case keyCodes.ENTER:
 				msg = 'Scanned for energy.';
+				bot.scanForRecharger()
 			break;
 			case keyCodes.MAC_ENTER:
 				msg = 'Scanned for energy.';
+				bot.scanForRecharger()
 			break;
 			// Pick up recharger
 			case keyCodes.BACKSLASH:
-				msg = 'Picked up energy.';
+				msg = 'Attempted to pick up energy...';
+				bot.pickUpRecharger();
 			break;
 			// Look far ahead
 			case keyCodes.SLASH:
 				msg = 'Looked far ahead.';
+				bot.lookFarAhead();
 			break;
 		}
-		console.log(
-			'keyCode: ' + e.keyCode +
-			', charCode: ' + e.charCode +
-			', repeat: ' + e.repeat +
-			', target: ' + e.target +
-			', native event: ' + e.getBrowserEvent().type);
-		console.log(msg);
+		//console.log(
+		//	'keyCode: ' + e.keyCode +
+		//	', charCode: ' + e.charCode +
+		//	', repeat: ' + e.repeat +
+		//	', target: ' + e.target +
+		//	', native event: ' + e.getBrowserEvent().type);
+		//console.log(msg);
+	}
+	
+	function scaleMaze(x) {
+		var length = mazeContainer.getNumberOfChildren();
+		for (var i = 0; i < length; i++) {
+			var sprite = mazeContainer.getChildAt(i);
+			sprite.runAction(new lime.animation.ScaleTo(sprite.getScale().x * x));
+		}
 	}
 }

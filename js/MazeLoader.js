@@ -22,7 +22,7 @@ MazeLoader = function(director) {
 				maze.start = new Point(data.start.x, data.start.y);
 				maze.startDir = Directions.get(data.start.dir);
 				
-				self.director.replaceScene(new Game(maze));
+				self.director.pushScene(new Game(maze));
 			} else {
 				//error
 			}
