@@ -1,11 +1,12 @@
 goog.provide('KeyEvents');
 goog.require('MOVE');
 
-KeyEvents = function(bot, maze, scene, mazeContainer) {
+KeyEvents = function(bot, maze, scene, mazeContainer, background) {
 	var bot = bot;
 	var maze = maze;
 	var scene = scene;
 	var mazeContainer = mazeContainer;
+	var background = background;
 
 	this.events = function(e) {
 		var sum = goog.math.Coordinate.sum;
@@ -66,7 +67,7 @@ KeyEvents = function(bot, maze, scene, mazeContainer) {
 				console.log("Zoom out.");
 				//mazeContainer.runAction(new lime.animation.ScaleTo(mazeContainer.getScale().x / 1.1));
 				scaleMaze(0.9);
-				//scene.runAction(new lime.animation.MoveTo(bot.sprite.getPosition()));
+				//mazeContainer.runAction(new lime.animation.MoveTo(bot.sprite.getPosition()));
 			break;
 			// Sprint forward
 			case keyCodes.SPACE:
@@ -84,7 +85,7 @@ KeyEvents = function(bot, maze, scene, mazeContainer) {
 				bot.scanForRecharger()
 			break;
 			case keyCodes.MAC_ENTER:
-				msg = 'Scanned for energy.';
+				msg = 'Scanned for energy.';is
 				bot.scanForRecharger()
 			break;
 			// Pick up recharger
@@ -102,7 +103,7 @@ KeyEvents = function(bot, maze, scene, mazeContainer) {
 		//	'keyCode: ' + e.keyCode +
 		//	', charCode: ' + e.charCode +
 		//	', repeat: ' + e.repeat +
-		//	', target: ' + e.target +
+		//	', target: ' + e.target +a
 		//	', native event: ' + e.getBrowserEvent().type);
 		//console.log(msg);
 	}
@@ -111,7 +112,18 @@ KeyEvents = function(bot, maze, scene, mazeContainer) {
 		var length = mazeContainer.getNumberOfChildren();
 		for (var i = 0; i < length; i++) {
 			var sprite = mazeContainer.getChildAt(i);
-			sprite.runAction(new lime.animation.ScaleTo(sprite.getScale().x * x));
+			var scale = new lime.animation.ScaleTo(sprite.getScale().x * x);
+			//var moveTo = new lime.animation.MoveTo(sprite.getPosition().x * x, sprite.getPosition().y * x);
+			//var spawn = new lime.animation.Spawn(scale);//, moveTo);
+			//sprite.runAction(spawn);
+			sprite.runAction(scale);
 		}
+		var scale = new lime.animation.ScaleTo(mazeContainer.getScale().x * x);
+		var moveTo = new lime.animation.MoveTo(mazeContainer.getPosition().x * x, mazeContainer.getPosition().y * x);
+		var spawn = new lime.animation.Spawn(scale, moveTo);
+		mazeContainer.runAction(spawn);
+		x = (x == 0.9) ? 1.1 : 0.9;
+		scale = new lime.animation.ScaleTo(background.getScale().x * x);
+		//background.runAction(scale);
 	}
 }

@@ -32,12 +32,12 @@ Game = function(maze) {
 		.setFill('#000000')
 	    .setAnchorPoint(0, 0)
 		.setPosition(Constants.Graphics.TOP_CORNER);
-    scene.appendChild(mazeContainer);
+    background.appendChild(mazeContainer);
 
     // Add Bot
     var bot = new Bot(maze);
     mazeContainer.appendChild(bot.sprite);
-    goog.events.listen(new goog.events.KeyHandler(document), 'key', new KeyEvents(bot, maze, scene, mazeContainer).events);
+    goog.events.listen(new goog.events.KeyHandler(document), 'key', new KeyEvents(bot, maze, scene, mazeContainer, background).events);
     // set current scene active
     return scene;
 }

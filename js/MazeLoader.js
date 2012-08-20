@@ -16,10 +16,10 @@ MazeLoader = function(director) {
 				maze = new Maze();
 				maze.width = data.maze.length;
 				maze.height = data.maze[0].length;
-				maze.maze = data.mazemaze;
-				maze.goal = new Point(data.goal.x, data.goal.y);
-				maze.recharger = new Point(data.recharger.x, data.recharger.y);
-				maze.start = new Point(data.start.x, data.start.y);
+				maze.maze = data.maze;
+				maze.goal = new Point(parseInt(data.goal.x), parseInt(data.goal.y));
+				maze.recharger = new Point(parseInt(data.recharger.x), parseInt(data.recharger.y));
+				maze.start = new Point(parseInt(data.start.x), parseInt(data.start.y));
 				maze.startDir = Directions.get(data.start.dir);
 				
 				self.director.pushScene(new Game(maze));

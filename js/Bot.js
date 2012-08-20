@@ -11,6 +11,7 @@ Bot = function (maze) {
     var energy = Constants.Bot.ENERGY;
     var maze = maze;
     var sum = goog.math.Coordinate.sum;
+    var difference = goog.math.Coordinate.difference;
     // public variables
 	this.sprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'bot.png');
 	
@@ -34,6 +35,10 @@ Bot = function (maze) {
 				}
 			break;
 			case MOVE.BACKWARD:
+				if (maze.get(difference(position, direction)) == Constants.Maze.OPEN) {
+					position = difference(position, direction);
+					console.log(position);
+				}
 			break;
 		}
 	}

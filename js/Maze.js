@@ -12,7 +12,10 @@ Maze = function(maze) {
     this.start = null;
     this.startDir = null;
     this.get = function(x, y) {
-        return this.maze[x][y];
+		if (typeof x == 'object')
+			return this.maze[x.x][x.y];
+		else
+			return this.maze[x][y];
     }
 }
 
