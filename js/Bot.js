@@ -3,31 +3,33 @@ goog.require('Constants');
 goog.require('MOVE');
 goog.require('TURN');
 goog.require('LOOK');
-Bot = function (maze) {
+goog.require('Utils');
+Bot = function (maze, mazeSprite) {
 	// private variables
     var self = this;
     var position = maze.start;
+    // its actually 
     var direction = maze.startDir;
     var energy = Constants.Bot.ENERGY;
     var maze = maze;
+	var mazeSprite = mazeSprite;
+    
+    // for lazy typists    
     var sum = goog.math.Coordinate.sum;
     var difference = goog.math.Coordinate.difference;
+    
     // public variables
 	this.sprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'bot.png');
 	
     // private functions
     updateDirection = function(x) {
-		//self.sprite.setAnchorPoint(0.5, 0.5);
 		self.sprite.runAction(
 			new lime.animation.Sequence(
-				new lime.animation.ScaleTo(1.2).setDuration(.2),
+				new lime.animation.ScaleTo(1.2).setDuration(.1),
 				new lime.animation.RotateBy(x),
-				new lime.animation.ScaleTo(1).setDuration(.2)
+				new lime.animation.ScaleTo(1).setDuration(.1)
 			)
 		);
-		//self.sprite.setAnchorPoint(0, 0);
-		//updatePosition();
-		//lime.scheduleManager.callAfter(function() {self.sprite.setAnchorPoint(0, 0);}, null, 1)
     }
     updatePosition = function() {
 		self.sprite.runAction(new lime.animation.MoveTo(getScreenPosition()).setSpeed(0.5));
@@ -36,10 +38,21 @@ Bot = function (maze) {
 		// for whatever reason the position.coord vars are detected as strings here... stupid JS
 		var width = self.sprite.getSize().width;
 		var height = self.sprite.getSize().height;
-        var coord = new goog.math.Coordinate(Constants.Graphics.CELL_W * position.x*1 + width/2, Constants.Graphics.CELL_H * position.y*1 + height/2);
+        var coord = new goog.math.Coordinate(width * position.x*1 + width/2, height * position.y*1 + height/2);
         //alert(coord);
         //var coord = goog.math.Coordinate.sum(position, Constants.Graphics.TOP_CORNER);
         return coord;
+    }
+    
+    hitWall = function(wall) {
+		if (!Utils.validatePoint(wall)) return;
+		var wallSprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'wall.png');
+		var width = wallSprite.getSize().width;
+		var height = wallSprite.getSize().height;		
+		var coord = new goog.math.Coordinate(width * wall.x*1 + width/2, height * wall.y*1 + height/2);
+		wallSprite.setPosition(coord);
+		mazeSprite.appendChild(wallSprite);
+		
     }
     
     // public functions
@@ -49,12 +62,16 @@ Bot = function (maze) {
 				if (maze.get(sum(position, direction)) == Constants.Maze.OPEN) {
 					position = sum(position, direction);
 					updatePosition();
+				} else { // hit wall
+					hitWall(sum(position, direction));
 				}
 			break;
 			case MOVE.BACKWARD:
 				if (maze.get(difference(position, direction)) == Constants.Maze.OPEN) {
 					position = difference(position, direction);
 					updatePosition();
+				} else { // hit wall
+					hitWall(difference(position, direction));
 				}
 			break;
 		}
@@ -94,7 +111,11 @@ Bot = function (maze) {
 	this.pickUpRecharger = function() {}
     
     // set up initial position
-    
+	while (!direction.equals(maze.startDir)) { // sprite starts facing north
+		var rotate = 90;
+		direction = direction.rotate(rotate*Math.PI/180);
+		updateDirection(rotate);
+    }
     //AnchorPoint is defined with ‘setAnchorPoint()’ method. The parameters are vector points in 0 to 1 range where (0,0) means top-left and (1,1) bottom right corner. By default all elements are positioned from the center and so have anchor point set to (0.5,0.5).
 	//this.sprite.setAnchorPoint(0, 0);
     updatePosition();

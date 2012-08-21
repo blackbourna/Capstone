@@ -35,8 +35,9 @@ Game = function(maze) {
     background.appendChild(mazeContainer);
 
     // Add Bot
-    var bot = new Bot(maze);
+    var bot = new Bot(maze, mazeContainer);
     mazeContainer.appendChild(bot.sprite);
+    maze.drawMaze(mazeContainer);
     goog.events.listen(new goog.events.KeyHandler(document), 'key', new KeyEvents(bot, maze, scene, mazeContainer, background).events);
     // set current scene active
     return scene;
