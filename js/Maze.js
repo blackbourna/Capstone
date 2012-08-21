@@ -19,9 +19,11 @@ Maze = function(maze) {
 		}
     }
     this.drawMaze = function(mazeSprite) {
+		var mazeString = '';
 		for (var x = 0; x < this.maze.length; x++) {
 			for (var y = 0; y < this.maze.length; y++) {
 				var wall = new goog.math.Coordinate(x, y);
+				mazeString += this.maze[x][y];
 				if (this.maze[x][y] == '#') {
 					var wallSprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'wall.png');
 					var width = wallSprite.getSize().width;
@@ -31,7 +33,9 @@ Maze = function(maze) {
 					mazeSprite.appendChild(wallSprite);
 				}
 			}
+			mazeString += '\n';
 		}
+		console.log(mazeString);
     }
 }
 
