@@ -76,7 +76,7 @@ KeyEvents = function(bot, maze, scene, mazeContainer, background) {
 			break;
 			// Rotate
 			case keyCodes.CTRL:
-				msg = 'Turned 180 degrees.';z
+				msg = 'Turned 180 degrees.';
 				bot.turn(TURN.AROUND);
 			break;
 			// Scan

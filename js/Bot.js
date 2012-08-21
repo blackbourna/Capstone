@@ -26,7 +26,7 @@ Bot = function (maze, mazeSprite) {
 		self.sprite.runAction(
 			new lime.animation.Sequence(
 				new lime.animation.ScaleTo(1.2).setDuration(.1),
-				new lime.animation.RotateBy(x),
+				new lime.animation.RotateBy(-x),
 				new lime.animation.ScaleTo(1).setDuration(.1)
 			)
 		);
@@ -56,6 +56,8 @@ Bot = function (maze, mazeSprite) {
     }
     
     // public functions
+    this.getPosition = function() {return position;}
+    
 	this.move = function(dir) {
 		switch(dir) {
 			case MOVE.FORWARD:

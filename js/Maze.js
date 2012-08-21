@@ -1,6 +1,7 @@
 goog.provide('Maze');
 
 goog.require('Constants');
+goog.require('Utils');
 
 Maze = function(maze) {
     var self = this; //  private functions lose THIS reference - see http://css.dzone.com/news/object-oriented-javascript-und
@@ -18,12 +19,16 @@ Maze = function(maze) {
 			return (Utils.validatePoint(x)) ? this.maze[x][y] : '#';
 		}
     }
-    this.drawMaze = function(mazeSprite) {
+    this.drawMaze = function(mazeSprite, bot) {
 		var mazeString = '';
-		for (var x = 0; x < this.maze.length; x++) {
-			for (var y = 0; y < this.maze.length; y++) {
+		for (var y = 0; y < this.maze.length; y++) {
+			for (var x = 0; x < this.maze.length; x++) {
 				var wall = new goog.math.Coordinate(x, y);
-				mazeString += this.maze[x][y];
+				if (bot.getPosition().x == x && bot.getPosition().y == y) {
+					mazeString += '@';
+				} else {
+					mazeString += this.maze[x][y];
+				}
 				if (this.maze[x][y] == '#') {
 					var wallSprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'wall.png');
 					var width = wallSprite.getSize().width;
