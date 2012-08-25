@@ -9,6 +9,7 @@ KeyEvents = function(bot, maze, scene, mazeContainer, background) {
 	var background = background;
 
 	this.events = function(e) {
+		if (Globals.animationPlaying) return;
 		var sum = goog.math.Coordinate.sum;
 		var keyCodes = goog.events.KeyCodes;
 		var msg = '';

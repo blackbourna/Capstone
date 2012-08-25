@@ -5,6 +5,7 @@ goog.provide('Game');
 goog.require('KeyEvents');
 
 goog.require('Constants');
+goog.require('Globals');
 // fill effects
 goog.require('lime.fill.LinearGradient');
 goog.require('lime.Sprite');

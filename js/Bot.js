@@ -23,16 +23,19 @@ Bot = function (maze, mazeSprite) {
 	
     // private functions
     updateDirection = function(x) {
-		self.sprite.runAction(
-			new lime.animation.Sequence(
-				new lime.animation.ScaleTo(1.2).setDuration(.1),
-				new lime.animation.RotateBy(-x),
-				new lime.animation.ScaleTo(1).setDuration(.1)
-			)
+		var sequence = 	new lime.animation.Sequence(
+			new lime.animation.ScaleTo(1.2).setDuration(.1),
+			new lime.animation.RotateBy(-x),
+			new lime.animation.ScaleTo(1).setDuration(.1)
 		);
+		Globals.waitForAnimationEndEvent(sequence);
+		
+		self.sprite.runAction(sequence);
     }
     updatePosition = function() {
-		self.sprite.runAction(new lime.animation.MoveTo(getScreenPosition()).setSpeed(0.5));
+		var moveTo = new lime.animation.MoveTo(getScreenPosition()).setSpeed(0.5);
+		Globals.waitForAnimationEndEvent(moveTo);
+		self.sprite.runAction(moveTo);
     }
     getScreenPosition = function() {
 		// for whatever reason the position.coord vars are detected as strings here... stupid JS
