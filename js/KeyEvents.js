@@ -99,6 +99,7 @@ KeyEvents = function(bot, maze, scene, mazeContainer, background) {
 				bot.lookFarAhead();
 			break;
 		}
+		maze.drawMaze(mazeContainer, bot, true);
 		//console.log(
 		//	'keyCode: ' + e.keyCode +
 		//	', charCode: ' + e.charCode +

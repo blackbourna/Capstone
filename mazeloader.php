@@ -51,6 +51,7 @@ class MazeReader {
 		$maze->maze = array_slice($mazetext, 1, 44);
         
         //return json array
+        
 		echo json_encode($maze);
 	}
 }
