@@ -36,6 +36,7 @@ Bot = function (maze, mazeSprite) {
 		var moveTo = new lime.animation.MoveTo(getScreenPosition()).setSpeed(0.5);
 		Globals.waitForAnimationEndEvent(moveTo);
 		self.sprite.runAction(moveTo);
+		console.log(Directions.getName(direction));
     }
     getScreenPosition = function() {
 		// for whatever reason the position.coord vars are detected as strings here... stupid JS

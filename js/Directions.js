@@ -16,3 +16,15 @@ Directions.get = function(x) {
 		break;
 	}
 }
+
+Directions.getName = function(x) {
+	if (x.equals(Directions.get('NORTH'))) {
+		return 'NORTH';
+	} else if (x.equals(Directions.get('EAST'))) {
+		return 'EAST';
+	} else if (x.equals(Directions.get('SOUTH'))) {
+		return 'SOUTH';
+	} else if (x.equals(Directions.get('WEST'))) {
+		return 'WEST';
+	}
+}
