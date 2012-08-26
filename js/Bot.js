@@ -4,16 +4,16 @@ goog.require('MOVE');
 goog.require('TURN');
 goog.require('LOOK');
 goog.require('Utils');
+goog.require('Compass');
+
 Bot = function (maze, mazeSprite) {
 	// private variables
     var self = this;
     var position = maze.start;
-    // its actually 
-    var direction = maze.startDir;
+    var direction = Directions.get('NORTH');
     var energy = Constants.Bot.ENERGY;
     var maze = maze;
 	var mazeSprite = mazeSprite;
-    
     // for lazy typists    
     var sum = goog.math.Coordinate.sum;
     var difference = goog.math.Coordinate.difference;
@@ -87,12 +87,14 @@ Bot = function (maze, mazeSprite) {
 		switch(dir) {
 			case TURN.RIGHT:
 				rotate = 90;
+				direction = Compass.rotate(TURN.RIGHT, direction);
 			break;
 			case TURN.LEFT:
 				rotate = -90;
+				direction = Compass.rotate(TURN.LEFT, direction);
 			break;
 		}
-		direction = direction.rotate(rotate*Math.PI/180);
+		//direction = direction.rotate(rotate*Math.PI/180);
 		updateDirection(rotate);
 	}
 	this.look = function(die) {
@@ -116,13 +118,15 @@ Bot = function (maze, mazeSprite) {
 	this.pickUpRecharger = function() {}
     
     // set up initial position
-	while (!direction.equals(maze.startDir)) { // sprite starts facing north
+    var attempt=0;
+    console.log(direction.equals);
+	while (attempt++< 5 && !direction.equals(maze.startDir)) { // sprite starts facing north
+	
 		var rotate = 90;
-		direction = direction.rotate(rotate*Math.PI/180);
+		console.log(direction);
+		direction = Compass.rotate(TURN.RIGHT, direction);
 		updateDirection(rotate);
     }
-    //AnchorPoint is defined with ‘setAnchorPoint()’ method. The parameters are vector points in 0 to 1 range where (0,0) means top-left and (1,1) bottom right corner. By default all elements are positioned from the center and so have anchor point set to (0.5,0.5).
-	//this.sprite.setAnchorPoint(0, 0);
     updatePosition();
 
 	// from old code - move this to new style

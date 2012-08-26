@@ -23,7 +23,7 @@ class MazeReader {
 	function __construct() {
 		$this->readMazeFile();
 	}
-	function readMazeFile($filename = 'assets/mazes/2010.maze') {
+	function readMazeFile($filename = 'assets/mazes/testmaze1.maze') {
 		$filecontents = file_get_contents($filename);
 		$mazetext = explode("\n", $filecontents);
 		for ($i = 1; $i < 45; $i++) {

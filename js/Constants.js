@@ -45,4 +45,3 @@ Constants.Graphics = {
 Constants.Bot = {
 	ENERGY: 10000
 }
-console.log(Constants);
