@@ -46,8 +46,12 @@ Bot = function (maze, mazeSprite) {
         //var coord = goog.math.Coordinate.sum(position, Constants.Graphics.TOP_CORNER);
         return coord;
     }
-    
-    hitWall = function(wall) {
+
+	/*
+	 * Adds a wall
+	 * @params wall - the cell to add the wall
+	 * */
+	addWall = function(wall) {
 		if (!Utils.validatePoint(wall)) return;
 		var wallSprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'wall.png');
 		var width = wallSprite.getSize().width;
@@ -55,7 +59,10 @@ Bot = function (maze, mazeSprite) {
 		var coord = new goog.math.Coordinate(width * wall.x*1 + width/2, height * wall.y*1 + height/2);
 		wallSprite.setPosition(coord);
 		mazeSprite.appendChild(wallSprite);
-		
+	}
+    
+    hitWall = function(wall) {
+		addWall(wall);
     }
     
     // public functions

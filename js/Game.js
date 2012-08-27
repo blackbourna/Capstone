@@ -25,14 +25,29 @@ Game = function(maze) {
 		.setPosition(0, 0);
     scene.appendChild(background);
     
-    // HUD
+    // BotStats & HUD
+    var botStats = new lime.RoundedRect()
+		.setSize(225, 450)
+		.setFill('#DEFFFF')
+		.setPosition(10, 50)
+		.setAnchorPoint(0, 0)
+		.setRadius(30);
+	background.appendChild(botStats);
+	
+    var hudContainer = new lime.RoundedRect()
+		.setSize(225, 100)
+		.setFill('#DEFFFF')
+		.setPosition(10, 550)
+		.setAnchorPoint(0, 0)
+		.setRadius(30);
+	background.appendChild(hudContainer);
     
     // Eternal Darkness
     var mazeContainer = new lime.Sprite()
 		.setSize(Constants.Graphics.MAZE_W_PX, Constants.Graphics.MAZE_H_PX)
 		.setFill('#000000')
 	    .setAnchorPoint(0, 0)
-		.setPosition(Constants.Graphics.TOP_CORNER);
+		.setPosition(Constants.Graphics.TOP_CORNER)
     background.appendChild(mazeContainer);
 
     // Add Bot
