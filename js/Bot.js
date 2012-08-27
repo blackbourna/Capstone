@@ -32,8 +32,8 @@ Bot = function (maze, mazeSprite) {
 		
 		self.sprite.runAction(sequence);
     }
-    updatePosition = function() {
-		var moveTo = new lime.animation.MoveTo(getScreenPosition()).setSpeed(0.5);
+    updatePosition = function(speed) {
+		var moveTo = new lime.animation.MoveTo(getScreenPosition()).setSpeed(speed ? speed : 0.5);
 		Globals.waitForAnimationEndEvent(moveTo);
 		self.sprite.runAction(moveTo);
 		console.log(Directions.getName(direction));
@@ -94,7 +94,6 @@ Bot = function (maze, mazeSprite) {
 				direction = Compass.rotate(TURN.LEFT, direction);
 			break;
 		}
-		//direction = direction.rotate(rotate*Math.PI/180);
 		updateDirection(rotate);
 	}
 	this.look = function(die) {
@@ -119,19 +118,12 @@ Bot = function (maze, mazeSprite) {
     
     // set up initial position
     var attempt=0;
-    console.log(direction.equals);
+    var rotateCt = 0;
 	while (!direction.equals(maze.startDir)) { // sprite starts facing north
 		var rotate = -90;
+		rotateCt++;
 		direction = Compass.rotate(TURN.RIGHT, direction);
-		updateDirection(rotate);
+		self.sprite.runAction(new lime.animation.RotateBy(90));
     }
-    updatePosition();
-
-	// from old code - move this to new style
-	//bot.sprite.runAction(new lime.animation.Sequence(
-	//	new lime.animation.ScaleTo(1.2).setDuration(.2),
-	//	new lime.animation.RotateBy(-90),
-	//	new lime.animation.ScaleTo(1).setDuration(.2)
-	//));
-	//bot.sprite.setPosition(sum(bot.sprite.getPosition(), DIR_RIGHT));
+    updatePosition(0.1);
 }
