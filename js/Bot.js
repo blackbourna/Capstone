@@ -25,7 +25,7 @@ Bot = function (maze, mazeSprite) {
     updateDirection = function(x) {
 		var sequence = 	new lime.animation.Sequence(
 			new lime.animation.ScaleTo(1.2).setDuration(.1),
-			new lime.animation.RotateBy(-x),
+			new lime.animation.RotateBy(x),
 			new lime.animation.ScaleTo(1).setDuration(.1)
 		);
 		Globals.waitForAnimationEndEvent(sequence);
@@ -39,7 +39,6 @@ Bot = function (maze, mazeSprite) {
 		console.log(Directions.getName(direction));
     }
     getScreenPosition = function() {
-		// for whatever reason the position.coord vars are detected as strings here... stupid JS
 		var width = self.sprite.getSize().width;
 		var height = self.sprite.getSize().height;
         var coord = new goog.math.Coordinate(width * position.x*1 + width/2, height * position.y*1 + height/2);
@@ -87,11 +86,11 @@ Bot = function (maze, mazeSprite) {
 		console.log(direction);
 		switch(dir) {
 			case TURN.RIGHT:
-				rotate = 90;
+				rotate = -90;
 				direction = Compass.rotate(TURN.RIGHT, direction);
 			break;
 			case TURN.LEFT:
-				rotate = -90;
+				rotate = 90;
 				direction = Compass.rotate(TURN.LEFT, direction);
 			break;
 		}
@@ -121,10 +120,8 @@ Bot = function (maze, mazeSprite) {
     // set up initial position
     var attempt=0;
     console.log(direction.equals);
-	while (attempt++< 5 && !direction.equals(maze.startDir)) { // sprite starts facing north
-	
-		var rotate = 90;
-		console.log(direction);
+	while (!direction.equals(maze.startDir)) { // sprite starts facing north
+		var rotate = -90;
 		direction = Compass.rotate(TURN.RIGHT, direction);
 		updateDirection(rotate);
     }

@@ -14,9 +14,9 @@ Maze = function(maze) {
     this.startDir = null;
     this.get = function(x, y) {
 		if (typeof x == 'object') {
-			return (Utils.validatePoint(x)) ? this.maze[x.x][x.y] : '#';
+			return (Utils.validatePoint(x)) ? this.maze[x.y][x.x] : '#';
 		} else {
-			return (Utils.validatePoint(x)) ? this.maze[x][y] : '#';
+			return (Utils.validatePoint(x)) ? this.maze[y][x] : '#';
 		}
     }
     this.drawMaze = function(mazeSprite, bot, debug) {
@@ -24,7 +24,7 @@ Maze = function(maze) {
 		for (var x = 0; x < this.maze.length; x++) {
 			for (var y = 0; y < this.maze.length; y++) {
 				var wall = new goog.math.Coordinate(y, x);
-				if (bot.getPosition().x == x && bot.getPosition().y == y) {
+				if (bot.getPosition().x == y && bot.getPosition().y == x) {
 					mazeString += '@';
 				} else {
 					mazeString += this.maze[x][y];

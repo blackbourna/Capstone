@@ -9,7 +9,7 @@ Directions.get = function(x) {
 			return new Vec2(1, 0);
 		break;
 		case 'SOUTH':
-			return new Vec2(1, 0);
+			return new Vec2(0, 1);
 		break;
 		case 'WEST':
 			return new Vec2(-1, 0);
