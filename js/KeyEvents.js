@@ -99,6 +99,9 @@ KeyEvents = function(bot, maze, scene, mazeContainer, background) {
 				msg = 'Looked far ahead.';
 				bot.lookFarAhead();
 			break;
+			case keyCodes.ESC:
+				bot.drawMaze();
+			break;
 		}
 		maze.drawMaze(mazeContainer, bot, true);
 		//console.log(

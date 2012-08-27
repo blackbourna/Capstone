@@ -51,18 +51,27 @@ Bot = function (maze, mazeSprite) {
 	 * Adds a wall
 	 * @params wall - the cell to add the wall
 	 * */
-	addWall = function(wall) {
-		if (!Utils.validatePoint(wall)) return;
-		var wallSprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'wall.png');
-		var width = wallSprite.getSize().width;
-		var height = wallSprite.getSize().height;		
-		var coord = new goog.math.Coordinate(width * wall.x*1 + width/2, height * wall.y*1 + height/2);
-		wallSprite.setPosition(coord);
-		mazeSprite.appendChild(wallSprite);
+	addWall = function(cell) {
+		addCell(cell, Constants.Graphics.IMG_ASSETS + 'wall.png');
 	}
+	
+    addOpen = function(cell) {
+		addCell(cell, Constants.Graphics.IMG_ASSETS + 'open.png');
+    }
     
-    hitWall = function(wall) {
-		addWall(wall);
+    addCell = function(cell, img) {
+		if (!Utils.validatePoint(cell)) return;
+		var sprite = new lime.Sprite().setFill(img);
+		var width = sprite.getSize().width;
+		var height = sprite.getSize().height;		
+		var coord = new goog.math.Coordinate(width * cell.x*1 + width/2, height * cell.y*1 + height/2);
+		sprite.setPosition(coord);
+		mazeSprite.appendChild(sprite);
+		mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
+    }
+    
+    hitWall = function(cell) {
+		addWall(cell);
     }
     
     // public functions
@@ -100,12 +109,21 @@ Bot = function (maze, mazeSprite) {
 				rotate = 90;
 				direction = Compass.rotate(TURN.LEFT, direction);
 			break;
+			case TURN.AROUND:
+				rotate = 180;
+				direction = Compass.rotate(TURN.LEFT, direction);
+			break;
 		}
 		updateDirection(rotate);
 	}
-	this.look = function(die) {
+	this.look = function(dir) {
 		switch(dir) {
 			case LOOK.AHEAD:
+				if (maze.get(sum(position, direction)) == Constants.Maze.OPEN) {
+					addOpen(sum(position, direction));
+				} else { // hit wall
+					addWall(sum(position, direction));
+				}
 			break;
 			case LOOK.RIGHT:
 			break;
@@ -113,7 +131,14 @@ Bot = function (maze, mazeSprite) {
 			break;
 		}
 	}
-	this.lookFarAhead = function() {}
+	this.lookFarAhead = function() {
+		var cell = sum(position, direction);
+		while (maze.get(cell) == Constants.Maze.OPEN) {
+			addOpen(cell);
+			cell = sum(cell, direction);
+		}
+		addWall(cell);
+	}
 	
 	
 	this.sprint = function() {}
@@ -122,7 +147,9 @@ Bot = function (maze, mazeSprite) {
 	this.scanForRecharger = function() {}
 	// 1
 	this.pickUpRecharger = function() {}
-    
+    this.drawMaze = function() {
+		maze.drawMaze(mazeSprite, self, false);
+    }
     // set up initial position
     var attempt=0;
     var rotateCt = 0;
