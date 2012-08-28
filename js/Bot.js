@@ -127,8 +127,20 @@ Bot = function (maze, mazeSprite) {
 				}
 			break;
 			case LOOK.RIGHT:
+				var dir = Compass.rotate(TURN.RIGHT, direction);
+				if (maze.get(sum(position, dir)) == Constants.Maze.OPEN) {
+					addOpen(sum(position, dir));
+				} else { // hit wall
+					addWall(sum(position, dir));
+				}
 			break;
 			case LOOK.LEFT:
+				var dir = Compass.rotate(TURN.LEFT, direction);
+				if (maze.get(sum(position, dir)) == Constants.Maze.OPEN) {
+					addOpen(sum(position, dir));
+				} else { // hit wall
+					addWall(sum(position, dir));
+				}
 			break;
 		}
 	}

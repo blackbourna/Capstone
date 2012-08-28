@@ -3,6 +3,11 @@ goog.provide('Maze');
 goog.require('Constants');
 goog.require('Utils');
 
+// Cell states
+Maze.OPEN = '-';
+Maze.BLOCKED = '#';
+Maze.GOAL = '@';
+
 Maze = function(maze) {
     var self = this; //  private functions lose THIS reference - see http://css.dzone.com/news/object-oriented-javascript-und
     this.width = Constants.MAZE_W;
@@ -44,8 +49,19 @@ Maze = function(maze) {
 		}
 		console.log(mazeString);
     }
+    this.init = function(mazeSprite) {
+        // set maze size constants
+		for (var x = this.goal.y; x < this.goal.y + 4; x++) {
+			for (var y = this.goal.x; y < this.goal.x + 4; y++) {
+				this.maze[x][y] = '@';
+				var cell = new goog.math.Coordinate(y, x);
+				var sprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'goal.png');
+				var width = sprite.getSize().width;
+				var height = sprite.getSize().height;		
+				var coord = new goog.math.Coordinate(width * cell.x*1 + width/2, height * cell.y*1 + height/2);
+				sprite.setPosition(coord);
+				mazeSprite.appendChild(sprite);
+			}
+		}
+    }
 }
-
-Maze.OPEN = '-';
-Maze.BLOCKED = '#';
-Maze.GOAL = '@';
