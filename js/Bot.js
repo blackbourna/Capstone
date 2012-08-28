@@ -112,6 +112,7 @@ Bot = function (maze, mazeSprite) {
 			case TURN.AROUND:
 				rotate = 180;
 				direction = Compass.rotate(TURN.LEFT, direction);
+				direction = Compass.rotate(TURN.LEFT, direction);
 			break;
 		}
 		updateDirection(rotate);
@@ -141,7 +142,14 @@ Bot = function (maze, mazeSprite) {
 	}
 	
 	
-	this.sprint = function() {}
+	this.sprint = function() {
+		for (var x = 0; x < 5; x++) {
+			if (maze.get(sum(position, direction)) == Constants.Maze.OPEN) {
+					position = sum(position, direction);
+			}
+		}
+		updatePosition(0.25);
+	}
 	
 	// 3
 	this.scanForRecharger = function() {}
