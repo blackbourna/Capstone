@@ -165,7 +165,7 @@ Bot = function (maze, mazeSprite) {
 	
 	// 3
 	this.scanForRecharger = function() {
-		maze.scanForRecharger(position);
+		maze.scanForRecharger(position, mazeSprite);
 	}
 	// 1
 	this.pickUpRecharger = function() {}

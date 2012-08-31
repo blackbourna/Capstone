@@ -64,16 +64,31 @@ Maze = function(maze) {
 		}
     }
     
-    this.scanForRecharger = function(position) {
+    this.scanForRecharger = function(position, mazeSprite) {
 		//(int)Math.round(Math.sqrt(dx * dx + dy * dy));
 		for (var i = 1; i < 12; i++) { // work outward 12 cells from bot position
+			var sprites = [];
 			for (var x = 0; x < this.maze.length; x++) { // iterate maze
 				for (var y = 0; y < this.maze[0].length; y++) {
 					var pt = new Point(y, x);
 					var distance = parseInt(Math.round(Math.sqrt(Point.squaredDistance(position, pt))));
 					if (distance == i) {
+						//var sequence = new lime.animation.Sequence();
+						var scanSprite = new lime.Sprite()
+							.setFill(Constants.Graphics.IMG_ASSETS + 'scan.png')
+							.setAnchorPoint(0, 0)
+							.setOpacity(0.0)
+							.setPosition(Utils.getScreenPositionRelativeToCoordinates(pt));
+						sprites.push(scanSprite);
 					}
 				}
+			}
+			for (var s in sprites) {
+				mazeSprite.appendChild(sprites[s]);
+				var sequence = new lime.animation.Sequence(
+					new lime.animation.FadeTo(1).setDuration(0.5), 
+					new lime.animation.FadeTo(0).setDuration(0.5));
+				sprites[s].runAction(sequence);
 			}
 		}
     }

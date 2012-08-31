@@ -9,10 +9,11 @@ Utils = {
 		}
 	},
 	getScreenPositionRelativeToCoordinates: function(x, y) {
+		// note that this requires that the object have an AnchorPoint of (0, 0)!
 		if (typeof x == 'object') {
-			return new goog.math.Coordinate(Constants.Graphics.CELL_W * position.x.x*1 + width/2, Constants.Graphics.CELL_W * position.x.y*1 + height/2);
+			return new goog.math.Coordinate(Constants.Graphics.CELL_W * x.x, Constants.Graphics.CELL_W * x.y);
 		} else {
-			return new goog.math.Coordinate(Constants.Graphics.CELL_W * position.x*1 + width/2, Constants.Graphics.CELL_W * position.y*1 + height/2);
+			return new goog.math.Coordinate(Constants.Graphics.CELL_W * x, Constants.Graphics.CELL_W * y);
 		}
 	}
 }
