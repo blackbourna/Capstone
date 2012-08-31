@@ -9,7 +9,7 @@ Maze.BLOCKED = '#';
 Maze.GOAL = '@';
 
 Maze = function(maze) {
-    var self = this; //  private functions lose THIS reference - see http://css.dzone.com/news/object-oriented-javascript-und
+    var self = this;
     this.width = Constants.MAZE_W;
     this.height = Constants.MAZE_H;
 	this.maze = null;
@@ -27,7 +27,7 @@ Maze = function(maze) {
     this.drawMaze = function(mazeSprite, bot, debug) {
 		var mazeString = '';
 		for (var x = 0; x < this.maze.length; x++) {
-			for (var y = 0; y < this.maze.length; y++) {
+			for (var y = 0; y < this.maze[0].length; y++) {
 				var wall = new goog.math.Coordinate(y, x);
 				if (bot.getPosition().x == y && bot.getPosition().y == x) {
 					mazeString += '@';
@@ -39,7 +39,6 @@ Maze = function(maze) {
 					var wallSprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'wall.png');
 					var width = wallSprite.getSize().width;
 					var height = wallSprite.getSize().height;		
-					//var coord = new goog.math.Coordinate(width * wall.x*1 + width/2, height * wall.y*1 + height/2);
 					var coord = new goog.math.Coordinate(width * wall.x*1 + width/2, height * wall.y*1 + height/2);
 					wallSprite.setPosition(coord);
 					mazeSprite.appendChild(wallSprite);
@@ -61,6 +60,20 @@ Maze = function(maze) {
 				var coord = new goog.math.Coordinate(width * cell.x*1 + width/2, height * cell.y*1 + height/2);
 				sprite.setPosition(coord);
 				mazeSprite.appendChild(sprite);
+			}
+		}
+    }
+    
+    this.scanForRecharger = function(position) {
+		//(int)Math.round(Math.sqrt(dx * dx + dy * dy));
+		for (var i = 1; i < 12; i++) { // work outward 12 cells from bot position
+			for (var x = 0; x < this.maze.length; x++) { // iterate maze
+				for (var y = 0; y < this.maze[0].length; y++) {
+					var pt = new Point(y, x);
+					var distance = parseInt(Math.round(Math.sqrt(Point.squaredDistance(position, pt))));
+					if (distance == i) {
+					}
+				}
 			}
 		}
     }
