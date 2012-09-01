@@ -52,7 +52,6 @@ Maze = function(energyPt) {
 			}
 			mazeString += '\n';
 		}
-		console.log(mazeString);
     }
     this.init = function(mazeSprite) {
         // set maze size constants
@@ -73,6 +72,7 @@ Maze = function(energyPt) {
     this.scanForRecharger = function(position, mazeSprite) {
 		//(int)Math.round(Math.sqrt(dx * dx + dy * dy));
 		Globals.animationPlaying = true;
+		
 		for (var i = 1; i < 12 && !foundEnergy; i++) { // work outward 12 cells from bot position
 			var sprites = [];
 			var foundEnergy = false;
@@ -134,6 +134,13 @@ Maze = function(energyPt) {
 		// re-enable keyboard input
 		lime.scheduleManager.scheduleWithDelay(function (dt) {
 			Globals.animationPlaying = false;
-		}, null, i * 1000, 3);
+		}, null, i * radarSpeed * 1000, 1);
+		
+		var distance = i;
+		var label = new lime.Label(distance)
+			.setAnchorPoint(0, 0)
+			.setPosition(Utils.getScreenPositionRelativeToCoordinates(position));
+		console.log(label);
+		mazeSprite.appendChild(label);
     }
 }

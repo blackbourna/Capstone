@@ -37,6 +37,7 @@ Bot = function (maze, mazeSprite) {
 		self.sprite.runAction(sequence);
     }
     updatePosition = function(speed) {
+		addOpen(position);
 		var moveTo = new lime.animation.MoveTo(getScreenPosition()).setSpeed(speed ? speed : 0.5);
 		Globals.waitForAnimationEndEvent(moveTo);
 		self.sprite.runAction(moveTo);
@@ -104,7 +105,6 @@ Bot = function (maze, mazeSprite) {
 	}
 	this.turn = function(dir) {
 		var rotate = 0;
-		console.log(direction);
 		switch(dir) {
 			case TURN.RIGHT:
 				rotate = -90;
@@ -187,5 +187,6 @@ Bot = function (maze, mazeSprite) {
 		direction = Compass.rotate(TURN.RIGHT, direction);
 		self.sprite.runAction(new lime.animation.RotateBy(90));
     }
+    addOpen(position);
     updatePosition(0.1);
 }

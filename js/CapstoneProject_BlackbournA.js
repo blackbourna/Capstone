@@ -13,9 +13,10 @@ goog.require('Constants');
 goog.require('lime.Director');
 goog.require('lime.Scene');
 goog.require('lime.GlossyButton');
+goog.require('lime.Label');
 
+// probably will use this for zooming
 //goog.require('lime.Layer');
-//goog.require('lime.Label');
 
 // animations
 goog.require('lime.animation.Spawn');
