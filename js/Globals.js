@@ -7,5 +7,11 @@ Globals = {
 		goog.events.listen(anim,lime.animation.Event.STOP,function(){
 			Globals.animationPlaying = false;
 		});
+	},
+	Audio: {
+		stopThenPlay: function(audio) {
+			audio.currentTime = 0;
+			audio.play();
+		}
 	}
 }

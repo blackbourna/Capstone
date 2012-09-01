@@ -100,8 +100,7 @@ Bot = function (maze, mazeSprite) {
 				}
 			break;
 		}
-		sfx_step.currentTime = 0;
-		sfx_step.play();
+		Globals.Audio.stopThenPlay(sfx_step);
 	}
 	this.turn = function(dir) {
 		var rotate = 0;
