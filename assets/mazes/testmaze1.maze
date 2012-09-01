@@ -45,4 +45,4 @@ amazebot2011maze
 --------------#--------------#--#--#--------
 start = (0,43,NORTH)
 goal = (19,0)
-recharger = (25,26)
+recharger = (0,40)

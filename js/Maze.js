@@ -8,15 +8,17 @@ Maze.OPEN = '-';
 Maze.BLOCKED = '#';
 Maze.GOAL = '@';
 
-Maze = function(maze) {
+Maze = function(energyPt) {
     var self = this;
     this.width = Constants.MAZE_W;
     this.height = Constants.MAZE_H;
 	this.maze = null;
 	this.goal = null;
-	this.recharger = null;
     this.start = null;
     this.startDir = null;
+	
+	var recharger = energyPt;
+	
     this.get = function(x, y) {
 		if (typeof x == 'object') {
 			return (Utils.validatePoint(x)) ? this.maze[x.y][x.x] : '#';
@@ -66,8 +68,9 @@ Maze = function(maze) {
     
     this.scanForRecharger = function(position, mazeSprite) {
 		//(int)Math.round(Math.sqrt(dx * dx + dy * dy));
-		for (var i = 1; i < 12; i++) { // work outward 12 cells from bot position
+		for (var i = 1; i < 12 && !foundEnergy; i++) { // work outward 12 cells from bot position
 			var sprites = [];
+			var foundEnergy = false;
 			for (var x = 0; x < this.maze.length; x++) { // iterate maze
 				for (var y = 0; y < this.maze[0].length; y++) {
 					var pt = new Point(y, x);
@@ -80,14 +83,37 @@ Maze = function(maze) {
 							.setOpacity(0.0)
 							.setPosition(Utils.getScreenPositionRelativeToCoordinates(pt));
 						sprites.push(scanSprite);
+						if (Point.equals(recharger, pt)) {
+							foundEnergy = true;
+							console.log(recharger, pt, i);
+						}
 					}
 				}
 			}
 			for (var s in sprites) {
 				mazeSprite.appendChild(sprites[s]);
-				var sequence = new lime.animation.Sequence(
-					new lime.animation.FadeTo(1).setDuration(0.5), 
-					new lime.animation.FadeTo(0).setDuration(0.5));
+				var sequence = null;
+				if (!foundEnergy) {
+					sequence = new lime.animation.Sequence(
+						new lime.animation.Delay().setDuration((i - 1)/4),
+						new lime.animation.FadeTo(1).setDuration(0.125), 
+						new lime.animation.FadeTo(0).setDuration(0.125)
+					);
+				} else {
+					sequence = new lime.animation.Sequence(
+						// flash 3 times. limejs doesn't have any list-style animation collections,
+						// and javascript doesn't support tuples... ugly stuff
+						new lime.animation.Delay().setDuration((i - 1)/4),
+						new lime.animation.FadeTo(1).setDuration(0.125), 
+						new lime.animation.FadeTo(0).setDuration(0.125),
+						
+						new lime.animation.FadeTo(1).setDuration(0.125), 
+						new lime.animation.FadeTo(0).setDuration(0.125),
+						
+						new lime.animation.FadeTo(1).setDuration(0.125), 
+						new lime.animation.FadeTo(0).setDuration(0.125)
+					);
+				}
 				sprites[s].runAction(sequence);
 			}
 		}
