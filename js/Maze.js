@@ -16,6 +16,9 @@ Maze = function(energyPt) {
 	this.goal = null;
     this.start = null;
     this.startDir = null;
+
+	var radar1 = new Audio(Constants.Assets.AUDIO_PATH + 'radar1.wav');
+	var radar2 = new Audio(Constants.Assets.AUDIO_PATH + 'radar2.wav');
 	
 	var recharger = energyPt;
 	
@@ -38,7 +41,7 @@ Maze = function(energyPt) {
 				}
 				if (!debug)
 				if (this.maze[x][y] == '#') {
-					var wallSprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'wall.png');
+					var wallSprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'wall.png');
 					var width = wallSprite.getSize().width;
 					var height = wallSprite.getSize().height;		
 					var coord = new goog.math.Coordinate(width * wall.x*1 + width/2, height * wall.y*1 + height/2);
@@ -56,7 +59,7 @@ Maze = function(energyPt) {
 			for (var y = this.goal.x; y < this.goal.x + 4; y++) {
 				this.maze[x][y] = '@';
 				var cell = new goog.math.Coordinate(y, x);
-				var sprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'goal.png');
+				var sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'goal.png');
 				var width = sprite.getSize().width;
 				var height = sprite.getSize().height;		
 				var coord = new goog.math.Coordinate(width * cell.x*1 + width/2, height * cell.y*1 + height/2);
@@ -78,14 +81,13 @@ Maze = function(energyPt) {
 					if (distance == i) {
 						//var sequence = new lime.animation.Sequence();
 						var scanSprite = new lime.Sprite()
-							.setFill(Constants.Graphics.IMG_ASSETS + 'scan.png')
+							.setFill(Constants.Assets.IMAGE_PATH + 'scan.png')
 							.setAnchorPoint(0, 0)
 							.setOpacity(0.0)
 							.setPosition(Utils.getScreenPositionRelativeToCoordinates(pt));
 						sprites.push(scanSprite);
 						if (Point.equals(recharger, pt)) {
 							foundEnergy = true;
-							console.log(recharger, pt, i);
 						}
 					}
 				}
@@ -99,6 +101,10 @@ Maze = function(energyPt) {
 						new lime.animation.FadeTo(1).setDuration(0.125), 
 						new lime.animation.FadeTo(0).setDuration(0.125)
 					);
+					lime.scheduleManager.scheduleWithDelay(function (dt) {
+						radar1.currentTime = 0;
+						radar1.play(); // use raw HTML5 for audio, limejs has terrible audio support
+					}, null, 250 * i, 1);
 				} else {
 					sequence = new lime.animation.Sequence(
 						// flash 3 times. limejs doesn't have any list-style animation collections,
@@ -113,6 +119,14 @@ Maze = function(energyPt) {
 						new lime.animation.FadeTo(1).setDuration(0.125), 
 						new lime.animation.FadeTo(0).setDuration(0.125)
 					);
+					lime.scheduleManager.scheduleWithDelay(function (dt) {
+						radar1.currentTime = 0;
+						radar1.play();
+						lime.scheduleManager.scheduleWithDelay(function (dt) {
+							radar2.currentTime = 0;
+							radar2.play();
+						}, null, 250, 3);
+					}, null, 250 * i, 1);
 				}
 				sprites[s].runAction(sequence);
 			}

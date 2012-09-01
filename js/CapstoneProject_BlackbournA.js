@@ -29,6 +29,11 @@ goog.require('lime.animation.RotateBy');
 goog.require('lime.transitions.Dissolve');
 goog.require('lime.animation.FadeTo');
 goog.require('lime.animation.Delay');
+
+// audio
+
+goog.require('lime.audio.Audio');
+
 //events/keyhandlers
 goog.require('goog.events');
 goog.require('goog.events.KeyCodes');

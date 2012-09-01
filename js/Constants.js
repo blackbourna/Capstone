@@ -37,9 +37,12 @@ Constants.Graphics = {
     MAZE_W_PX: 16*44,
     MAZE_H_PX: 16*44,
     
-	IMG_ASSETS: 'assets/sprites/',
-    MAZE_ASSETS: 'assets/mazes/',
-    SFX_ASSETS: 'assets/sfx/',
+}
+
+Constants.Assets = {
+	IMAGE_PATH: 'assets/sprites/',
+    MAZE_PATH: 'assets/mazes/',
+    AUDIO_PATH: 'assets/audio/',
 }
 
 Constants.Bot = {

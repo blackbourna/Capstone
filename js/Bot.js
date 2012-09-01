@@ -18,8 +18,12 @@ Bot = function (maze, mazeSprite) {
     var sum = goog.math.Coordinate.sum;
     var difference = goog.math.Coordinate.difference;
     
+    var sfx_step = new Audio(Constants.Assets.AUDIO_PATH + 'step.wav');
+    var sfx_look = new Audio(Constants.Assets.AUDIO_PATH + 'look.wav');
+    var sfx_turn = null;
+    
     // public variables
-	this.sprite = new lime.Sprite().setFill(Constants.Graphics.IMG_ASSETS + 'bot.png');
+	this.sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'bot.png');
 	
     // private functions
     updateDirection = function(x) {
@@ -52,11 +56,11 @@ Bot = function (maze, mazeSprite) {
 	 * @params wall - the cell to add the wall
 	 * */
 	addWall = function(cell) {
-		addCell(cell, Constants.Graphics.IMG_ASSETS + 'wall.png');
+		addCell(cell, Constants.Assets.IMAGE_PATH + 'wall.png');
 	}
 	
     addOpen = function(cell) {
-		addCell(cell, Constants.Graphics.IMG_ASSETS + 'open.png');
+		addCell(cell, Constants.Assets.IMAGE_PATH + 'open.png');
     }
     
     addCell = function(cell, img) {
@@ -96,6 +100,8 @@ Bot = function (maze, mazeSprite) {
 				}
 			break;
 		}
+		sfx_step.currentTime = 0;
+		sfx_step.play();
 	}
 	this.turn = function(dir) {
 		var rotate = 0;
@@ -143,6 +149,7 @@ Bot = function (maze, mazeSprite) {
 				}
 			break;
 		}
+		sfx_look.play();
 	}
 	this.lookFarAhead = function() {
 		var cell = sum(position, direction);
