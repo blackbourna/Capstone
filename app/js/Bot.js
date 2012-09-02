@@ -6,7 +6,7 @@ goog.require('LOOK');
 goog.require('Utils');
 goog.require('Compass');
 
-Bot = function (maze, mazeSprite) {
+Bot = function (maze, mazeSprite, director) {
 	// private variables
     var self = this;
     var position = maze.start;
@@ -14,6 +14,7 @@ Bot = function (maze, mazeSprite) {
     var energy = Constants.EnergyCosts.START_ENERGY;
     var maze = maze;
 	var mazeSprite = mazeSprite;
+	var director = director;
     // for lazy typists    
     var sum = goog.math.Coordinate.sum;
     var difference = goog.math.Coordinate.difference;
@@ -205,6 +206,7 @@ Bot = function (maze, mazeSprite) {
 		for (var x = 0; x < 5; x++) {
 			if (maze.get(sum(position, direction)) == Constants.Maze.OPEN) {
 					position = sum(position, direction);
+					addOpen(position);
 			} else {
 				blocked = true;
 			}
@@ -235,10 +237,15 @@ Bot = function (maze, mazeSprite) {
 		direction = Compass.rotate(TURN.RIGHT, direction);
 		self.sprite.runAction(new lime.animation.RotateBy(90));
     }
-    lime.scheduleManager.scheduleWithDelay(function (dt) {
-		if (energy <= 0)
+    var energyCheckEvent = function (dt) {
+		if (energy <= 0) {
 			alert("OUT OF ENERGY");
-    }, 0.25);
+			lime.scheduleManager.unschedule(energyCheckEvent, this);
+			director.popScene();
+		}
+		console.log('running!' + energy);
+    };
+    lime.scheduleManager.scheduleWithDelay(energyCheckEvent, 0.25);
     addOpen(position);
     updatePosition(0.1);
 }

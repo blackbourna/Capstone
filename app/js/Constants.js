@@ -40,7 +40,7 @@ Constants.Graphics = {
 }
 
 Constants.EnergyCosts = {
-	START_ENERGY: 100,
+	START_ENERGY: 10,
 	MOVE: 6,
 	MOVE_BLOCKED: 12,
 	TURN: 4,

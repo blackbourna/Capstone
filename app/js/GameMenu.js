@@ -8,19 +8,19 @@ GameMenu=function(director) {
 		var scene = new lime.Scene();
 		scene.setRenderer(lime.Renderer.CANVAS);
 		var startGameButton = new lime.GlossyButton('Start Game').setPosition(500, 500).setSize(500, 50);
-		goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
+			goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
 			new MazeLoader(director).getMaze();
 		});
 		scene.appendChild(startGameButton);
 
 		var helpButton = new lime.GlossyButton('Start Game').setPosition(500, 500).setSize(500, 50);
-		goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
+			goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
 			
 		});
 		scene.appendChild(helpButton);
 
 		var highscoreButton = new lime.GlossyButton('Start Game').setPosition(500, 500).setSize(500, 50);
-		goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
+			goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
 
 		});
 		scene.appendChild(highscoreButton);
@@ -28,6 +28,6 @@ GameMenu=function(director) {
 		director.pushScene(scene);
 
 		// for debugging
-		new MazeLoader(director).getMaze();
+		//new MazeLoader(director).getMaze();
 	}
 }

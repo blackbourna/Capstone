@@ -10,7 +10,7 @@ goog.require('Globals');
 goog.require('lime.fill.LinearGradient');
 goog.require('lime.Sprite');
 
-Game = function(maze) {
+Game = function(maze, director) {
 // Setup visuals
     var scene = new lime.Scene();
 
@@ -51,7 +51,7 @@ Game = function(maze) {
     background.appendChild(mazeContainer);
 
     // Add Bot
-    var bot = new Bot(maze, mazeContainer);
+    var bot = new Bot(maze, mazeContainer, director);
     mazeContainer.appendChild(bot.sprite);
     //maze.drawMaze(mazeContainer, bot, false);
     maze.init(mazeContainer);

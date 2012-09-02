@@ -21,7 +21,7 @@ MazeLoader = function(director) {
 				maze.start = new Point(parseInt(data.start.x), parseInt(data.start.y));
 				maze.startDir = Directions.get(data.start.dir);
 				
-				self.director.pushScene(new Game(maze));
+				self.director.pushScene(new Game(maze, self.director));
 			} else {
 				//error
 			}
