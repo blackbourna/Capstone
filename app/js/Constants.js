@@ -35,7 +35,7 @@ Constants.Graphics = {
     MAZE_DIMENSIONS: new Point(16*44 , 16*44), // use this to replace MAZE_W_PX
     
     MAZE_W_PX: 16*44,
-    MAZE_H_PX: 16*44,
+    MAZE_H_PX: 16*44
     
 }
 
@@ -56,5 +56,5 @@ Constants.EnergyCosts = {
 Constants.Assets = {
     IMAGE_PATH: 'assets/sprites/',
     MAZE_PATH: 'assets/mazes/',
-    AUDIO_PATH: 'assets/audio/',
+    AUDIO_PATH: 'assets/audio/'
 }
