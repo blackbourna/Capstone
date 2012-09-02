@@ -3,11 +3,6 @@ goog.provide('Maze');
 goog.require('Constants');
 goog.require('Utils');
 
-// Cell states
-Maze.OPEN = '-';
-Maze.BLOCKED = '#';
-Maze.GOAL = '@';
-
 Maze = function(energyPt) {
     var self = this;
     this.width = Constants.MAZE_W;

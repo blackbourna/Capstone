@@ -109,7 +109,7 @@ Bot = function (maze, mazeSprite, director) {
 		blocked = false;
 		switch(dir) {
 			case MOVE.FORWARD:
-				if (maze.get(sum(position, direction)) == Constants.Maze.OPEN) {
+				if (maze.get(sum(position, direction)) == Cell.OPEN) {
 					position = sum(position, direction);
 					updatePosition();
 				} else { // hit wall
@@ -118,7 +118,7 @@ Bot = function (maze, mazeSprite, director) {
 				}
 			break;
 			case MOVE.BACKWARD:
-				if (maze.get(difference(position, direction)) == Constants.Maze.OPEN) {
+				if (maze.get(difference(position, direction)) == Cell.OPEN) {
 					position = difference(position, direction);
 					updatePosition();
 				} else { // hit wall
@@ -160,7 +160,7 @@ Bot = function (maze, mazeSprite, director) {
 		if (!hasEnergy(Constants.EnergyCosts.LOOK)) return false;
 		switch(dir) {
 			case LOOK.AHEAD:
-				if (maze.get(sum(position, direction)) == Constants.Maze.OPEN) {
+				if (maze.get(sum(position, direction)) == Cell.OPEN) {
 					addOpen(sum(position, direction));
 				} else { // hit wall
 					addWall(sum(position, direction));
@@ -168,7 +168,7 @@ Bot = function (maze, mazeSprite, director) {
 			break;
 			case LOOK.RIGHT:
 				var dir = Compass.rotate(TURN.RIGHT, direction);
-				if (maze.get(sum(position, dir)) == Constants.Maze.OPEN) {
+				if (maze.get(sum(position, dir)) == Cell.OPEN) {
 					addOpen(sum(position, dir));
 				} else { // hit wall
 					addWall(sum(position, dir));
@@ -176,7 +176,7 @@ Bot = function (maze, mazeSprite, director) {
 			break;
 			case LOOK.LEFT:
 				var dir = Compass.rotate(TURN.LEFT, direction);
-				if (maze.get(sum(position, dir)) == Constants.Maze.OPEN) {
+				if (maze.get(sum(position, dir)) == Cell.OPEN) {
 					addOpen(sum(position, dir));
 				} else { // hit wall
 					addWall(sum(position, dir));
@@ -194,7 +194,7 @@ Bot = function (maze, mazeSprite, director) {
 		if (!hasEnergy(Constants.EnergyCosts.LOOK_AHEAD)) return false;
 		energy -= Constants.EnergyCosts.LOOK_AHEAD;
 		var cell = sum(position, direction);
-		while (maze.get(cell) == Constants.Maze.OPEN) {
+		while (maze.get(cell) == Cell.OPEN) {
 			addOpen(cell);
 			cell = sum(cell, direction);
 		}
@@ -207,7 +207,7 @@ Bot = function (maze, mazeSprite, director) {
 		if (!hasEnergy(Constants.EnergyCosts.SPRINT)) return false;
 		var blocked = false;
 		for (var x = 0; x < 5; x++) {
-			if (maze.get(sum(position, direction)) == Constants.Maze.OPEN) {
+			if (maze.get(sum(position, direction)) == Cell.OPEN) {
 					position = sum(position, direction);
 					addOpen(position);
 			} else {

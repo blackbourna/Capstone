@@ -6,6 +6,7 @@ goog.provide('CapstoneProject_BlackbournA');
 // my classes
 goog.require('GameMenu');
 goog.require('Bot');
+goog.require('Cell');
 goog.require('Maze');
 goog.require('Constants');
 

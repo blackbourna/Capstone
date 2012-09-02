@@ -16,8 +16,6 @@ Constants.Maze = {
     MAZE_W: 44,
     MAZE_H: 44,
     MAZE_DIMENSIONS: new Point(44, 44),
-    OPEN: '-',
-    WALL: '#'
 }
 
 Constants.Graphics = {
@@ -40,7 +38,7 @@ Constants.Graphics = {
 }
 
 Constants.EnergyCosts = {
-	START_ENERGY: 10,
+	START_ENERGY: 100,
 	MOVE: 6,
 	MOVE_BLOCKED: 12,
 	TURN: 4,

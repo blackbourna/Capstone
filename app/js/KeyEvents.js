@@ -76,7 +76,7 @@ KeyEvents = function(bot, maze) {
 				bot.scanForRecharger()
 			break;
 			case keyCodes.MAC_ENTER:
-				msg = 'Scanned for energy.';is
+				msg = 'Scanned for energy.';
 				bot.scanForRecharger()
 			break;
 			// Pick up recharger
