@@ -15,7 +15,7 @@ Constants.Maze = {
 	// todo: fix this, don't use a constant, get the value from Ajax
     MAZE_W: 44,
     MAZE_H: 44,
-    MAZE_DIMENSIONS: new Point(44, 44),
+    MAZE_DIMENSIONS: new Point(44, 44)
 }
 
 Constants.Graphics = {
