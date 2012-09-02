@@ -13,7 +13,7 @@ goog.require('lime.Sprite');
 Game = function(maze) {
 // Setup visuals
     var scene = new lime.Scene();
-    
+
     // Background
     var backgroundGradient = new lime.fill.LinearGradient();
     backgroundGradient.addColorStop(0, '#ABCDEF');

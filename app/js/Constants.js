@@ -21,8 +21,8 @@ Constants.Maze = {
 }
 
 Constants.Graphics = {
-	APP_DIMENSIONS: new Point(1024, 768),
-	APP_W_PX: 1024,
+    APP_DIMENSIONS: new Point(1024, 768),
+    APP_W_PX: 1024,
     APP_H_PX: 768,
     TOP_CORNER: new Point(250, 35),
 	
@@ -54,7 +54,7 @@ Constants.EnergyCosts = {
 }
 
 Constants.Assets = {
-	IMAGE_PATH: 'assets/sprites/',
+    IMAGE_PATH: 'assets/sprites/',
     MAZE_PATH: 'assets/mazes/',
     AUDIO_PATH: 'assets/audio/',
 }
