@@ -72,7 +72,9 @@ Maze = function(energyPt) {
     this.scanForRecharger = function(position, mazeSprite) {
 		//(int)Math.round(Math.sqrt(dx * dx + dy * dy));
 		Globals.animationPlaying = true;
-		
+		if (Point.equals(recharger, position)) { // play some notifier
+			foundEnergy = true;
+		}
 		for (var i = 1; i < 12 && !foundEnergy; i++) { // work outward 12 cells from bot position
 			var sprites = [];
 			var foundEnergy = false;
@@ -136,11 +138,11 @@ Maze = function(energyPt) {
 			Globals.animationPlaying = false;
 		}, null, i * radarSpeed * 1000, 1);
 		
-		var distance = i;
+		var distance = (foundEnergy) ? i - 1 : -1;
 		var label = new lime.Label(distance)
 			.setAnchorPoint(0, 0)
 			.setPosition(Utils.getScreenPositionRelativeToCoordinates(position));
-		console.log(label);
 		mazeSprite.appendChild(label);
+		label.runAction(new lime.animation.FadeTo(1).setDuration(i * radarSpeed));
     }
 }

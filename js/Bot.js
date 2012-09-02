@@ -21,6 +21,7 @@ Bot = function (maze, mazeSprite) {
     var sfx_step = new Audio(Constants.Assets.AUDIO_PATH + 'step.wav');
     var sfx_look = new Audio(Constants.Assets.AUDIO_PATH + 'look.wav');
     var sfx_turn = null;
+    var markedCells = new Array();
     
     // public variables
 	this.sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'bot.png');
@@ -66,6 +67,7 @@ Bot = function (maze, mazeSprite) {
     
     addCell = function(cell, img) {
 		if (!Utils.validatePoint(cell)) return;
+		if (cellHasBeenMarked(cell)) return;
 		var sprite = new lime.Sprite().setFill(img);
 		var width = sprite.getSize().width;
 		var height = sprite.getSize().height;		
@@ -73,6 +75,18 @@ Bot = function (maze, mazeSprite) {
 		sprite.setPosition(coord);
 		mazeSprite.appendChild(sprite);
 		mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
+    }
+    
+    cellHasBeenMarked = function(cell) {
+		var alreadyMarked = false;
+		for (var c in markedCells) {
+			if (Point.equals(cell, markedCells[c])) {
+				alreadyMarked = true;
+				break;
+			}
+		}
+		markedCells.push(cell)
+		return alreadyMarked;
     }
     
     hitWall = function(cell) {
