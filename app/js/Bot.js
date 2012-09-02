@@ -6,6 +6,9 @@ goog.require('LOOK');
 goog.require('Utils');
 goog.require('Compass');
 
+// my key handler
+goog.require('KeyEvents');
+
 Bot = function (maze, mazeSprite, director) {
 	// private variables
     var self = this;
@@ -241,6 +244,7 @@ Bot = function (maze, mazeSprite, director) {
 		if (energy <= 0) {
 			alert("OUT OF ENERGY");
 			lime.scheduleManager.unschedule(energyCheckEvent, this);
+			goog.events.unlisten(keyhandler, 'key', keyevents);
 			director.popScene();
 		}
 		console.log('running!' + energy);
@@ -248,4 +252,7 @@ Bot = function (maze, mazeSprite, director) {
     lime.scheduleManager.scheduleWithDelay(energyCheckEvent, 0.25);
     addOpen(position);
     updatePosition(0.1);
+    var keyhandler = new goog.events.KeyHandler(document);
+    var keyevents = new KeyEvents(self, maze).events;
+	goog.events.listen(keyhandler, 'key', keyevents);
 }

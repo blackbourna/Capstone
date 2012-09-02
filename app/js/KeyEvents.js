@@ -1,12 +1,9 @@
 goog.provide('KeyEvents');
 goog.require('MOVE');
 
-KeyEvents = function(bot, maze, scene, mazeContainer, background) {
+KeyEvents = function(bot, maze) {
 	var bot = bot;
 	var maze = maze;
-	var scene = scene;
-	var mazeContainer = mazeContainer;
-	var background = background;
 
 	this.events = function(e) {
 		if (Globals.animationPlaying) return;
@@ -58,17 +55,10 @@ KeyEvents = function(bot, maze, scene, mazeContainer, background) {
 			break;
 			// Camera zoom - this may be about impossible to actually implement with the framework
 			case keyCodes.A:
-				console.log("Zoom in.");
-				//mazeContainer.runAction(new lime.animation.ScaleTo(mazeContainer.getScale().x * 1.1));
-				scaleMaze(1.1);
-				//scene.runAction(new lime.animation.MoveTo(bot.sprite.getPosition()));
-				//scene.setScale(0.1);
+				msg = "Zoom in.";
 			break;
 			case keyCodes.Z:
-				console.log("Zoom out.");
-				//mazeContainer.runAction(new lime.animation.ScaleTo(mazeContainer.getScale().x / 1.1));
-				scaleMaze(0.9);
-				//mazeContainer.runAction(new lime.animation.MoveTo(bot.sprite.getPosition()));
+				msg = "Zoom out.";
 			break;
 			// Sprint forward
 			case keyCodes.SPACE:
@@ -103,7 +93,6 @@ KeyEvents = function(bot, maze, scene, mazeContainer, background) {
 				bot.drawMaze();
 			break;
 		}
-		maze.drawMaze(mazeContainer, bot, true);
 		//console.log(
 		//	'keyCode: ' + e.keyCode +
 		//	', charCode: ' + e.charCode +
@@ -114,21 +103,6 @@ KeyEvents = function(bot, maze, scene, mazeContainer, background) {
 	}
 	
 	function scaleMaze(x) {
-		var length = mazeContainer.getNumberOfChildren();
-		for (var i = 0; i < length; i++) {
-			var sprite = mazeContainer.getChildAt(i);
-			var scale = new lime.animation.ScaleTo(sprite.getScale().x * x);
-			//var moveTo = new lime.animation.MoveTo(sprite.getPosition().x * x, sprite.getPosition().y * x);
-			//var spawn = new lime.animation.Spawn(scale);//, moveTo);
-			//sprite.runAction(spawn);
-			sprite.runAction(scale);
-		}
-		var scale = new lime.animation.ScaleTo(mazeContainer.getScale().x * x);
-		var moveTo = new lime.animation.MoveTo(mazeContainer.getPosition().x * x, mazeContainer.getPosition().y * x);
-		var spawn = new lime.animation.Spawn(scale, moveTo);
-		mazeContainer.runAction(spawn);
-		x = (x == 0.9) ? 1.1 : 0.9;
-		scale = new lime.animation.ScaleTo(background.getScale().x * x);
-		//background.runAction(scale);
+
 	}
 }

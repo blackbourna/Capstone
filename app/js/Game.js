@@ -1,9 +1,6 @@
 //set main namespace
 goog.provide('Game');
 
-// my key handler
-goog.require('KeyEvents');
-
 goog.require('Constants');
 goog.require('Globals');
 // fill effects
@@ -55,7 +52,6 @@ Game = function(maze, director) {
     mazeContainer.appendChild(bot.sprite);
     //maze.drawMaze(mazeContainer, bot, false);
     maze.init(mazeContainer);
-    goog.events.listen(new goog.events.KeyHandler(document), 'key', new KeyEvents(bot, maze, scene, mazeContainer, background).events);
     // set current scene active
     return scene;
 }
