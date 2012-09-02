@@ -11,7 +11,7 @@ Bot = function (maze, mazeSprite) {
     var self = this;
     var position = maze.start;
     var direction = Directions.get('NORTH');
-    var energy = Constants.Bot.ENERGY;
+    var energy = Constants.EnergyCosts.START_ENERGY;
     var maze = maze;
 	var mazeSprite = mazeSprite;
     // for lazy typists    
@@ -93,10 +93,16 @@ Bot = function (maze, mazeSprite) {
 		addWall(cell);
     }
     
+    hasEnergy = function(cost) {
+		return (energy >= cost)
+    }
+    
     // public functions
     this.getPosition = function() {return position;}
     
 	this.move = function(dir) {
+		if (!hasEnergy(Constants.EnergyCosts.MOVE)) return false;
+		blocked = false;
 		switch(dir) {
 			case MOVE.FORWARD:
 				if (maze.get(sum(position, direction)) == Constants.Maze.OPEN) {
@@ -104,6 +110,7 @@ Bot = function (maze, mazeSprite) {
 					updatePosition();
 				} else { // hit wall
 					hitWall(sum(position, direction));
+					blocked = true;
 				}
 			break;
 			case MOVE.BACKWARD:
@@ -112,31 +119,41 @@ Bot = function (maze, mazeSprite) {
 					updatePosition();
 				} else { // hit wall
 					hitWall(difference(position, direction));
+					blocked = true;
 				}
 			break;
 		}
+		energy -= (blocked) ? Constants.EnergyCosts.MOVE_BLOCKED : Constants.EnergyCosts.MOVE;
 		Globals.Audio.stopThenPlay(sfx_step);
+		return true;
 	}
 	this.turn = function(dir) {
+		if (dir == TURN.AROUND && !hasEnergy(Constants.EnergyCosts.TURN_AROUND)) return false;
+		if (!hasEnergy(Constants.EnergyCosts.TURN)) return false;
 		var rotate = 0;
 		switch(dir) {
 			case TURN.RIGHT:
 				rotate = -90;
 				direction = Compass.rotate(TURN.RIGHT, direction);
+				energy -= Constants.EnergyCosts.TURN;
 			break;
 			case TURN.LEFT:
 				rotate = 90;
 				direction = Compass.rotate(TURN.LEFT, direction);
+				energy -= Constants.EnergyCosts.TURN;
 			break;
 			case TURN.AROUND:
 				rotate = 180;
 				direction = Compass.rotate(TURN.LEFT, direction);
 				direction = Compass.rotate(TURN.LEFT, direction);
+				energy -= Constants.EnergyCosts.TURN_AROUND;
 			break;
 		}
 		updateDirection(rotate);
+		return true;
 	}
 	this.look = function(dir) {
+		if (!hasEnergy(Constants.EnergyCosts.LOOK)) return false;
 		switch(dir) {
 			case LOOK.AHEAD:
 				if (maze.get(sum(position, direction)) == Constants.Maze.OPEN) {
@@ -161,34 +178,51 @@ Bot = function (maze, mazeSprite) {
 					addWall(sum(position, dir));
 				}
 			break;
+			default: // fixes some redraw issues for some reason
+				energy -= Constants.EnergyCosts.LOOK;
+				return true;
 		}
+		energy -= Constants.EnergyCosts.LOOK;
 		sfx_look.play();
+		return true;
 	}
 	this.lookFarAhead = function() {
+		if (!hasEnergy(Constants.EnergyCosts.LOOK_AHEAD)) return false;
+		energy -= Constants.EnergyCosts.LOOK_AHEAD;
 		var cell = sum(position, direction);
 		while (maze.get(cell) == Constants.Maze.OPEN) {
 			addOpen(cell);
 			cell = sum(cell, direction);
 		}
 		addWall(cell);
+		return true;
 	}
 	
 	
 	this.sprint = function() {
+		if (!hasEnergy(Constants.EnergyCosts.SPRINT)) return false;
+		var blocked = false;
 		for (var x = 0; x < 5; x++) {
 			if (maze.get(sum(position, direction)) == Constants.Maze.OPEN) {
 					position = sum(position, direction);
+			} else {
+				blocked = true;
 			}
 		}
+		energy -= (blocked) ? Constants.EnergyCosts.SPRINT_BLOCKED : Constants.EnergyCosts.SPRINT;
 		updatePosition(0.25);
+		return true;
 	}
 	
-	// 3
 	this.scanForRecharger = function() {
+		if (!hasEnergy(Constants.EnergyCosts.ENERGY_SCAN)) return false;
+		energy -= Constants.EnergyCosts.ENERGY_SCAN;
 		maze.scanForRecharger(position, mazeSprite);
 	}
-	// 1
-	this.pickUpRecharger = function() {}
+	this.pickUpRecharger = function() {
+		if (!hasEnergy(Constants.EnergyCosts.ENERGY_PICKUP)) return false;
+		energy -= Constants.EnergyCosts.ENERGY_PICKUP;
+	}
     this.drawMaze = function() {
 		maze.drawMaze(mazeSprite, self, false);
     }
@@ -201,6 +235,10 @@ Bot = function (maze, mazeSprite) {
 		direction = Compass.rotate(TURN.RIGHT, direction);
 		self.sprite.runAction(new lime.animation.RotateBy(90));
     }
+    lime.scheduleManager.scheduleWithDelay(function (dt) {
+		if (energy <= 0)
+			alert("OUT OF ENERGY");
+    }, 0.25);
     addOpen(position);
     updatePosition(0.1);
 }

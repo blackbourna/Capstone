@@ -39,12 +39,22 @@ Constants.Graphics = {
     
 }
 
+Constants.EnergyCosts = {
+	START_ENERGY: 100,
+	MOVE: 6,
+	MOVE_BLOCKED: 12,
+	TURN: 4,
+	TURN_AROUND: 7,
+	LOOK: 2,
+	LOOK_AHEAD: 5,
+	SPRINT: 15,
+	SPRINT_BLOCKED: 60,
+	ENERGY_SCAN: 3,
+	ENERGY_PICKUP: 10
+}
+
 Constants.Assets = {
 	IMAGE_PATH: 'assets/sprites/',
     MAZE_PATH: 'assets/mazes/',
     AUDIO_PATH: 'assets/audio/',
-}
-
-Constants.Bot = {
-	ENERGY: 10000
 }
