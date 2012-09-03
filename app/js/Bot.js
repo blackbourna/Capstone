@@ -247,27 +247,11 @@ Bot = function (maze, mazeSprite, director, layer) {
 			zoom = zoom.x < 1 ? new Vec2(1, 1) : zoom;
 		}
 		layer.setScale(zoom);
-		mazePos = mazeSprite.getPosition();
-		
-		mazePos.x -= Constants.Graphics.MAZE_DIMENSIONS.x / 2;
-		mazePos.y -= Constants.Graphics.MAZE_DIMENSIONS.y / 2;
-		var length = maze.maze.length;
-		if (position.x > length / 2)
-			mazePos.x += ((position.x + 1) / length) * Constants.Graphics.MAZE_DIMENSIONS.x;
-		else
-			mazePos.x -= ((position.x + 1) / length) * Constants.Graphics.MAZE_DIMENSIONS.x;
-		if (position.y > length / 2)
-			mazePos.y += ((position.y + 1) / length) * Constants.Graphics.MAZE_DIMENSIONS.y;
-		else
-			mazePos.y -= ((position.y + 1) / length) * Constants.Graphics.MAZE_DIMENSIONS.y;
-		
-		console.log("TEST: " + mazePos);
-		
-		mazeSprite.setPosition(mazePos);
-		//layer.setPosition(position.);
-		//var relativePos = position;
-		
-		//mazeSprite.runAction(new lime.animation.MoveTo());
+		mazeSprite.setPosition(position.x / Constants.Maze.MAZE_DIMENSIONS.x)
+		//mazeSprite.setPosition(Constants.Maze.MAZE_DIMENSIONS.x / 2 - position.x, Constants.Maze.MAZE_DIMENSIONS.y / 2 - position.y);
+		//console.log(mazeSprite.getAnchorPoint());
+		//mazeSprite.setAnchorPoint(mazeSprite.getAnchorPoint().scale(zoom.x));
+		//console.log(mazeSprite.getAnchorPoint());
     }
     // set up initial position
     var attempt=0;
