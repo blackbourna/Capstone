@@ -25,6 +25,7 @@ goog.require('lime.animation.Sequence');
 goog.require('lime.animation.FadeTo');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.MoveTo');
+goog.require('lime.animation.MoveBy');
 goog.require('lime.animation.RotateBy');
 
 // transitions
