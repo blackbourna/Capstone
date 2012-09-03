@@ -56,9 +56,11 @@ KeyEvents = function(bot, maze) {
 			// Camera zoom - this may be about impossible to actually implement with the framework
 			case keyCodes.A:
 				msg = "Zoom in.";
+				bot.zoom(true);
 			break;
 			case keyCodes.Z:
 				msg = "Zoom out.";
+				bot.zoom(false  );
 			break;
 			// Sprint forward
 			case keyCodes.SPACE:

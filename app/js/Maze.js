@@ -5,8 +5,8 @@ goog.require('Utils');
 
 Maze = function(energyPt) {
     var self = this;
-    this.width = Constants.MAZE_W;
-    this.height = Constants.MAZE_H;
+    this.width = Constants.Maze.MAZE_DIMENSIONS.x;
+    this.height = Constants.Maze.MAZE_DIMENSIONS.y;
 	this.maze = null;
 	this.goal = null;
     this.start = null;

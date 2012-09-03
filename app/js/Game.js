@@ -14,9 +14,9 @@ Game = function(maze, director) {
     // Background
     var backgroundGradient = new lime.fill.LinearGradient();
     backgroundGradient.addColorStop(0, '#ABCDEF');
-    backgroundGradient.addColorStop(Constants.Graphics.APP_W_PX, '#BADA55');
+    backgroundGradient.addColorStop(Constants.Graphics.APP_DIMENSIONS.x, '#BADA55');
     var background = new lime.Sprite()
-		.setSize(Constants.Graphics.APP_W_PX, Constants.Graphics.APP_H_PX)
+		.setSize(Constants.Graphics.APP_DIMENSIONS.x, Constants.Graphics.APP_DIMENSIONS.y)
 		.setFill(backgroundGradient)
 		.setAnchorPoint(0, 0)
 		.setPosition(0, 0);
@@ -41,7 +41,7 @@ Game = function(maze, director) {
     
     // Eternal Darkness
     var mazeContainer = new lime.Sprite()
-		.setSize(Constants.Graphics.MAZE_W_PX, Constants.Graphics.MAZE_H_PX)
+		.setSize(Constants.Graphics.MAZE_DIMENSIONS.x, Constants.Graphics.MAZE_DIMENSIONS.y)
 		.setFill('#000000')
 	    .setAnchorPoint(0, 0)
 		.setPosition(Constants.Graphics.TOP_CORNER)
