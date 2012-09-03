@@ -9,7 +9,7 @@ goog.require('Compass');
 // my key handler
 goog.require('KeyEvents');
 
-Bot = function (maze, mazeSprite, director) {
+Bot = function (maze, mazeSprite, director, layer) {
 	// private variables
     var self = this;
     var position = maze.start;
@@ -22,10 +22,16 @@ Bot = function (maze, mazeSprite, director) {
     var sum = goog.math.Coordinate.sum;
     var difference = goog.math.Coordinate.difference;
     
+    // sound effects
     var sfx_step = new Audio(Constants.Assets.AUDIO_PATH + 'step.wav');
     var sfx_look = new Audio(Constants.Assets.AUDIO_PATH + 'look.wav');
     var sfx_turn = null;
+    
+    // list of cells that are already drawn
     var markedCells = new Array();
+    
+    // the mazeContainer layer for zooming
+    var layer = layer;
     
     // public variables
 	this.sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'bot.png');
@@ -231,6 +237,22 @@ Bot = function (maze, mazeSprite, director) {
     this.drawMaze = function() {
 		maze.drawMaze(mazeSprite, self, false);
     }
+    
+    this.zoom = function(zoomIn) {
+		if (zoomIn) {
+			var zoom = layer.getScale().scale(1.1);
+			zoom = zoom.x > 2.5 ? new Vec2(2.5, 2.5) : zoom;
+		} else {
+			var zoom = layer.getScale().scale(0.9);
+			zoom = zoom.x < 1 ? new Vec2(1, 1) : zoom;
+		}
+		layer.setScale(zoom);
+		mazeSprite.setPosition(position.x / Constants.Maze.MAZE_DIMENSIONS.x)
+		//mazeSprite.setPosition(Constants.Maze.MAZE_DIMENSIONS.x / 2 - position.x, Constants.Maze.MAZE_DIMENSIONS.y / 2 - position.y);
+		//console.log(mazeSprite.getAnchorPoint());
+		//mazeSprite.setAnchorPoint(mazeSprite.getAnchorPoint().scale(zoom.x));
+		//console.log(mazeSprite.getAnchorPoint());
+    }
     // set up initial position
     var attempt=0;
     var rotateCt = 0;
@@ -247,7 +269,6 @@ Bot = function (maze, mazeSprite, director) {
 			goog.events.unlisten(keyhandler, 'key', keyevents);
 			director.popScene();
 		}
-		console.log('running!' + energy);
     };
     lime.scheduleManager.scheduleWithDelay(energyCheckEvent, 0.25);
     addOpen(position);
