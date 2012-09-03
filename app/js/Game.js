@@ -7,18 +7,16 @@ goog.require('Globals');
 goog.require('lime.fill.LinearGradient');
 goog.require('lime.Sprite');
 
-goog.require('lime.Layer');
-
 Game = function(maze, director) {
 // Setup visuals
     var scene = new lime.Scene();
-	
+
     // Background
     var backgroundGradient = new lime.fill.LinearGradient();
     backgroundGradient.addColorStop(0, '#ABCDEF');
-    backgroundGradient.addColorStop(Constants.Graphics.APP_DIMENSIONS.x, '#BADA55');
+    backgroundGradient.addColorStop(Constants.Graphics.APP_W_PX, '#BADA55');
     var background = new lime.Sprite()
-		.setSize(Constants.Graphics.APP_DIMENSIONS.x, Constants.Graphics.APP_DIMENSIONS.y)
+		.setSize(Constants.Graphics.APP_W_PX, Constants.Graphics.APP_H_PX)
 		.setFill(backgroundGradient)
 		.setAnchorPoint(0, 0)
 		.setPosition(0, 0);
@@ -41,30 +39,16 @@ Game = function(maze, director) {
 		.setRadius(30);
 	background.appendChild(hudContainer);
     
-	var mazeLayer = new lime.Layer()
-		.setSize(Constants.Graphics.MAZE_DIMENSIONS.x, Constants.Graphics.MAZE_DIMENSIONS.y)
-	    .setAnchorPoint(0, 0)
-		.setPosition(Constants.Graphics.TOP_CORNER);
-    background.appendChild(mazeLayer);
-    
-	var mazeMask = new lime.Layer()
-		.setSize(Constants.Graphics.MAZE_DIMENSIONS.x, Constants.Graphics.MAZE_DIMENSIONS.y)
-	    .setAnchorPoint(0, 0)
-		.setPosition(Constants.Graphics.TOP_CORNER);
-    background.appendChild(mazeMask);
-    
-    mazeLayer.setMask(mazeMask);
-    
     // Eternal Darkness
     var mazeContainer = new lime.Sprite()
-		.setSize(Constants.Graphics.MAZE_DIMENSIONS.x, Constants.Graphics.MAZE_DIMENSIONS.y)
+		.setSize(Constants.Graphics.MAZE_W_PX, Constants.Graphics.MAZE_H_PX)
+		.setFill('#000000')
 	    .setAnchorPoint(0, 0)
-	    .setFill('#000000')
-		.setPosition(0, 0);
-    mazeLayer.appendChild(mazeContainer);
-	
+		.setPosition(Constants.Graphics.TOP_CORNER)
+    background.appendChild(mazeContainer);
+
     // Add Bot
-    var bot = new Bot(maze, mazeContainer, director, mazeLayer);
+    var bot = new Bot(maze, mazeContainer, director);
     mazeContainer.appendChild(bot.sprite);
     //maze.drawMaze(mazeContainer, bot, false);
     maze.init(mazeContainer);

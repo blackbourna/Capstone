@@ -47,7 +47,7 @@ goog.require('goog.json');
 
 // Game entrypoint
 CapstoneProject_BlackbournA.start = function(){
-    var director = new lime.Director(document.body, Constants.Graphics.APP_DIMENSIONS.x, Constants.Graphics.APP_DIMENSIONS.y);
+    var director = new lime.Director(document.body, Constants.Graphics.APP_W_PX, Constants.Graphics.APP_H_PX);
     new GameMenu(director).showMenu();
 };
 
