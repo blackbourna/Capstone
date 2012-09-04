@@ -247,7 +247,7 @@ Bot = function (maze, mazeSprite, director) {
 			goog.events.unlisten(keyhandler, 'key', keyevents);
 			director.popScene();
 		}
-		console.log('running!' + energy);
+		//console.log('running!' + energy);
     };
     lime.scheduleManager.scheduleWithDelay(energyCheckEvent, 0.25);
     addOpen(position);
