@@ -26,6 +26,7 @@ Bot = function (maze, mazeSprite, director) {
     var sfx_look = new Audio(Constants.Assets.AUDIO_PATH + 'look.wav');
     var sfx_turn = null;
     var markedCells = new Array();
+    var history = new Array();
     
     // public variables
 	this.sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'bot.png');
@@ -105,6 +106,7 @@ Bot = function (maze, mazeSprite, director) {
     this.getPosition = function() {return position;}
     
 	this.move = function(dir) {
+		history.push(dir);
 		if (!hasEnergy(Constants.EnergyCosts.MOVE)) return false;
 		blocked = false;
 		switch(dir) {
@@ -132,6 +134,7 @@ Bot = function (maze, mazeSprite, director) {
 		return true;
 	}
 	this.turn = function(dir) {
+		history.push(dir);
 		if (dir == TURN.AROUND && !hasEnergy(Constants.EnergyCosts.TURN_AROUND)) return false;
 		if (!hasEnergy(Constants.EnergyCosts.TURN)) return false;
 		var rotate = 0;
@@ -157,6 +160,7 @@ Bot = function (maze, mazeSprite, director) {
 		return true;
 	}
 	this.look = function(dir) {
+		history.push(dir);
 		if (!hasEnergy(Constants.EnergyCosts.LOOK)) return false;
 		switch(dir) {
 			case LOOK.AHEAD:
@@ -191,6 +195,7 @@ Bot = function (maze, mazeSprite, director) {
 		return true;
 	}
 	this.lookFarAhead = function() {
+		history.push('lookfar');
 		if (!hasEnergy(Constants.EnergyCosts.LOOK_AHEAD)) return false;
 		energy -= Constants.EnergyCosts.LOOK_AHEAD;
 		var cell = sum(position, direction);
@@ -204,6 +209,7 @@ Bot = function (maze, mazeSprite, director) {
 	
 	
 	this.sprint = function() {
+		history.push('SPRINT');
 		if (!hasEnergy(Constants.EnergyCosts.SPRINT)) return false;
 		var blocked = false;
 		for (var x = 0; x < 5; x++) {
@@ -220,11 +226,13 @@ Bot = function (maze, mazeSprite, director) {
 	}
 	
 	this.scanForRecharger = function() {
+		history.push('SCAN');
 		if (!hasEnergy(Constants.EnergyCosts.ENERGY_SCAN)) return false;
 		energy -= Constants.EnergyCosts.ENERGY_SCAN;
 		maze.scanForRecharger(position, mazeSprite);
 	}
 	this.pickUpRecharger = function() {
+		history.push('PICKUP');
 		if (!hasEnergy(Constants.EnergyCosts.ENERGY_PICKUP)) return false;
 		energy -= Constants.EnergyCosts.ENERGY_PICKUP;
 	}
@@ -245,6 +253,7 @@ Bot = function (maze, mazeSprite, director) {
 			alert("OUT OF ENERGY");
 			lime.scheduleManager.unschedule(energyCheckEvent, this);
 			goog.events.unlisten(keyhandler, 'key', keyevents);
+			console.log(history);
 			director.popScene();
 		}
 		//console.log('running!' + energy);
