@@ -52,7 +52,7 @@ Maze = function(energyPt) {
         // set maze size constants
 		for (var x = this.goal.y; x < this.goal.y + 4; x++) {
 			for (var y = this.goal.x; y < this.goal.x + 4; y++) {
-				this.maze[x][y] = '@';
+				this.maze[x][y] = Cell.GOAL;
 				var cell = new goog.math.Coordinate(y, x);
 				var sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'goal.png');
 				var width = sprite.getSize().width;

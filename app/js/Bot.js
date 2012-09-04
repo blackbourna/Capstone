@@ -102,6 +102,11 @@ Bot = function (maze, mazeSprite, director) {
 		return (energy >= cost)
     }
     
+    isOpen = function(cell) {
+		var cellState = maze.get(cell);
+		return cellState == Cell.OPEN || cellState == Cell.GOAL;
+    }
+    
     // public functions
     this.getPosition = function() {return position;}
     
@@ -111,7 +116,7 @@ Bot = function (maze, mazeSprite, director) {
 		blocked = false;
 		switch(dir) {
 			case MOVE.FORWARD:
-				if (maze.get(sum(position, direction)) == Cell.OPEN) {
+				if (isOpen(sum(position, direction))) {
 					position = sum(position, direction);
 					updatePosition();
 				} else { // hit wall
@@ -120,7 +125,7 @@ Bot = function (maze, mazeSprite, director) {
 				}
 			break;
 			case MOVE.BACKWARD:
-				if (maze.get(difference(position, direction)) == Cell.OPEN) {
+				if (isOpen(difference(position, direction))) {
 					position = difference(position, direction);
 					updatePosition();
 				} else { // hit wall
@@ -164,7 +169,7 @@ Bot = function (maze, mazeSprite, director) {
 		if (!hasEnergy(Constants.EnergyCosts.LOOK)) return false;
 		switch(dir) {
 			case LOOK.AHEAD:
-				if (maze.get(sum(position, direction)) == Cell.OPEN) {
+				if (isOpen(sum(position, direction))) {
 					addOpen(sum(position, direction));
 				} else { // hit wall
 					addWall(sum(position, direction));
@@ -172,7 +177,7 @@ Bot = function (maze, mazeSprite, director) {
 			break;
 			case LOOK.RIGHT:
 				var dir = Compass.rotate(TURN.RIGHT, direction);
-				if (maze.get(sum(position, dir)) == Cell.OPEN) {
+				if (isOpen(sum(position, dir))) {
 					addOpen(sum(position, dir));
 				} else { // hit wall
 					addWall(sum(position, dir));
@@ -180,7 +185,7 @@ Bot = function (maze, mazeSprite, director) {
 			break;
 			case LOOK.LEFT:
 				var dir = Compass.rotate(TURN.LEFT, direction);
-				if (maze.get(sum(position, dir)) == Cell.OPEN) {
+				if (isOpen(sum(position, dir))) {
 					addOpen(sum(position, dir));
 				} else { // hit wall
 					addWall(sum(position, dir));
@@ -199,8 +204,10 @@ Bot = function (maze, mazeSprite, director) {
 		if (!hasEnergy(Constants.EnergyCosts.LOOK_AHEAD)) return false;
 		energy -= Constants.EnergyCosts.LOOK_AHEAD;
 		var cell = sum(position, direction);
-		while (maze.get(cell) == Cell.OPEN) {
-			addOpen(cell);
+		//while (maze.get(cell) == Cell.OPEN) {
+		while (isOpen(cell)) { 
+			if (maze.get(cell) != Cell.GOAL) // don't overwrite goal sprites
+				addOpen(cell);
 			cell = sum(cell, direction);
 		}
 		addWall(cell);
@@ -213,7 +220,7 @@ Bot = function (maze, mazeSprite, director) {
 		if (!hasEnergy(Constants.EnergyCosts.SPRINT)) return false;
 		var blocked = false;
 		for (var x = 0; x < 5; x++) {
-			if (maze.get(sum(position, direction)) == Cell.OPEN) {
+			if (isOpen(sum(position, direction))) {
 					position = sum(position, direction);
 					addOpen(position);
 			} else {
@@ -251,17 +258,25 @@ Bot = function (maze, mazeSprite, director) {
 		direction = Compass.rotate(TURN.RIGHT, direction);
 		self.sprite.runAction(new lime.animation.RotateBy(90));
     }
-    var energyCheckEvent = function (dt) {
+    var mazeEvents = function (dt) {
+		var gameDone = false;
 		if (energy <= 0) {
 			alert("OUT OF ENERGY");
-			lime.scheduleManager.unschedule(energyCheckEvent, this);
+			gameDone = true;
+		}
+		if (maze.get(position) == Cell.GOAL) {
+			gameDone = true;
+			alert("YAY!");
+		}
+		if (gameDone) {
+			lime.scheduleManager.unschedule(mazeEvents, this);
 			goog.events.unlisten(keyhandler, 'key', keyevents);
 			console.log(history);
 			director.popScene();
 		}
 		//console.log('running!' + energy);
     };
-    lime.scheduleManager.scheduleWithDelay(energyCheckEvent, 0.25);
+    lime.scheduleManager.scheduleWithDelay(mazeEvents, 0.25);
     addOpen(position);
     updatePosition(0.1);
     var keyhandler = new goog.events.KeyHandler(document);
