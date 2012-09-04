@@ -22,11 +22,11 @@ Constants.Graphics = {
 	// cell size in px
 	CELL_DIMENSIONS: new Point(16, 16), // use this to replace CELL_DIMENSIONS.x
     
-    MAZE_DIMENSIONS: new Point(16*44 , 16*44), // use this to replace MAZE_DIMENSIONS.x
+    MAZE_DIMENSIONS: new Point(16*44 , 16*44) // use this to replace MAZE_DIMENSIONS.x
 }
 
 Constants.EnergyCosts = {
-	START_ENERGY: 100,
+	START_ENERGY: 1000,
 	MOVE: 6,
 	MOVE_BLOCKED: 12,
 	TURN: 4,
