@@ -235,6 +235,9 @@ Bot = function (maze, mazeSprite, director) {
 		history.push('PICKUP');
 		if (!hasEnergy(Constants.EnergyCosts.ENERGY_PICKUP)) return false;
 		energy -= Constants.EnergyCosts.ENERGY_PICKUP;
+		var foundIt = maze.pickUpRecharger(position);
+		if (foundIt) energy += Constants.EnergyCosts.ENERGY_GAINED;
+		if (foundIt) alert("TEST");
 	}
     this.drawMaze = function() {
 		maze.drawMaze(mazeSprite, self, false);

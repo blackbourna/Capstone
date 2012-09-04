@@ -140,4 +140,11 @@ Maze = function(energyPt) {
 		mazeSprite.appendChild(label);
 		label.runAction(new lime.animation.FadeTo(1).setDuration(i * radarSpeed));
     }
+    
+    this.pickUpRecharger = function(position) {
+		var foundIt = Point.equals(position, recharger);
+		if (foundIt)
+			recharger = null;
+		return foundIt;
+    }
 }
