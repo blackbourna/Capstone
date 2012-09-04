@@ -1,6 +1,11 @@
 TODO:<br/>
 =
--Move logs in JSON array to be put in database
+
+Recharger pickup
+Goal collision
+HUD
+
+-Move logs in JSON array to be put in database<br/>
 -SOUND<br/>
 -ZOOM IN/OUT<br/>
 -HIGH SCORES<br/>
