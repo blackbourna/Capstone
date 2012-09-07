@@ -4,7 +4,7 @@ Globals = {
 	animationPlaying: false,
 	waitForAnimationEndEvent: function(anim) {
 		Globals.animationPlaying = true;
-		goog.events.listen(anim,lime.animation.Event.STOP,function(){
+		goog.events.listen(anim,lime.animation.Event.STOP, function(){
 			Globals.animationPlaying = false;
 		});
 	},
@@ -13,5 +13,7 @@ Globals = {
 			audio.currentTime = 0;
 			audio.play();
 		}
-	}
+	},
+    hudLabel: null,
+    logLabel: null
 }
