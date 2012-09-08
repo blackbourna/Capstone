@@ -30,13 +30,22 @@ Game = function(maze, director) {
 		.setAnchorPoint(0, 0)
 		.setRadius(30);
 	background.appendChild(botStats);
-	
+	Globals.logLabel = new lime.Label('test\nWorldtestaet asdfg sdgasd gasd gasdg sd!')
+        .setAnchorPoint(0, 0)
+        .setPosition(50, 50);
+    botStats.appendChild(Globals.logLabel);
+    
     var hudContainer = new lime.RoundedRect()
 		.setSize(225, 100)
 		.setFill('#DEFFFF')
 		.setPosition(10, 550)
 		.setAnchorPoint(0, 0)
 		.setRadius(30);
+    Globals.hudLabel = new lime.Label('Hello!')
+        .setAnchorPoint(0, 0)
+        .setPosition(50, 50);
+    hudContainer.appendChild(Globals.hudLabel);
+    
 	background.appendChild(hudContainer);
     
     // Eternal Darkness
@@ -44,14 +53,14 @@ Game = function(maze, director) {
 		.setSize(Constants.Graphics.MAZE_DIMENSIONS.x, Constants.Graphics.MAZE_DIMENSIONS.y)
 		.setFill('#000000')
 	    .setAnchorPoint(0, 0)
-		.setPosition(Constants.Graphics.TOP_CORNER)
+		.setPosition(Constants.Graphics.TOP_CORNER);
     background.appendChild(mazeContainer);
-
+    
+    maze.init(mazeContainer);
+    
     // Add Bot
     var bot = new Bot(maze, mazeContainer, director);
     mazeContainer.appendChild(bot.sprite);
-    //maze.drawMaze(mazeContainer, bot, false);
-    maze.init(mazeContainer);
     // set current scene active
     return scene;
 }

@@ -23,6 +23,7 @@ class MazeReader {
 	function __construct() {
 		$this->readMazeFile();
 	}
+
 	function readMazeFile($filename = 'assets/mazes/testmaze1.maze') {
 		exec('java -jar ./amazegen/amazegen.jar mazegen -s 1 -m NS', $mazetext);
 		for ($i = 1; $i < 45; $i++) {
