@@ -250,15 +250,16 @@ Bot = function (maze, mazeSprite, director) {
 		maze.drawMaze(mazeSprite, self, false);
     }
     // set up initial position
-    var attempt=0;
-    var rotateCt = 0;
-	while (!direction.equals(maze.startDir)) { // sprite starts facing north
-		var rotate = -90;
-		rotateCt++;
-		direction = Compass.rotate(TURN.RIGHT, direction);
-		self.sprite.runAction(new lime.animation.RotateBy(90));
+    {
+		var rotate = 0;
+		do { // sprite starts facing north
+			rotate += 90;
+			direction = Compass.rotate(TURN.LEFT, direction);
+		} while (!direction.equals(maze.startDir));
+		self.sprite.runAction(new lime.animation.RotateBy(rotate));
     }
-    var mazeEvents = function (dt) {
+    // setup keyhandler and game events
+	var mazeEvents = function (dt) {
 		var gameDone = false;
 		if (energy <= 0) {
 			alert("OUT OF ENERGY");
@@ -275,7 +276,7 @@ Bot = function (maze, mazeSprite, director) {
 			director.popScene();
 		}
 		//console.log('running!' + energy);
-    };
+	};
     lime.scheduleManager.scheduleWithDelay(mazeEvents, 0.25);
     addOpen(position);
     updatePosition(0.1);
