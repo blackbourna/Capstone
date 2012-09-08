@@ -24,8 +24,7 @@ class MazeReader {
 		$this->readMazeFile();
 	}
 	function readMazeFile($filename = 'assets/mazes/testmaze1.maze') {
-		$filecontents = file_get_contents($filename);
-		$mazetext = explode("\n", $filecontents);
+		exec('java -jar ./amazegen/amazegen.jar mazegen -s 1 -m NS', $mazetext);
 		for ($i = 1; $i < 45; $i++) {
 			$mazetext[$i] = str_split($mazetext[$i]);
 		}
