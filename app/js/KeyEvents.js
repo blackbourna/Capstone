@@ -60,7 +60,7 @@ KeyEvents = function(bot, maze) {
 			break;
 			case keyCodes.Z:
 				msg = "Zoom out.";
-				bot.zoom(false  );
+				bot.zoom(false);
 			break;
 			// Sprint forward
 			case keyCodes.SPACE:

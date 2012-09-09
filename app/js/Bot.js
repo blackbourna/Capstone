@@ -249,6 +249,13 @@ Bot = function (maze, mazeSprite, director) {
     this.drawMaze = function() {
 		maze.drawMaze(mazeSprite, self, false);
     }
+    
+    this.zoom = function(zoomIn) {
+		if (zoomIn) {
+		} else {
+		}
+    }
+    
     // set up initial position
     {
 		var rotate = 0;
