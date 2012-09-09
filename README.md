@@ -1,6 +1,8 @@
 TODO:<br/>
 =
 
+sudo apt-get install sqlite php5-sqlite
+
 Recharger pickup
 Goal collision
 HUD
