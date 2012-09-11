@@ -32,7 +32,7 @@ Bot = function (maze, mazeSprite, director) {
 	this.sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'bot.png');
 	
     // private functions
-    updateDirection = function(x) {
+    var updateDirection = function(x) {
 		var sequence = 	new lime.animation.Sequence(
 			new lime.animation.ScaleTo(1.2).setDuration(.1),
 			new lime.animation.RotateBy(x),
@@ -42,14 +42,14 @@ Bot = function (maze, mazeSprite, director) {
 		
 		self.sprite.runAction(sequence);
     }
-    updatePosition = function(speed) {
+    var updatePosition = function(speed) {
 		addOpen(position);
 		var moveTo = new lime.animation.MoveTo(getScreenPosition()).setSpeed(speed ? speed : 0.5);
 		Globals.waitForAnimationEndEvent(moveTo);
 		self.sprite.runAction(moveTo);
 		console.log(Directions.getName(direction));
     }
-    getScreenPosition = function() {
+    var getScreenPosition = function() {
 		var width = self.sprite.getSize().width;
 		var height = self.sprite.getSize().height;
         var coord = new goog.math.Coordinate(width * position.x*1 + width/2, height * position.y*1 + height/2);
@@ -62,15 +62,15 @@ Bot = function (maze, mazeSprite, director) {
 	 * Adds a wall
 	 * @params wall - the cell to add the wall
 	 * */
-	addWall = function(cell) {
+	var addWall = function(cell) {
 		addCell(cell, Constants.Assets.IMAGE_PATH + 'wall.png');
 	}
 	
-    addOpen = function(cell) {
+    var addOpen = function(cell) {
 		addCell(cell, Constants.Assets.IMAGE_PATH + 'open.png');
     }
     
-    addCell = function(cell, img) {
+    var addCell = function(cell, img) {
 		if (!Utils.validatePoint(cell)) return;
 		if (cellHasBeenMarked(cell)) return;
 		var sprite = new lime.Sprite().setFill(img);
@@ -82,7 +82,7 @@ Bot = function (maze, mazeSprite, director) {
 		mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
     }
     
-    cellHasBeenMarked = function(cell) {
+    var cellHasBeenMarked = function(cell) {
 		var alreadyMarked = false;
 		for (var c in markedCells) {
 			if (Point.equals(cell, markedCells[c])) {
@@ -94,15 +94,15 @@ Bot = function (maze, mazeSprite, director) {
 		return alreadyMarked;
     }
     
-    hitWall = function(cell) {
+    var hitWall = function(cell) {
 		addWall(cell);
     }
     
-    hasEnergy = function(cost) {
+    var hasEnergy = function(cost) {
 		return (energy >= cost)
     }
     
-    isOpen = function(cell) {
+    var isOpen = function(cell) {
 		var cellState = maze.get(cell);
 		return cellState == Cell.OPEN || cellState == Cell.GOAL;
     }
