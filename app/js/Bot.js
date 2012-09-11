@@ -196,7 +196,7 @@ Bot = function (maze, mazeSprite, director) {
 				return true;
 		}
 		energy -= Constants.EnergyCosts.LOOK;
-		sfx_look.play();
+		Globals.Audio.stopThenPlay(sfx_look);
 		return true;
 	}
 	this.lookFarAhead = function() {
