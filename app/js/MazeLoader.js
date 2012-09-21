@@ -6,7 +6,7 @@ goog.require('Directions');
 MazeLoader = function(director) {
 	this.director = director;
 	var self = this;
-	this.getMaze = function(){
+	this.getMaze = function(type){
 		var request = new goog.net.XhrIo();
 
 		goog.events.listen(request, 'complete', function(){
@@ -26,6 +26,6 @@ MazeLoader = function(director) {
 				//error
 			}
 		});
-		request.send('./mazeloader.php');
+		request.send('./mazeloader.php?type='+type);
 	};
 }

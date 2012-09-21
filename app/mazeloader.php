@@ -21,11 +21,20 @@ class Maze {}
 
 class MazeReader {
 	function __construct() {
-		$this->readMazeFile();
+		$types = array('CB', 'GR', 'NS', 'RG', 'PR', 'FM');
+		
+		if (isset($_GET['type'])) {
+			$type = $_GET['type'];
+		}
+		if (!in_array($type, $types))
+			$type = 'CB';
+		
+		$this->readMazeFile($type);
 	}
 
-	function readMazeFile($filename = 'assets/mazes/testmaze1.maze') {
-		exec('java -jar ./amazegen/amazegen.jar mazegen -s '.rand(0, 999999999).' -m NS', $mazetext);
+	function readMazeFile($type) {
+		$seed = strtotime(date('Y-m-d'));
+		exec('java -jar ./amazegen/amazegen.jar mazegen -s '. $seed .' -m ' . $type, $mazetext);
 		for ($i = 1; $i < 45; $i++) {
 			$mazetext[$i] = str_split($mazetext[$i]);
 		}
