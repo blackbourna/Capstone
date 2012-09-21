@@ -22,7 +22,7 @@ class Maze {}
 class MazeReader {
 	function __construct() {
 		$types = array('CB', 'GR', 'NS', 'RG', 'PR', 'FM');
-		
+		$type = '';
 		if (isset($_GET['type'])) {
 			$type = $_GET['type'];
 		}
