@@ -47,7 +47,6 @@ Bot = function (maze, mazeSprite, director) {
 		var moveTo = new lime.animation.MoveTo(getScreenPosition()).setSpeed(speed ? speed : 0.5);
 		Globals.waitForAnimationEndEvent(moveTo);
 		self.sprite.runAction(moveTo);
-		console.log(Directions.getName(direction));
     }
     var getScreenPosition = function() {
 		var width = self.sprite.getSize().width;
@@ -98,10 +97,6 @@ Bot = function (maze, mazeSprite, director) {
 		addWall(cell);
     }
     
-    var hasEnergy = function(cost) {
-		return (energy >= cost)
-    }
-    
     var isOpen = function(cell) {
 		var cellState = maze.get(cell);
 		return cellState == Cell.OPEN || cellState == Cell.GOAL;
@@ -112,7 +107,6 @@ Bot = function (maze, mazeSprite, director) {
     
 	this.move = function(dir) {
 		history.push(dir);
-		if (!hasEnergy(Constants.EnergyCosts.MOVE)) return false;
 		blocked = false;
 		switch(dir) {
 			case MOVE.FORWARD:
@@ -136,12 +130,10 @@ Bot = function (maze, mazeSprite, director) {
 		}
 		energy -= (blocked) ? Constants.EnergyCosts.MOVE_BLOCKED : Constants.EnergyCosts.MOVE;
 		Globals.Audio.stopThenPlay(sfx_step);
-		return true;
+		return !blocked;
 	}
 	this.turn = function(dir) {
 		history.push(dir);
-		if (dir == TURN.AROUND && !hasEnergy(Constants.EnergyCosts.TURN_AROUND)) return false;
-		if (!hasEnergy(Constants.EnergyCosts.TURN)) return false;
 		var rotate = 0;
 		switch(dir) {
 			case TURN.RIGHT:
@@ -166,7 +158,6 @@ Bot = function (maze, mazeSprite, director) {
 	}
 	this.look = function(dir) {
 		history.push(dir);
-		if (!hasEnergy(Constants.EnergyCosts.LOOK)) return false;
 		switch(dir) {
 			case LOOK.AHEAD:
 				if (isOpen(sum(position, direction))) {
@@ -201,7 +192,6 @@ Bot = function (maze, mazeSprite, director) {
 	}
 	this.lookFarAhead = function() {
 		history.push('lookfar');
-		if (!hasEnergy(Constants.EnergyCosts.LOOK_AHEAD)) return false;
 		energy -= Constants.EnergyCosts.LOOK_AHEAD;
 		var cell = sum(position, direction);
 		//while (maze.get(cell) == Cell.OPEN) {
@@ -245,6 +235,10 @@ Bot = function (maze, mazeSprite, director) {
 		var foundIt = maze.pickUpRecharger(position);
 		if (foundIt) energy += Constants.EnergyCosts.ENERGY_GAINED;
 		if (foundIt) alert("TEST");
+	}
+	
+	this.getEnergy = function() {
+		return energy;
 	}
     this.drawMaze = function() {
 		maze.drawMaze(mazeSprite, self, false);
@@ -290,4 +284,11 @@ Bot = function (maze, mazeSprite, director) {
     var keyhandler = new goog.events.KeyHandler(document);
     var keyevents = new KeyEvents(self, maze).events;
 	goog.events.listen(keyhandler, 'key', keyevents);
+	
+    // set up HUD and Log
+    Globals.logLabel.setText('Welcome!');
+    Globals.hudLabel.setText('Bot Energy: ' + this.getEnergy() + '\n' +
+		'Direction: ' + Directions.getName(direction) + '\n' + 
+		'Position: ' + position.x + ', ' + position.y
+    );
 }

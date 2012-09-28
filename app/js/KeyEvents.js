@@ -5,12 +5,20 @@ KeyEvents = function(bot, maze) {
 	var bot = bot;
 	var maze = maze;
 
+	var hasEnergy = function(cost) {
+		var hasEnergy = bot.getEnergy() >= cost;
+		return hasEnergy;
+    }
+
 	this.events = function(e) {
 		if (Globals.animationPlaying) return;
-		var sum = goog.math.Coordinate.sum;
+		var success = true; // whether bot had enough energy to make the move
+		var sum = goog.math.Coordinate.sum; // for lazy typists
 		var keyCodes = goog.events.KeyCodes;
-		var msg = '';
-		var keyCode = e.keyCode;
+		
+		var msg = ''; // the message to be output to the onscreen bot log
+		var keyCode = e.keyCode; // the keycode that fired the event
+		
 		// On the Mac, shift-/ triggers a question mark char code and no key code,
 		// so we synthesize the latter http://closure-library.googlecode.com/svn/docs/closure_goog_events_keyhandler.js.source.html
 		if (goog.userAgent.MAC && charCode == goog.events.KeyCodes.QUESTION_MARK && !keyCode) {
@@ -21,36 +29,59 @@ KeyEvents = function(bot, maze) {
 			// Forward
 			case keyCodes.UP:
 				if (e.event_.shiftKey) {
-					msg = 'Looked ahead.';
-					bot.look(LOOK.AHEAD);
+					success = hasEnergy(Constants.EnergyCosts.LOOK);
+					if (success) {
+						msg = 'Looked ahead.';
+						bot.look(LOOK.AHEAD);
+					}
 				} else {
-					msg = 'Moved forward.';
-					bot.move(MOVE.FORWARD);
+					success = hasEnergy(Constants.EnergyCosts.MOVE);
+					if (success) {
+						msg = 'Moved forward.';
+						if (!bot.move(MOVE.FORWARD))
+							msg += '.. Blocked!';
+					}
 				}
 			break;
 			// Back
 			case keyCodes.DOWN:
-				msg = 'Moved back.';
-				bot.move(MOVE.BACKWARD);
+				success = hasEnergy(Constants.EnergyCosts.MOVE);
+				if (success) {
+					msg = 'Moved back.';
+					if (!bot.move(MOVE.BACKWARD))
+						msg += '.. Blocked!';
+				}
 			break;
 			// Turn Right
 			case keyCodes.RIGHT:
 				if (e.event_.shiftKey) {
-					msg = 'Looked right.';
-					bot.look(LOOK.RIGHT);
+					success = hasEnergy(Constants.EnergyCosts.LOOK);
+					if (success) {
+						msg = 'Looked right.';
+						bot.look(LOOK.RIGHT);
+					}
 				} else {
-					msg = 'Turned right.';
-					bot.turn(TURN.RIGHT);
+					success = hasEnergy(Constants.EnergyCosts.TURN);
+					if (success) {
+						msg = 'Turned right.';
+						bot.turn(TURN.RIGHT);
+					}
 				}
 			break;
 			// Turn Left
 			case keyCodes.LEFT:
 				if (e.event_.shiftKey) {
-					msg = 'Looked left.';
-					bot.look(LOOK.LEFT);
+					success = hasEnergy(Constants.EnergyCosts.LOOK);
+					if (success) {
+						msg = 'Looked left.';
+						bot.look(LOOK.LEFT);
+					}
 				} else {
-					msg = 'Turned left.';
-					bot.turn(TURN.LEFT);
+					success = hasEnergy(Constants.EnergyCosts.TURN);
+					if (success) {
+						msg = 'Turned left.';
+						bot.turn(TURN.LEFT);
+					}
 				}
 			break;
 			// Camera zoom - this may be about impossible to actually implement with the framework
@@ -64,13 +95,18 @@ KeyEvents = function(bot, maze) {
 			break;
 			// Sprint forward
 			case keyCodes.SPACE:
-				msg = 'Sprinted forward.';
-				bot.sprint();
+				success = hasEnergy(Constants.EnergyCosts.SPRINT);
+				if (success) {
+					msg = 'Sprinted forward.';
+					bot.sprint();
+				}
 			break;
 			// Rotate
 			case keyCodes.CTRL:
-				msg = 'Turned 180 degrees.';
-				bot.turn(TURN.AROUND);
+				if (hasEnergy(Constants.EnergyCosts.TURN_AROUND)) {
+					msg = 'Turned 180 degrees.';
+					bot.turn(TURN.AROUND);
+				}
 			break;
 			// Scan
 			case keyCodes.ENTER:
@@ -88,12 +124,33 @@ KeyEvents = function(bot, maze) {
 			break;
 			// Look far ahead
 			case keyCodes.SLASH:
-				msg = 'Looked far ahead.';
-				bot.lookFarAhead();
+				success = hasEnergy(Constants.EnergyCosts.LOOK_AHEAD);
+				if (success) {
+					msg = 'Looked far ahead.';
+					bot.lookFarAhead();
+				}
 			break;
-			case keyCodes.ESC:
+			case keyCodes.ESC: // cheater!
 				bot.drawMaze();
 			break;
+			default:
+				success = true;
+		}
+		if (!success) {
+			msg = 'Not enough energy!';
+		}
+		console.log(msg);
+		if (msg.length > 0) {
+			var oldTxt = Globals.logLabel.getText();
+			Globals.logLabel.setText(oldTxt + "\n" + msg);
+			if (Globals.logLabel.getSize().height > Globals.logContainer.getSize().height) {
+				console.log(Globals.logLabel.getSize().height);
+				console.log(Globals.logContainer.getSize().height);
+				var msgs = Globals.logLabel.getText();
+				msgs = msgs.split('\n');
+				msgs = msgs.slice(1);
+				Globals.logLabel.setText(msgs.join('\n'));
+			}
 		}
 		//console.log(
 		//	'keyCode: ' + e.keyCode +

@@ -15,5 +15,6 @@ Globals = {
 		}
 	},
     hudLabel: null,
-    logLabel: null
+	logContainer:null,
+    logLabel: null,
 }

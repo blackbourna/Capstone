@@ -23,30 +23,31 @@ Game = function(maze, director) {
     scene.appendChild(background);
     
     // BotStats & HUD
-    var botStats = new lime.RoundedRect()
+    Globals.logContainer = new lime.RoundedRect()
 		.setSize(225, 450)
 		.setFill('#DEFFFF')
 		.setPosition(10, 50)
 		.setAnchorPoint(0, 0)
 		.setRadius(30);
-	background.appendChild(botStats);
-	Globals.logLabel = new lime.Label('test\nWorldtestaet asdfg sdgasd gasd gasdg sd!')
+	background.appendChild(Globals.logContainer);
+	Globals.logLabel = new lime.LabelMulti('')
         .setAnchorPoint(0, 0)
-        .setPosition(50, 50);
-    botStats.appendChild(Globals.logLabel);
+        .setPosition(10, 10)
+        .setAlign('left');
+    Globals.logContainer.appendChild(Globals.logLabel);
     
-    var hudContainer = new lime.RoundedRect()
+    hudContainer = new lime.RoundedRect()
 		.setSize(225, 100)
 		.setFill('#DEFFFF')
 		.setPosition(10, 550)
 		.setAnchorPoint(0, 0)
 		.setRadius(30);
-    Globals.hudLabel = new lime.Label('Hello!')
-        .setAnchorPoint(0, 0)
-        .setPosition(50, 50);
-    hudContainer.appendChild(Globals.hudLabel);
-    
 	background.appendChild(hudContainer);
+    Globals.hudLabel = new lime.LabelMulti('Hello!')
+        .setAnchorPoint(0, 0)
+        .setPosition(10, 10)
+        .setAlign('left');
+    hudContainer.appendChild(Globals.hudLabel);
     
     // Eternal Darkness
     var mazeContainer = new lime.Sprite()
