@@ -27,6 +27,7 @@ Bot = function (maze, mazeSprite, director) {
     var sfx_turn = null;
     var markedCells = new Array();
     var history = new Array();
+    var timer = 0.0;
     
     // public variables
 	this.sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'bot.png');
@@ -250,6 +251,14 @@ Bot = function (maze, mazeSprite, director) {
 		}
     }
     
+	this.updateOutput = function (){
+		Globals.hudLabel.setText('Bot Energy: ' + this.getEnergy() + '\n' +
+			'Direction: ' + Directions.getName(direction) + '\n' + 
+			'Position: ' + position.x + ', ' + position.y + '\n' +
+			'Time: ' + (timer/1000.0).toFixed(3)
+		);
+	}
+    
     // set up initial position
     {
 		var rotate = 0;
@@ -263,12 +272,14 @@ Bot = function (maze, mazeSprite, director) {
 	var mazeEvents = function (dt) {
 		var gameDone = false;
 		if (energy <= 0) {
-			alert("OUT OF ENERGY");
+			alert('noooo!');
+			lime.scheduleManager.scheduleWithDelay(endGame, null, 1000);
 			gameDone = true;
 		}
 		if (maze.get(position) == Cell.GOAL) {
+			alert('you win!!');
+			lime.scheduleManager.scheduleWithDelay(endGame, null, 1000);
 			gameDone = true;
-			alert("YAY!");
 		}
 		if (gameDone) {
 			lime.scheduleManager.unschedule(mazeEvents, this);
@@ -278,17 +289,29 @@ Bot = function (maze, mazeSprite, director) {
 		}
 		//console.log('running!' + energy);
 	};
-    lime.scheduleManager.scheduleWithDelay(mazeEvents, 0.25);
+	
+	var updateTimer = function(dt) {
+		timer += dt;
+		self.updateOutput();
+	}
+	var endGame = function() {
+		director.popScene();
+	}
+	
+	// move these to constants!
+	var TIMER_INTERVAL = 1;
+	var MAZE_EVENTS_INTERVAL = 250;
+	
+    lime.scheduleManager.scheduleWithDelay(mazeEvents, null, MAZE_EVENTS_INTERVAL);
+    lime.scheduleManager.scheduleWithDelay(updateTimer, null, TIMER_INTERVAL);
+    
     addOpen(position);
     updatePosition(0.1);
     var keyhandler = new goog.events.KeyHandler(document);
     var keyevents = new KeyEvents(self, maze).events;
 	goog.events.listen(keyhandler, 'key', keyevents);
 	
-    // set up HUD and Log
-    Globals.logLabel.setText('Welcome!');
-    Globals.hudLabel.setText('Bot Energy: ' + this.getEnergy() + '\n' +
-		'Direction: ' + Directions.getName(direction) + '\n' + 
-		'Position: ' + position.x + ', ' + position.y
-    );
+	// initial set up of HUD and Log
+	Globals.logLabel.setText('Welcome!');
+	this.updateOutput();
 }
