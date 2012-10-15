@@ -84,12 +84,21 @@ KeyEvents = function(bot, maze) {
 					}
 				}
 			break;
+			case keyCodes.A: // auto look left
+				msg = bot.toggleAutoLookDirection(LOOK.LEFT);
+			break;
+			case keyCodes.D: // auto look right
+				msg = bot.toggleAutoLookDirection(LOOK.RIGHT);
+			break;
+			case keyCodes.W: // auto look forware
+				msg = bot.toggleAutoLookDirection(LOOK.AHEAD);
+			break;
 			// Camera zoom - this may be about impossible to actually implement with the framework
-			case keyCodes.A:
+			case keyCodes.Z:
 				msg = "Zoom in.";
 				bot.zoom(true);
 			break;
-			case keyCodes.Z:
+			case keyCodes.X:
 				msg = "Zoom out.";
 				bot.zoom(false);
 			break;
@@ -97,8 +106,7 @@ KeyEvents = function(bot, maze) {
 			case keyCodes.SPACE:
 				success = hasEnergy(Constants.EnergyCosts.SPRINT);
 				if (success) {
-					msg = 'Sprinted forward.';
-					bot.sprint();
+					msg = 'Sprinted forward ' + bot.sprint() + ' steps';
 				}
 			break;
 			// Rotate
@@ -110,24 +118,28 @@ KeyEvents = function(bot, maze) {
 			break;
 			// Scan
 			case keyCodes.ENTER:
-				msg = 'Scanned for energy.';
-				bot.scanForRecharger()
+				if (hasEnergy(Constants.EnergyCosts.ENERGY_SCAN)) {
+					var scan = bot.scanForRecharger();
+					msg = 'Scanned, ' + ((scan >= 0) ? scan + ' cells away' : ' not in range.');
+				}
 			break;
 			case keyCodes.MAC_ENTER:
-				msg = 'Scanned for energy.';
-				bot.scanForRecharger()
+				if (hasEnergy(Constants.EnergyCosts.ENERGY_SCAN)) {
+					var scan = bot.scanForRecharger();
+					msg = 'Scanned, ' + ((scan >= 0) ? scan + ' cells away' : ' not in range.');
+				}
 			break;
 			// Pick up recharger
 			case keyCodes.BACKSLASH:
-				msg = 'Attempted to pick up energy...';
-				bot.pickUpRecharger();
+				if (hasEnergy(Constants.EnergyCosts.ENERGY_PICKUP)) {
+					msg = 'Attempted to pick up energy...' + (bot.pickUpRecharger()) ? ' got it!' : ' not found!';
+				}
 			break;
 			// Look far ahead
 			case keyCodes.SLASH:
 				success = hasEnergy(Constants.EnergyCosts.LOOK_AHEAD);
 				if (success) {
-					msg = 'Looked far ahead.';
-					bot.lookFarAhead();
+					msg = 'Looked far ahead. ' + bot.lookFarAhead() + ' open spaces.';
 				}
 			break;
 			case keyCodes.ESC: // cheater!

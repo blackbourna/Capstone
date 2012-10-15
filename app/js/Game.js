@@ -59,9 +59,13 @@ Game = function(maze, director) {
     
     maze.init(mazeContainer);
     
+	if (Globals.easyMode) {
+		maze.drawMaze(mazeContainer);
+	}
+    
     // Add Bot
     var bot = new Bot(maze, mazeContainer, director);
-    mazeContainer.appendChild(bot.sprite);
+
     // set current scene active
     return scene;
 }

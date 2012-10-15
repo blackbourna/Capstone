@@ -17,4 +17,5 @@ Globals = {
     hudLabel: null,
 	logContainer:null,
     logLabel: null,
+    easyMode: false
 }

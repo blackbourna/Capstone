@@ -41,17 +41,12 @@ Maze = function(energyPt) {
 			return (Utils.validatePoint(x)) ? this.maze[y][x] : '#';
 		}
     }
-    this.drawMaze = function(mazeSprite, bot, debug) {
+    this.drawMaze = function(mazeSprite) {
+		if (!Globals.easyMode) return;
 		var mazeString = '';
 		for (var x = 0; x < this.maze.length; x++) {
 			for (var y = 0; y < this.maze[0].length; y++) {
 				var wall = new goog.math.Coordinate(y, x);
-				if (bot.getPosition().x == y && bot.getPosition().y == x) {
-					mazeString += '@';
-				} else {
-					mazeString += this.maze[x][y];
-				}
-				if (!debug)
 				if (this.maze[x][y] == '#') {
 					var wallSprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'wall.png');
 					var width = wallSprite.getSize().width;
@@ -134,12 +129,14 @@ Maze = function(energyPt) {
 			Globals.animationPlaying = false;
 		}, null, i * radarSpeed * 1000, 1);
 		
+		// add label to cell
 		var distance = (foundEnergy) ? i - 1 : -1;
 		var label = new lime.Label(distance)
 			.setAnchorPoint(0, 0)
 			.setPosition(Utils.getScreenPositionRelativeToCoordinates(position));
 		mazeSprite.appendChild(label);
 		label.runAction(new lime.animation.FadeTo(1).setDuration(i * radarSpeed));
+		return distance;
     }
     
     this.pickUpRecharger = function(position) {

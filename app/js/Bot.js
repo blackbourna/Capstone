@@ -28,6 +28,7 @@ Bot = function (maze, mazeSprite, director) {
     var markedCells = new Array();
     var history = new Array();
     var timer = 0.0;
+    var autolook = new Array();
     
     // public variables
 	this.sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'bot.png');
@@ -45,16 +46,16 @@ Bot = function (maze, mazeSprite, director) {
     }
     var updatePosition = function(speed) {
 		addOpen(position);
-		var moveTo = new lime.animation.MoveTo(getScreenPosition()).setSpeed(speed ? speed : 0.5);
+		var moveTo = new lime.animation.MoveTo(getScreenPosition()).setDuration(speed ? speed : 0.1);
 		Globals.waitForAnimationEndEvent(moveTo);
 		self.sprite.runAction(moveTo);
     }
     var getScreenPosition = function() {
 		var width = self.sprite.getSize().width;
 		var height = self.sprite.getSize().height;
+		if (width == 0) width = CELL_DIMENSIONS.x;
+		if (height == 0) width = CELL_DIMENSIONS.y;
         var coord = new goog.math.Coordinate(width * position.x*1 + width/2, height * position.y*1 + height/2);
-        //alert(coord);
-        //var coord = goog.math.Coordinate.sum(position, Constants.Graphics.TOP_CORNER);
         return coord;
     }
 
@@ -72,7 +73,7 @@ Bot = function (maze, mazeSprite, director) {
     
     var addCell = function(cell, img) {
 		if (!Utils.validatePoint(cell)) return;
-		if (cellHasBeenMarked(cell)) return;
+		if (cellHasBeenMarked(cell, true)) return;
 		var sprite = new lime.Sprite().setFill(img);
 		var width = sprite.getSize().width;
 		var height = sprite.getSize().height;		
@@ -82,7 +83,7 @@ Bot = function (maze, mazeSprite, director) {
 		mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
     }
     
-    var cellHasBeenMarked = function(cell) {
+    var cellHasBeenMarked = function(cell, doMark) {
 		var alreadyMarked = false;
 		for (var c in markedCells) {
 			if (Point.equals(cell, markedCells[c])) {
@@ -90,7 +91,8 @@ Bot = function (maze, mazeSprite, director) {
 				break;
 			}
 		}
-		markedCells.push(cell)
+		if (doMark)
+			markedCells.push(cell);
 		return alreadyMarked;
     }
     
@@ -103,6 +105,28 @@ Bot = function (maze, mazeSprite, director) {
 		return cellState == Cell.OPEN || cellState == Cell.GOAL;
     }
     
+    var doAutoLook = function() {
+		for (var key in autolook) {
+			var cell = null;
+			switch (key) {
+				case LOOK.AHEAD:
+					cell = sum(position, direction);
+				break;
+				case LOOK.RIGHT:
+					var dir = Compass.rotate(TURN.RIGHT, direction);
+					cell = sum(position, dir);
+				break;
+				case LOOK.LEFT:
+					var dir = Compass.rotate(TURN.LEFT, direction);
+					cell = sum(position, dir);
+				break;
+			}
+			if (!cellHasBeenMarked(cell, false)) {
+				self.look(autolook[key]);
+			}
+		}
+	}
+    
     // public functions
     this.getPosition = function() {return position;}
     
@@ -114,6 +138,7 @@ Bot = function (maze, mazeSprite, director) {
 				if (isOpen(sum(position, direction))) {
 					position = sum(position, direction);
 					updatePosition();
+					doAutoLook();
 				} else { // hit wall
 					hitWall(sum(position, direction));
 					blocked = true;
@@ -123,6 +148,7 @@ Bot = function (maze, mazeSprite, director) {
 				if (isOpen(difference(position, direction))) {
 					position = difference(position, direction);
 					updatePosition();
+					doAutoLook();
 				} else { // hit wall
 					hitWall(difference(position, direction));
 					blocked = true;
@@ -195,20 +221,20 @@ Bot = function (maze, mazeSprite, director) {
 		history.push('lookfar');
 		energy -= Constants.EnergyCosts.LOOK_AHEAD;
 		var cell = sum(position, direction);
-		//while (maze.get(cell) == Cell.OPEN) {
-		while (isOpen(cell)) { 
+		var ct = 0;
+		while (isOpen(cell)) {
+			ct++;
 			if (maze.get(cell) != Cell.GOAL) // don't overwrite goal sprites
 				addOpen(cell);
 			cell = sum(cell, direction);
 		}
 		addWall(cell);
-		return true;
+		return ct;
 	}
 	
 	
 	this.sprint = function() {
 		history.push('SPRINT');
-		if (!hasEnergy(Constants.EnergyCosts.SPRINT)) return false;
 		var blocked = false;
 		for (var x = 0; x < 5; x++) {
 			if (isOpen(sum(position, direction))) {
@@ -216,22 +242,21 @@ Bot = function (maze, mazeSprite, director) {
 					addOpen(position);
 			} else {
 				blocked = true;
+				break;
 			}
 		}
 		energy -= (blocked) ? Constants.EnergyCosts.SPRINT_BLOCKED : Constants.EnergyCosts.SPRINT;
 		updatePosition(0.25);
-		return true;
+		return x;
 	}
 	
 	this.scanForRecharger = function() {
 		history.push('SCAN');
-		if (!hasEnergy(Constants.EnergyCosts.ENERGY_SCAN)) return false;
 		energy -= Constants.EnergyCosts.ENERGY_SCAN;
-		maze.scanForRecharger(position, mazeSprite);
+		return maze.scanForRecharger(position, mazeSprite);
 	}
 	this.pickUpRecharger = function() {
 		history.push('PICKUP');
-		if (!hasEnergy(Constants.EnergyCosts.ENERGY_PICKUP)) return false;
 		energy -= Constants.EnergyCosts.ENERGY_PICKUP;
 		var foundIt = maze.pickUpRecharger(position);
 		if (foundIt) energy += Constants.EnergyCosts.ENERGY_GAINED;
@@ -242,7 +267,7 @@ Bot = function (maze, mazeSprite, director) {
 		return energy;
 	}
     this.drawMaze = function() {
-		maze.drawMaze(mazeSprite, self, false);
+		maze.drawMaze(mazeSprite);
     }
     
     this.zoom = function(zoomIn) {
@@ -251,23 +276,44 @@ Bot = function (maze, mazeSprite, director) {
 		}
     }
     
+	var getFormattedTime = function () {
+		// modified version of http://stackoverflow.com/questions/6312993/javascript-seconds-to-time-with-format-hhmmss
+		var sec_numb = timer / 1000;
+		var hours   = Math.floor(sec_numb / 3600);
+		var minutes = Math.floor((sec_numb - (hours * 3600)) / 60);
+		var seconds = sec_numb - (hours * 3600) - (minutes * 60);
+		seconds = seconds.toFixed(3);
+
+		if (minutes < 10) {minutes = "0"+minutes;}
+		if (seconds < 10) {seconds = "0"+seconds;}
+		//var time = hours+':'+minutes+':'+seconds;
+		var time = minutes+':'+seconds;
+		return time;
+	}
+    
 	this.updateOutput = function (){
 		Globals.hudLabel.setText('Bot Energy: ' + this.getEnergy() + '\n' +
 			'Direction: ' + Directions.getName(direction) + '\n' + 
 			'Position: ' + position.x + ', ' + position.y + '\n' +
-			'Time: ' + (timer/1000.0).toFixed(3)
+			'Time: ' + getFormattedTime() //(timer/1000.0).toFixed(3)
 		);
 	}
-    
-    // set up initial position
-    {
-		var rotate = 0;
-		do { // sprite starts facing north
-			rotate += 90;
-			direction = Compass.rotate(TURN.LEFT, direction);
-		} while (!direction.equals(maze.startDir));
-		self.sprite.runAction(new lime.animation.RotateBy(rotate));
-    }
+	
+	this.toggleAutoLookDirection = function(dir) {
+		var dirName = dir.substring(5).toLowerCase();
+		var msg = 'Autolook ' + dirName + ' set to';
+		if (!autolook[dir]) {
+			history.push('autolook.off.'+dir);
+			autolook[dir] = dir;
+			msg += ' on';
+		} else {
+			history.push('autolook.on.'+dir);
+			delete autolook[dir];
+			msg += ' off';
+		}
+		return msg;
+	}
+	
     // setup keyhandler and game events
 	var mazeEvents = function (dt) {
 		var gameDone = false;
@@ -298,18 +344,30 @@ Bot = function (maze, mazeSprite, director) {
 		director.popScene();
 	}
 	
-	// move these to constants!
+	// move these to Constants.js
 	var TIMER_INTERVAL = 1;
 	var MAZE_EVENTS_INTERVAL = 250;
 	
     lime.scheduleManager.scheduleWithDelay(mazeEvents, null, MAZE_EVENTS_INTERVAL);
     lime.scheduleManager.scheduleWithDelay(updateTimer, null, TIMER_INTERVAL);
     
-    addOpen(position);
-    updatePosition(0.1);
     var keyhandler = new goog.events.KeyHandler(document);
     var keyevents = new KeyEvents(self, maze).events;
 	goog.events.listen(keyhandler, 'key', keyevents);
+
+    // set up initial position
+    {
+		var rotate = 0;
+		do { // sprite starts facing north
+			rotate += 90;
+			direction = Compass.rotate(TURN.LEFT, direction);
+		} while (!direction.equals(maze.startDir));
+		self.sprite.runAction(new lime.animation.RotateBy(rotate).setDuration(0));
+    }
+
+    addOpen(position);
+    updatePosition(0.0001);
+    mazeSprite.appendChild(this.sprite);
 	
 	// initial set up of HUD and Log
 	Globals.logLabel.setText('Welcome!');
