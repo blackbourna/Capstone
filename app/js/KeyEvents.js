@@ -29,6 +29,7 @@ KeyEvents = function(bot, maze) {
 			// Forward
 			case keyCodes.UP:
 				if (e.event_.shiftKey) {
+                    if (Globals.easyMode) break;
 					success = hasEnergy(Constants.EnergyCosts.LOOK);
 					if (success) {
 						msg = 'Looked ahead.';
@@ -55,6 +56,7 @@ KeyEvents = function(bot, maze) {
 			// Turn Right
 			case keyCodes.RIGHT:
 				if (e.event_.shiftKey) {
+                    if (Globals.easyMode) break;
 					success = hasEnergy(Constants.EnergyCosts.LOOK);
 					if (success) {
 						msg = 'Looked right.';
@@ -71,6 +73,7 @@ KeyEvents = function(bot, maze) {
 			// Turn Left
 			case keyCodes.LEFT:
 				if (e.event_.shiftKey) {
+                    if (Globals.easyMode) break;
 					success = hasEnergy(Constants.EnergyCosts.LOOK);
 					if (success) {
 						msg = 'Looked left.';
@@ -85,12 +88,15 @@ KeyEvents = function(bot, maze) {
 				}
 			break;
 			case keyCodes.A: // auto look left
+                if (Globals.easyMode) break;
 				msg = bot.toggleAutoLookDirection(LOOK.LEFT);
 			break;
 			case keyCodes.D: // auto look right
+                if (Globals.easyMode) break;
 				msg = bot.toggleAutoLookDirection(LOOK.RIGHT);
 			break;
-			case keyCodes.W: // auto look forware
+			case keyCodes.W: // auto look forward
+                if (Globals.easyMode) break;
 				msg = bot.toggleAutoLookDirection(LOOK.AHEAD);
 			break;
 			// Camera zoom - this may be about impossible to actually implement with the framework
@@ -137,13 +143,14 @@ KeyEvents = function(bot, maze) {
 			break;
 			// Look far ahead
 			case keyCodes.SLASH:
+                if (Globals.easyMode) break;
 				success = hasEnergy(Constants.EnergyCosts.LOOK_AHEAD);
 				if (success) {
 					msg = 'Looked far ahead. ' + bot.lookFarAhead() + ' open spaces.';
 				}
 			break;
 			case keyCodes.ESC: // cheater!
-				bot.drawMaze();
+				//bot.drawMaze();
 			break;
 			default:
 				success = true;

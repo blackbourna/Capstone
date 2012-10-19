@@ -49,8 +49,8 @@ Bot = function (maze, mazeSprite, director) {
     var getScreenPosition = function() {
 		var width = self.sprite.getSize().width;
 		var height = self.sprite.getSize().height;
-		if (width == 0) width = CELL_DIMENSIONS.x;
-		if (height == 0) width = CELL_DIMENSIONS.y;
+		if (width == 0) width = Constants.Graphics.CELL_DIMENSIONS.x;
+		if (height == 0) width = Constants.Graphics.CELL_DIMENSIONS.y;
         var coord = new goog.math.Coordinate(width * position.x*1 + width/2, height * position.y*1 + height/2);
         return coord;
     }
