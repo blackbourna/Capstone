@@ -1,3 +1,5 @@
 www:
   type: php
   approot: app
+  systempackages:
+    - openjdk-6-jre-headless
