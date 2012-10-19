@@ -8,6 +8,7 @@ goog.require('Compass');
 
 // my key handler
 goog.require('KeyEvents');
+goog.require('KeyEventsAlternative');
 
 Bot = function (maze, mazeSprite, director) {
 	// private variables
@@ -34,8 +35,9 @@ Bot = function (maze, mazeSprite, director) {
 	this.sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'bot.png');
 	
     // private functions
-    var updateDirection = function(x) {
+    var updateDirection = function(x, speed) {
 		var rotate = new lime.animation.RotateBy(x);
+        if (speed) rotate.setDuration(speed);
 		Globals.waitForAnimationEndEvent(rotate);
 		
 		self.sprite.runAction(rotate);
@@ -194,7 +196,7 @@ Bot = function (maze, mazeSprite, director) {
 				energy -= Constants.EnergyCosts.TURN_AROUND;
 			break;
 		}
-		updateDirection(rotate);
+		updateDirection(rotate, 0.001);
 		return true;
 	}
 	// @dir = LOOK.AHEAD, etc.
@@ -300,6 +302,10 @@ Bot = function (maze, mazeSprite, director) {
 		}
     }
     
+    this.getDirection = function() {
+        return direction;
+    }
+    
 	var getFormattedTime = function () {
 		// modified version of http://stackoverflow.com/questions/6312993/javascript-seconds-to-time-with-format-hhmmss
 		var sec_numb = timer / 1000;
@@ -376,7 +382,8 @@ Bot = function (maze, mazeSprite, director) {
     lime.scheduleManager.scheduleWithDelay(updateTimer, null, TIMER_INTERVAL);
     
     var keyhandler = new goog.events.KeyHandler(document);
-    var keyevents = new KeyEvents(self, maze).events;
+    var keyevents = new KeyEventsAlternative(self, maze).events;
+    //var keyevents = new KeyEvents(self, maze).events;
 	goog.events.listen(keyhandler, 'key', keyevents);
 
     // set up initial position
