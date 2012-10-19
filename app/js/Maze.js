@@ -131,7 +131,8 @@ Maze = function(energyPt) {
 		lime.scheduleManager.scheduleWithDelay(function (dt) {
 			Globals.animationPlaying = false;
 			for (var s in sprites) {
-				//sprites[s].removeDomElement(); // garbage collection, these sprites seem to cause browser slowdown
+				sprites[s].removeDomElement(); // garbage collection, these sprites seem to cause browser slowdown
+				delete sprites[s];
 			}
 		}, null, i * radarSpeed * 1000, 1);
 		
