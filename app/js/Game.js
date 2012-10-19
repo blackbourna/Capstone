@@ -5,7 +5,7 @@ goog.require('Constants');
 goog.require('Globals');
 
 Game = function(maze, director) {
-// Setup visuals
+    // Setup visuals
     var scene = new lime.Scene();
 
     // Background

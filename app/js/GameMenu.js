@@ -1,7 +1,9 @@
 goog.provide('GameMenu');
 goog.require('MazeLoader');
 goog.require('MazeMenu');
-//goog.inherits(rb.Button, lime.GlossyButton);// look into inherits!
+
+// remove this!
+goog.require('HighScoreInputScene');
 
 GameMenu=function(director) {
 	var director = director;
@@ -32,6 +34,12 @@ GameMenu=function(director) {
 		var highscoreButton = new lime.GlossyButton('High Scores').setPosition(500, 600).setSize(500, 50);
 		goog.events.listen(highscoreButton, ['mousedown','touchstart'], function(e) {
 			
+		});
+		scene.appendChild(highscoreButton);
+        
+		var highscoreButton = new lime.GlossyButton('Enter Highscore').setPosition(500, 700).setSize(500, 50);
+		goog.events.listen(highscoreButton, ['mousedown','touchstart'], function(e) {
+			new HighScoreInputScene(director);
 		});
 		scene.appendChild(highscoreButton);
 
