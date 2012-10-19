@@ -31,7 +31,7 @@ GameMenu=function(director) {
 
 		var highscoreButton = new lime.GlossyButton('High Scores').setPosition(500, 600).setSize(500, 50);
 		goog.events.listen(highscoreButton, ['mousedown','touchstart'], function(e) {
-
+			
 		});
 		scene.appendChild(highscoreButton);
 

@@ -35,14 +35,10 @@ Bot = function (maze, mazeSprite, director) {
 	
     // private functions
     var updateDirection = function(x) {
-		var sequence = 	new lime.animation.Sequence(
-			new lime.animation.ScaleTo(1.2).setDuration(.1),
-			new lime.animation.RotateBy(x),
-			new lime.animation.ScaleTo(1).setDuration(.1)
-		);
-		Globals.waitForAnimationEndEvent(sequence);
+		var rotate = new lime.animation.RotateBy(x);
+		Globals.waitForAnimationEndEvent(rotate);
 		
-		self.sprite.runAction(sequence);
+		self.sprite.runAction(rotate);
     }
     var updatePosition = function(speed) {
 		addOpen(position);
@@ -97,6 +93,18 @@ Bot = function (maze, mazeSprite, director) {
     }
     
     var hitWall = function(cell) {
+		var topCornerPlus5 = new Point(Constants.Graphics.TOP_CORNER.x + 5, Constants.Graphics.TOP_CORNER.y +5)
+		var durTime = 0.05;
+		// this is why javascript could use a tuple type!
+		var sequence = 	new lime.animation.Sequence(
+			new lime.animation.MoveTo(topCornerPlus5).setDuration(durTime),
+			new lime.animation.MoveTo(Constants.Graphics.TOP_CORNER).setDuration(durTime),
+			new lime.animation.MoveTo(topCornerPlus5).setDuration(durTime),
+			new lime.animation.MoveTo(Constants.Graphics.TOP_CORNER).setDuration(durTime),
+			new lime.animation.MoveTo(topCornerPlus5).setDuration(durTime),
+			new lime.animation.MoveTo(Constants.Graphics.TOP_CORNER).setDuration(durTime)
+		);
+		mazeSprite.runAction(sequence);
 		addWall(cell);
     }
     
@@ -126,12 +134,17 @@ Bot = function (maze, mazeSprite, director) {
 			}
 		}
 	}
+	
+	var addHistory = function(move) {
+		history.push({action: move, time: timer});
+	}
     
     // public functions
     this.getPosition = function() {return position;}
     
+    // @dir = e.g. MOVE.FORWARD, MOVE.BACKWARD
 	this.move = function(dir) {
-		history.push(dir);
+		addHistory(dir);
 		blocked = false;
 		switch(dir) {
 			case MOVE.FORWARD:
@@ -159,8 +172,9 @@ Bot = function (maze, mazeSprite, director) {
 		Globals.Audio.stopThenPlay(sfx_step);
 		return !blocked;
 	}
+	// @dir = e.g. TURN.RIGHT
 	this.turn = function(dir) {
-		history.push(dir);
+		addHistory(dir);
 		var rotate = 0;
 		switch(dir) {
 			case TURN.RIGHT:
@@ -183,8 +197,9 @@ Bot = function (maze, mazeSprite, director) {
 		updateDirection(rotate);
 		return true;
 	}
+	// @dir = LOOK.AHEAD, etc.
 	this.look = function(dir) {
-		history.push(dir);
+		addHistory(dir);
 		switch(dir) {
 			case LOOK.AHEAD:
 				if (isOpen(sum(position, direction))) {
@@ -218,7 +233,7 @@ Bot = function (maze, mazeSprite, director) {
 		return true;
 	}
 	this.lookFarAhead = function() {
-		history.push('lookfar');
+		addHistory('LOOKFAR');
 		energy -= Constants.EnergyCosts.LOOK_AHEAD;
 		var cell = sum(position, direction);
 		var ct = 0;
@@ -234,7 +249,7 @@ Bot = function (maze, mazeSprite, director) {
 	
 	
 	this.sprint = function() {
-		history.push('SPRINT');
+		addHistory('SPRINT');
 		var blocked = false;
 		for (var x = 0; x < 5; x++) {
 			if (isOpen(sum(position, direction))) {
@@ -251,16 +266,25 @@ Bot = function (maze, mazeSprite, director) {
 	}
 	
 	this.scanForRecharger = function() {
-		history.push('SCAN');
+		addHistory('SCAN');
 		energy -= Constants.EnergyCosts.ENERGY_SCAN;
 		return maze.scanForRecharger(position, mazeSprite);
 	}
 	this.pickUpRecharger = function() {
-		history.push('PICKUP');
+		addHistory('PICKUP');
 		energy -= Constants.EnergyCosts.ENERGY_PICKUP;
 		var foundIt = maze.pickUpRecharger(position);
-		if (foundIt) energy += Constants.EnergyCosts.ENERGY_GAINED;
-		if (foundIt) alert("TEST");
+		if (foundIt) {
+			energy += Constants.EnergyCosts.ENERGY_GAINED;
+			var sequence = 	new lime.animation.Sequence(
+				// add sound
+				new lime.animation.ScaleTo(1.5).setDuration(.5),
+				new lime.animation.ScaleTo(1).setDuration(.5)
+			);
+			Globals.waitForAnimationEndEvent(sequence);
+			self.sprite.runAction(sequence);
+		}
+		return foundIt;
 	}
 	
 	this.getEnergy = function() {
@@ -303,15 +327,22 @@ Bot = function (maze, mazeSprite, director) {
 		var dirName = dir.substring(5).toLowerCase();
 		var msg = 'Autolook ' + dirName + ' set to';
 		if (!autolook[dir]) {
-			history.push('autolook.off.'+dir);
+			addHistory('autolook.off.'+dir);
 			autolook[dir] = dir;
 			msg += ' on';
 		} else {
-			history.push('autolook.on.'+dir);
+			addHistory('autolook.on.'+dir);
 			delete autolook[dir];
 			msg += ' off';
 		}
 		return msg;
+	}
+	
+	this.dispose = function() {
+		lime.scheduleManager.unschedule(mazeEvents, this);
+		goog.events.unlisten(keyhandler, 'key', keyevents);
+		console.log(history);
+		director.popScene();
 	}
 	
     // setup keyhandler and game events
@@ -319,29 +350,22 @@ Bot = function (maze, mazeSprite, director) {
 		var gameDone = false;
 		if (energy <= 0) {
 			alert('noooo!');
-			lime.scheduleManager.scheduleWithDelay(endGame, null, 1000);
+			lime.scheduleManager.scheduleWithDelay(self.dispose, null, 1000);
 			gameDone = true;
 		}
 		if (maze.get(position) == Cell.GOAL) {
 			alert('you win!!');
-			lime.scheduleManager.scheduleWithDelay(endGame, null, 1000);
+			lime.scheduleManager.scheduleWithDelay(self.dispose, null, 1000);
 			gameDone = true;
 		}
 		if (gameDone) {
-			lime.scheduleManager.unschedule(mazeEvents, this);
-			goog.events.unlisten(keyhandler, 'key', keyevents);
-			console.log(history);
-			director.popScene();
+			self.dispose();
 		}
-		//console.log('running!' + energy);
 	};
 	
 	var updateTimer = function(dt) {
 		timer += dt;
 		self.updateOutput();
-	}
-	var endGame = function() {
-		director.popScene();
 	}
 	
 	// move these to Constants.js

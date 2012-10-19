@@ -66,9 +66,10 @@ Maze = function(energyPt) {
 		if (Point.equals(recharger, position)) { // play some notifier
 			foundEnergy = true;
 		}
+		var allSprites = []; // collect all sprites for GC
 		for (var i = 1; i < 12 && !foundEnergy; i++) { // work outward 12 cells from bot position
-			var sprites = [];
 			var foundEnergy = false;
+			var sprites = []; // sprites of points of circle that match the distance of i
 			for (var x = 0; x < this.maze.length; x++) { // iterate maze
 				for (var y = 0; y < this.maze[0].length; y++) {
 					var pt = new Point(y, x);
@@ -80,6 +81,7 @@ Maze = function(energyPt) {
 							.setOpacity(0.0)
 							.setPosition(Utils.getScreenPositionRelativeToCoordinates(pt));
 						sprites.push(scanSprite);
+						allSprites.push(scanSprite);
 						if (Point.equals(recharger, pt)) { // only continue to scan outward until energy is found
 							foundEnergy = true;
 						}
@@ -89,12 +91,13 @@ Maze = function(energyPt) {
 			for (var s in sprites) {
 				mazeSprite.appendChild(sprites[s]);
 				var sequence = null;
+				var sequenceSpeed = radarSpeed/3;
 				if (!foundEnergy) {
 					sequence = new lime.animation.Sequence(
 						new lime.animation.Delay().setDuration((i - 1)*radarSpeed), 		
 										
-						new lime.animation.FadeTo(1).setDuration(radarSpeed/2), 
-						new lime.animation.FadeTo(0).setDuration(radarSpeed/2)
+						new lime.animation.FadeTo(1).setDuration(sequenceSpeed), 
+						new lime.animation.FadeTo(0).setDuration(sequenceSpeed)
 					);
 					lime.scheduleManager.scheduleWithDelay(function (dt) {
 						Globals.Audio.stopThenPlay(radar1); // use raw HTML5 for audio, limejs has terrible audio support
@@ -105,18 +108,18 @@ Maze = function(energyPt) {
 					sequence = new lime.animation.Sequence(
 						new lime.animation.Delay().setDuration((i - 1)*radarSpeed),
 						
-						new lime.animation.FadeTo(1).setDuration(radarSpeed/2), 
-						new lime.animation.FadeTo(0).setDuration(radarSpeed/2),
+						new lime.animation.FadeTo(1).setDuration(sequenceSpeed), 
+						new lime.animation.FadeTo(0).setDuration(sequenceSpeed),
 						
-						new lime.animation.FadeTo(1).setDuration(radarSpeed/2), 
-						new lime.animation.FadeTo(0).setDuration(radarSpeed/2),
+						new lime.animation.FadeTo(1).setDuration(sequenceSpeed), 
+						new lime.animation.FadeTo(0).setDuration(sequenceSpeed),
 						
-						new lime.animation.FadeTo(1).setDuration(radarSpeed/2), 
-						new lime.animation.FadeTo(0).setDuration(radarSpeed/2)
+						new lime.animation.FadeTo(1).setDuration(sequenceSpeed), 
+						new lime.animation.FadeTo(0).setDuration(sequenceSpeed)
 					);
 					lime.scheduleManager.scheduleWithDelay(function (dt) {
 						Globals.Audio.stopThenPlay(radar1);
-						lime.scheduleManager.scheduleWithDelay(function (dt) {
+						lime.scheduleManager.scheduleWithDelay(function (dt) { // high pitched "you've found it" notification
 							Globals.Audio.stopThenPlay(radar2);
 						}, null, radarSpeed * 1000, 3);
 					}, null, radarSpeed * 1000 * i, 1);
@@ -127,6 +130,9 @@ Maze = function(energyPt) {
 		// re-enable keyboard input
 		lime.scheduleManager.scheduleWithDelay(function (dt) {
 			Globals.animationPlaying = false;
+			for (var s in sprites) {
+				//sprites[s].removeDomElement(); // garbage collection, these sprites seem to cause browser slowdown
+			}
 		}, null, i * radarSpeed * 1000, 1);
 		
 		// add label to cell

@@ -132,7 +132,7 @@ KeyEvents = function(bot, maze) {
 			// Pick up recharger
 			case keyCodes.BACKSLASH:
 				if (hasEnergy(Constants.EnergyCosts.ENERGY_PICKUP)) {
-					msg = 'Attempted to pick up energy...' + (bot.pickUpRecharger()) ? ' got it!' : ' not found!';
+					msg = 'Try to pick up energy...' + ((bot.pickUpRecharger()) ? ' got it!' : ' not there!');
 				}
 			break;
 			// Look far ahead

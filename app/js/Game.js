@@ -3,9 +3,6 @@ goog.provide('Game');
 
 goog.require('Constants');
 goog.require('Globals');
-// fill effects
-goog.require('lime.fill.LinearGradient');
-goog.require('lime.Sprite');
 
 Game = function(maze, director) {
 // Setup visuals
@@ -49,6 +46,16 @@ Game = function(maze, director) {
         .setAlign('left');
     hudContainer.appendChild(Globals.hudLabel);
     
+    // Go back button
+	var goBack = new lime.GlossyButton('Go Back')
+		.setPosition(125, 700)
+		.setSize(200, 40)
+		.setColor('#FF0000');
+	goog.events.listen(goBack, ['mousedown','touchstart'], function(e) {
+		bot.dispose();
+	});
+	scene.appendChild(goBack);
+	
     // Eternal Darkness
     var mazeContainer = new lime.Sprite()
 		.setSize(Constants.Graphics.MAZE_DIMENSIONS.x, Constants.Graphics.MAZE_DIMENSIONS.y)
@@ -56,7 +63,7 @@ Game = function(maze, director) {
 	    .setAnchorPoint(0, 0)
 		.setPosition(Constants.Graphics.TOP_CORNER);
     background.appendChild(mazeContainer);
-    
+
     maze.init(mazeContainer);
     
 	if (Globals.easyMode) {
