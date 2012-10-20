@@ -13,8 +13,8 @@ function get_coordinates($x) {
 }
 // append the variables to the object, this function does NOT sum two points!
 function add_coordinates(&$maze, $var, $array) {
-    $maze->$var->x = $array[0];
-    $maze->$var->y = $array[1];
+    @$maze->$var->x = $array[0];
+    @$maze->$var->y = $array[1];
 }
 
 class Maze {}
