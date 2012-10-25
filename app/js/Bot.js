@@ -71,6 +71,7 @@ Bot = function (maze, mazeSprite, director) {
     
     var addCell = function(cell, img) {
 		if (!Utils.validatePoint(cell)) return;
+        if (maze.get(cell) == Cell.GOAL) return; // don't overwrite goal cells
 		if (cellHasBeenMarked(cell, true)) return;
 		var sprite = new lime.Sprite().setFill(img);
 		var width = sprite.getSize().width;
@@ -241,8 +242,6 @@ Bot = function (maze, mazeSprite, director) {
 		var ct = 0;
 		while (isOpen(cell)) {
 			ct++;
-			if (maze.get(cell) != Cell.GOAL) // don't overwrite goal sprites
-				addOpen(cell);
 			cell = sum(cell, direction);
 		}
 		addWall(cell);
@@ -259,6 +258,7 @@ Bot = function (maze, mazeSprite, director) {
 					addOpen(position);
 			} else {
 				blocked = true;
+                hitWall(sum(position, direction));
 				break;
 			}
 		}
@@ -306,26 +306,11 @@ Bot = function (maze, mazeSprite, director) {
         return direction;
     }
     
-	var getFormattedTime = function () {
-		// modified version of http://stackoverflow.com/questions/6312993/javascript-seconds-to-time-with-format-hhmmss
-		var sec_numb = timer / 1000;
-		var hours   = Math.floor(sec_numb / 3600);
-		var minutes = Math.floor((sec_numb - (hours * 3600)) / 60);
-		var seconds = sec_numb - (hours * 3600) - (minutes * 60);
-		seconds = seconds.toFixed(3);
-
-		if (minutes < 10) {minutes = "0"+minutes;}
-		if (seconds < 10) {seconds = "0"+seconds;}
-		//var time = hours+':'+minutes+':'+seconds;
-		var time = minutes+':'+seconds;
-		return time;
-	}
-    
 	this.updateOutput = function (){
 		Globals.hudLabel.setText('Bot Energy: ' + this.getEnergy() + '\n' +
 			'Direction: ' + Directions.getName(direction) + '\n' + 
 			'Position: ' + position.x + ', ' + position.y + '\n' +
-			'Time: ' + getFormattedTime() //(timer/1000.0).toFixed(3)
+			'Time: ' + Utils.getFormattedTime() //(timer/1000.0).toFixed(3)
 		);
 	}
 	
@@ -344,11 +329,12 @@ Bot = function (maze, mazeSprite, director) {
 		return msg;
 	}
 	
-	this.dispose = function() {
+	this.dispose = function(doPop) {
 		lime.scheduleManager.unschedule(mazeEvents, this);
 		goog.events.unlisten(keyhandler, 'key', keyevents);
 		console.log(history);
-		director.popScene();
+        if (doPop)
+            director.popScene();
 	}
 	
     // setup keyhandler and game events
@@ -356,16 +342,20 @@ Bot = function (maze, mazeSprite, director) {
 		var gameDone = false;
 		if (energy <= 0) {
 			alert('noooo!');
-			lime.scheduleManager.scheduleWithDelay(self.dispose, null, 1000);
+			lime.scheduleManager.scheduleWithDelay(function() {
+                self.dispose(true);
+            }, null, 1000);
 			gameDone = true;
 		}
-		if (maze.get(position) == Cell.GOAL) {
-			alert('you win!!');
-			lime.scheduleManager.scheduleWithDelay(self.dispose, null, 1000);
+		if (maze.get(position) == Cell.GOAL) { // maze solved!
+			lime.scheduleManager.scheduleWithDelay(function() {
+                self.dispose(false);
+                Utils.submitHighScore(energy, timer, history, director);
+            }, null, 1000);
 			gameDone = true;
 		}
 		if (gameDone) {
-			self.dispose();
+			self.dispose(true);
 		}
 	};
 	
