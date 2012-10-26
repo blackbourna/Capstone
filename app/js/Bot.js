@@ -350,7 +350,7 @@ Bot = function (maze, mazeSprite, director) {
 		if (maze.get(position) == Cell.GOAL) { // maze solved!
 			lime.scheduleManager.scheduleWithDelay(function() {
                 self.dispose(false);
-                Utils.submitHighScore(maze.type, energy, timer, history, director);
+                new HighScoreInputScene(director, maze, energy, timer, history);
             }, null, 1000);
 			gameDone = true;
 		}
@@ -364,13 +364,6 @@ Bot = function (maze, mazeSprite, director) {
 		self.updateOutput();
 	}
 
-	// move these to Constants.js?
-	var TIMER_INTERVAL = 1;
-	var MAZE_EVENTS_INTERVAL = 250;
-	
-    //lime.scheduleManager.scheduleWithDelay(mazeEvents, null, MAZE_EVENTS_INTERVAL);
-    //lime.scheduleManager.scheduleWithDelay(updateTimer, null, TIMER_INTERVAL);
-    
     lime.scheduleManager.schedule(mazeEvents, null);
     lime.scheduleManager.schedule(updateTimer, null);
     

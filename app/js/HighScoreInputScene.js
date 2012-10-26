@@ -1,11 +1,10 @@
 goog.provide('HighScoreInputScene');
-HighScoreInputScene = function(director) {
+HighScoreInputScene = function(director, maze, energy, timer, history) {
     var scene = new lime.Scene();
     var highScoreLabel = new lime.Label().setPosition(50, 50).setText('Enter your name');
     scene.appendChild(highScoreLabel);
     var highScoreInputLabel = new lime.Label().setPosition(50, 100).setText('');
     scene.appendChild(highScoreInputLabel);
-    
     var keyevents = function(e) {
         var txt = highScoreInputLabel.getText();
         if (e.keyCode == goog.events.KeyCodes.BACKSPACE) {
@@ -22,7 +21,7 @@ HighScoreInputScene = function(director) {
     
     var startGameButton = new lime.GlossyButton('Submit').setPosition(500, 300).setSize(500, 50);
     goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
-        new MazeMenu(director).showMenu();
+        Utils.submitHighScore(maze, energy, timer, history, scene);
     });
     scene.appendChild(startGameButton);
     
