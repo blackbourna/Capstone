@@ -7,7 +7,8 @@ goog.require('Globals');
 Game = function(maze, director) {
     // Setup visuals
     var scene = new lime.Scene();
-
+    var director = director;
+    
     // Background
     var backgroundGradient = new lime.fill.LinearGradient();
     backgroundGradient.addColorStop(0, '#ABCDEF');
@@ -53,6 +54,7 @@ Game = function(maze, director) {
 		.setColor('#FF0000');
 	goog.events.listen(goBack, ['mousedown','touchstart'], function(e) {
 		bot.dispose();
+        director.replaceScene(new GameMenu(director).showMenu());
 	});
 	scene.appendChild(goBack);
 	

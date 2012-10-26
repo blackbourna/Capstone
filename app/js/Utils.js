@@ -15,5 +15,43 @@ Utils = {
 		} else {
 			return new goog.math.Coordinate(Constants.Graphics.CELL_DIMENSIONS.x * x, Constants.Graphics.CELL_DIMENSIONS.x * y);
 		}
-	}
+	},
+    getFormattedTime: function (timer) {    
+		// modified version of http://stackoverflow.com/questions/6312993/javascript-seconds-to-time-with-format-hhmmss
+		var sec_numb = timer / 1000;
+		var hours   = Math.floor(sec_numb / 3600);
+		var minutes = Math.floor((sec_numb - (hours * 3600)) / 60);
+		var seconds = sec_numb - (hours * 3600) - (minutes * 60);
+		seconds = seconds.toFixed(3);
+
+		if (minutes < 10) {minutes = "0"+minutes;}
+		if (seconds < 10) {seconds = "0"+seconds;}
+		//var time = hours+':'+minutes+':'+seconds;
+		var time = minutes+':'+seconds;
+		return time;
+	},
+    submitHighScore: function(name, maze, energy, timer, history, scene) {
+		var request = new goog.net.XhrIo();
+		goog.events.listen(request, 'complete', function(){
+			//request complete
+			if (request.isSuccess()){
+				var data = request.getResponseJson();
+                console.log(data);
+				//director.replaceScene(new GameMenu.showMenu(director));
+			} else {
+				//error
+			}
+		});
+        if (!maze) {7
+            timer = 123;
+            history = ['test'];
+            name='abc';
+            energy= 650;
+            maze = {};
+            maze.seed = 123;
+            maze.type='gr';
+        }
+        var postData = {"name": name, "mazeSeed": maze.seed, "mazeType": maze.type, "energy": energy, "timer": timer, "history": history};
+		request.send('./highscore.php', "POST", null, postData);
+    }
 }

@@ -10,13 +10,6 @@ try {
 PRAGMA foreign_keys=OFF;
 DROP TABLE IF EXISTS "maze";
 DROP TABLE IF EXISTS "highscore";
-CREATE TABLE "maze" (
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    "seed" INTEGER NOT NULL,
-    "type" TEXT NOT NULL,
-    "date_start" TEXT NOT NULL,
-    "date_end" TEXT NOT NULL
-);
 CREATE TABLE "highscore" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "maze_id" INTEGER NOT NULL,
@@ -36,13 +29,11 @@ SQLSTR;
 	$month = substr($result[0], 5, 2);
 	$end_date = substr($result[0], 8);
 	
-	for (int $d = 1; $d <= $end_date; $d++) {
-		$seed = rand(0, 999999999);
-		$type = $types[rand(0, count($types) - 1)];
-		$sql = <<<SQLSTR
-INSERT INTO 'maze' values (null, )
-SQLSTR
-	}
+	//for ($d = 1; $d <= $end_date; $d++) {
+	//	$seed = rand(0, 999999999);
+	//	$type = $types[rand(0, count($types) - 1)];
+	//	$sql = "INSERT INTO 'maze' values (null, )";
+	//}
 	//for ($x = 1; $x < )
 } catch (PDOException $e) {
 	echo $e->getMessage();

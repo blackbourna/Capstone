@@ -71,6 +71,7 @@ Bot = function (maze, mazeSprite, director) {
     
     var addCell = function(cell, img) {
 		if (!Utils.validatePoint(cell)) return;
+        if (maze.get(cell) == Cell.GOAL) return; // don't overwrite goal cells
 		if (cellHasBeenMarked(cell, true)) return;
 		var sprite = new lime.Sprite().setFill(img);
 		var width = sprite.getSize().width;
@@ -241,8 +242,6 @@ Bot = function (maze, mazeSprite, director) {
 		var ct = 0;
 		while (isOpen(cell)) {
 			ct++;
-			if (maze.get(cell) != Cell.GOAL) // don't overwrite goal sprites
-				addOpen(cell);
 			cell = sum(cell, direction);
 		}
 		addWall(cell);
@@ -253,12 +252,13 @@ Bot = function (maze, mazeSprite, director) {
 	this.sprint = function() {
 		addHistory('SPRINT');
 		var blocked = false;
-		for (var x = 0; x < 5; x++) {
+		for (var x = 0; x < Constants.bot.SPRINT_DISTANCE; x++) {
 			if (isOpen(sum(position, direction))) {
 					position = sum(position, direction);
 					addOpen(position);
 			} else {
 				blocked = true;
+                hitWall(sum(position, direction));
 				break;
 			}
 		}
@@ -306,26 +306,11 @@ Bot = function (maze, mazeSprite, director) {
         return direction;
     }
     
-	var getFormattedTime = function () {
-		// modified version of http://stackoverflow.com/questions/6312993/javascript-seconds-to-time-with-format-hhmmss
-		var sec_numb = timer / 1000;
-		var hours   = Math.floor(sec_numb / 3600);
-		var minutes = Math.floor((sec_numb - (hours * 3600)) / 60);
-		var seconds = sec_numb - (hours * 3600) - (minutes * 60);
-		seconds = seconds.toFixed(3);
-
-		if (minutes < 10) {minutes = "0"+minutes;}
-		if (seconds < 10) {seconds = "0"+seconds;}
-		//var time = hours+':'+minutes+':'+seconds;
-		var time = minutes+':'+seconds;
-		return time;
-	}
-    
 	this.updateOutput = function (){
 		Globals.hudLabel.setText('Bot Energy: ' + this.getEnergy() + '\n' +
 			'Direction: ' + Directions.getName(direction) + '\n' + 
 			'Position: ' + position.x + ', ' + position.y + '\n' +
-			'Time: ' + getFormattedTime() //(timer/1000.0).toFixed(3)
+			'Time: ' + Utils.getFormattedTime(timer) //(timer/1000.0).toFixed(3)
 		);
 	}
 	
@@ -344,11 +329,12 @@ Bot = function (maze, mazeSprite, director) {
 		return msg;
 	}
 	
-	this.dispose = function() {
-		lime.scheduleManager.unschedule(mazeEvents, this);
+	this.dispose = function(doPop) {
+		lime.scheduleManager.unschedule(mazeEvents, null);
+        lime.scheduleManager.unschedule(updateTimer, null);
+        Globals.logLabel = null;
 		goog.events.unlisten(keyhandler, 'key', keyevents);
 		console.log(history);
-		director.popScene();
 	}
 	
     // setup keyhandler and game events
@@ -356,16 +342,20 @@ Bot = function (maze, mazeSprite, director) {
 		var gameDone = false;
 		if (energy <= 0) {
 			alert('noooo!');
-			lime.scheduleManager.scheduleWithDelay(self.dispose, null, 1000);
+			lime.scheduleManager.scheduleWithDelay(function() {
+                self.dispose(true);
+            }, null, 1000);
 			gameDone = true;
 		}
-		if (maze.get(position) == Cell.GOAL) {
-			alert('you win!!');
-			lime.scheduleManager.scheduleWithDelay(self.dispose, null, 1000);
+		if (maze.get(position) == Cell.GOAL) { // maze solved!
+			lime.scheduleManager.scheduleWithDelay(function() {
+                self.dispose(false);
+                new HighScoreInputScene(director, maze, energy, timer, history);
+            }, null, 1000);
 			gameDone = true;
 		}
 		if (gameDone) {
-			self.dispose();
+			self.dispose(true);
 		}
 	};
 	
@@ -373,13 +363,9 @@ Bot = function (maze, mazeSprite, director) {
 		timer += dt;
 		self.updateOutput();
 	}
-	
-	// move these to Constants.js
-	var TIMER_INTERVAL = 1;
-	var MAZE_EVENTS_INTERVAL = 250;
-	
-    lime.scheduleManager.scheduleWithDelay(mazeEvents, null, MAZE_EVENTS_INTERVAL);
-    lime.scheduleManager.scheduleWithDelay(updateTimer, null, TIMER_INTERVAL);
+
+    lime.scheduleManager.schedule(mazeEvents, null);
+    lime.scheduleManager.schedule(updateTimer, null);
     
     var keyhandler = new goog.events.KeyHandler(document);
     var keyevents = new KeyEventsAlternative(self, maze).events;

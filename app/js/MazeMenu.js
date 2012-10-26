@@ -50,6 +50,6 @@ MazeMenu=function(director) {
 		});
 		scene.appendChild(goBack);
 		
-		director.pushScene(scene);
+		return scene;
 	}
 }
