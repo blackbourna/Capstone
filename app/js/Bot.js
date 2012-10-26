@@ -330,14 +330,11 @@ Bot = function (maze, mazeSprite, director) {
 	}
 	
 	this.dispose = function(doPop) {
-        alert('dispose');
-		lime.scheduleManager.unschedule(mazeEvents, this);
-        lime.scheduleManager.unschedule(updateTimer, this);
+		lime.scheduleManager.unschedule(mazeEvents, null);
+        lime.scheduleManager.unschedule(updateTimer, null);
         Globals.logLabel = null;
 		goog.events.unlisten(keyhandler, 'key', keyevents);
 		console.log(history);
-        if (doPop)
-            director.popScene();
 	}
 	
     // setup keyhandler and game events
@@ -366,13 +363,16 @@ Bot = function (maze, mazeSprite, director) {
 		timer += dt;
 		self.updateOutput();
 	}
-	
+
 	// move these to Constants.js?
 	var TIMER_INTERVAL = 1;
 	var MAZE_EVENTS_INTERVAL = 250;
 	
-    lime.scheduleManager.scheduleWithDelay(mazeEvents, null, MAZE_EVENTS_INTERVAL);
-    lime.scheduleManager.scheduleWithDelay(updateTimer, null, TIMER_INTERVAL);
+    //lime.scheduleManager.scheduleWithDelay(mazeEvents, null, MAZE_EVENTS_INTERVAL);
+    //lime.scheduleManager.scheduleWithDelay(updateTimer, null, TIMER_INTERVAL);
+    
+    lime.scheduleManager.schedule(mazeEvents, null);
+    lime.scheduleManager.schedule(updateTimer, null);
     
     var keyhandler = new goog.events.KeyHandler(document);
     var keyevents = new KeyEventsAlternative(self, maze).events;
