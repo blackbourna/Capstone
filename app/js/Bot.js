@@ -252,7 +252,7 @@ Bot = function (maze, mazeSprite, director) {
 	this.sprint = function() {
 		addHistory('SPRINT');
 		var blocked = false;
-		for (var x = 0; x < 5; x++) {
+		for (var x = 0; x < Constants.bot.SPRINT_DISTANCE; x++) {
 			if (isOpen(sum(position, direction))) {
 					position = sum(position, direction);
 					addOpen(position);
@@ -310,7 +310,7 @@ Bot = function (maze, mazeSprite, director) {
 		Globals.hudLabel.setText('Bot Energy: ' + this.getEnergy() + '\n' +
 			'Direction: ' + Directions.getName(direction) + '\n' + 
 			'Position: ' + position.x + ', ' + position.y + '\n' +
-			'Time: ' + Utils.getFormattedTime() //(timer/1000.0).toFixed(3)
+			'Time: ' + Utils.getFormattedTime(timer) //(timer/1000.0).toFixed(3)
 		);
 	}
 	
@@ -330,7 +330,10 @@ Bot = function (maze, mazeSprite, director) {
 	}
 	
 	this.dispose = function(doPop) {
+        alert('dispose');
 		lime.scheduleManager.unschedule(mazeEvents, this);
+        lime.scheduleManager.unschedule(updateTimer, this);
+        Globals.logLabel = null;
 		goog.events.unlisten(keyhandler, 'key', keyevents);
 		console.log(history);
         if (doPop)
@@ -350,7 +353,7 @@ Bot = function (maze, mazeSprite, director) {
 		if (maze.get(position) == Cell.GOAL) { // maze solved!
 			lime.scheduleManager.scheduleWithDelay(function() {
                 self.dispose(false);
-                Utils.submitHighScore(energy, timer, history, director);
+                Utils.submitHighScore(maze.type, energy, timer, history, director);
             }, null, 1000);
 			gameDone = true;
 		}
@@ -364,7 +367,7 @@ Bot = function (maze, mazeSprite, director) {
 		self.updateOutput();
 	}
 	
-	// move these to Constants.js
+	// move these to Constants.js?
 	var TIMER_INTERVAL = 1;
 	var MAZE_EVENTS_INTERVAL = 250;
 	

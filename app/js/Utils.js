@@ -30,7 +30,7 @@ Utils = {
 		var time = minutes+':'+seconds;
 		return time;
 	},
-    submitHighScore: function(energy, timer, history, director) {
+    submitHighScore: function(mazeType, energy, timer, history, director) {
 		var request = new goog.net.XhrIo();
         director.replaceScene();
 		goog.events.listen(request, 'complete', function(){
@@ -42,6 +42,6 @@ Utils = {
 				//error
 			}
 		});
-		request.send('./highscore.php?name='+name+'&energy='+energy+'&timer='+timer+'&history='+history);
+		request.send('./highscore.php?name='+name+'&mazeType='+mazeType+'&energy='+energy+'&timer='+timer+'&history='+history, null, "POST");
     }
 }

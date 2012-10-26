@@ -41,6 +41,8 @@ Maze = function(energyPt) {
 			return (Utils.validatePoint(x)) ? this.maze[y][x] : '#';
 		}
     }
+    
+    // draw entire maze for easy mode/debugging
     this.drawMaze = function(mazeSprite) {
 		if (!Globals.easyMode) return;
 		var mazeString = '';
@@ -58,6 +60,13 @@ Maze = function(energyPt) {
 			}
 			mazeString += '\n';
 		}
+        // add recharger
+        var rechargerSprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'energy.png');
+        var width = rechargerSprite.getSize().width;
+        var height = rechargerSprite.getSize().height;		
+        var coord = new goog.math.Coordinate(width * recharger.x*1 + width/2, height * recharger.y*1 + height/2);
+        rechargerSprite.setPosition(coord);
+        mazeSprite.appendChild(rechargerSprite);
     }
     
     this.scanForRecharger = function(position, mazeSprite) {

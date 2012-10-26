@@ -155,7 +155,8 @@ KeyEventsAlternative = function(bot, maze) {
 			case keyCodes.SPACE:
 				success = hasEnergy(Constants.EnergyCosts.SPRINT);
 				if (success) {
-					msg = 'Sprinted forward ' + bot.sprint() + ' steps';
+                    var sprint = bot.sprint();
+					msg = 'Sprinted forward ' + sprint + ' steps ' + (sprint == Constants.bot.SPRINT_DISTANCE ? '' : ' but hit wall!');
 				}
 			break;
 			// Rotate

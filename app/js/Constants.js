@@ -25,6 +25,10 @@ Constants.Graphics = {
     MAZE_DIMENSIONS: new Point(16*44 , 16*44) // use this to replace MAZE_DIMENSIONS.x
 }
 
+Constants.Bot = {
+    SPRINT_DISTANCE: 5
+}
+
 Constants.EnergyCosts = {
 	START_ENERGY: 10000,
 	MOVE: 6,

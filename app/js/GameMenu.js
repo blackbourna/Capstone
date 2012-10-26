@@ -14,14 +14,15 @@ GameMenu=function(director) {
 		
 		var startGameButton = new lime.GlossyButton('Start Game').setPosition(500, 300).setSize(500, 50);
 		goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
-			new MazeMenu(director).showMenu();
+            Globals.easyMode = false;
+			director.replaceScene(new MazeMenu(director).showMenu());
 		});
 		scene.appendChild(startGameButton);
 		
 		var startEasyGameButton = new lime.GlossyButton('Start Game - Easy Mode').setPosition(500, 400).setSize(500, 50);
 		goog.events.listen(startEasyGameButton, ['mousedown','touchstart'], function(e) {
 			Globals.easyMode = true;
-			new MazeMenu(director).showMenu();
+			director.replaceScene(new MazeMenu(director).showMenu());
 		});
 		scene.appendChild(startEasyGameButton);
 
@@ -33,7 +34,7 @@ GameMenu=function(director) {
 
 		var highscoreButton = new lime.GlossyButton('High Scores').setPosition(500, 600).setSize(500, 50);
 		goog.events.listen(highscoreButton, ['mousedown','touchstart'], function(e) {
-			
+			new HighScoreScene(director);
 		});
 		scene.appendChild(highscoreButton);
         
@@ -43,6 +44,6 @@ GameMenu=function(director) {
 		});
 		scene.appendChild(highscoreButton);
 
-		director.replaceScene(scene);
+		return scene;
 	}
 }

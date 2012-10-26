@@ -19,18 +19,12 @@ HighScoreInputScene = function(director) {
     }
     var keyhandler = new goog.events.KeyHandler(document);
 	goog.events.listen(keyhandler, 'key', keyevents);
+    
+    var startGameButton = new lime.GlossyButton('Submit').setPosition(500, 300).setSize(500, 50);
+    goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
+        new MazeMenu(director).showMenu();
+    });
+    scene.appendChild(startGameButton);
+    
     director.replaceScene(scene);
-    // have to use  google editor field, limejs has no proper text input
-    // https://groups.google.com/forum/?fromgroups=#!topic/limejs/txaxgK3eXQg
-    //function makeTextBox(idString) {
-    //textBox = new goog.editor.Field(idString);
-    //textBox.setHtml(false, "Enter Text...");
-    //textBox.makeEditable();
-    //}
-    //
-    //var titleInput = new lime.Label().setAnchorPoint(0.5,0).setPosition(0,0).setFill('#fff').setSize(200,50).setText('Click here to enter text');
-    //titleInput.getDeepestDomElement().setAttribute('id','titleInput');
-    //
-    //goog.events.listen(titleInput, lime.Button.Event.CLICK, function() {  makeTextBox(titleInput.getDeepestDomElement().getAttribute('id'));
-    //});
 }
