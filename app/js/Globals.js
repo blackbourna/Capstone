@@ -14,6 +14,10 @@ Globals = {
 			audio.play();
 		}
 	},
+	ControlScheme: 1,
+	Debug: {
+		
+	},
     hudLabel: null,
 	logContainer:null,
     logLabel: null,

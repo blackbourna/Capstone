@@ -42,7 +42,8 @@ Utils = {
 				//error
 			}
 		});
-        if (!maze) {7
+		// remove this test obj!
+        if (!maze) {
             timer = 123;
             history = ['test'];
             name='abc';

@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS "highscore";
 CREATE TABLE "highscore" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "maze_id" INTEGER NOT NULL,
+    "easy_mode" INTEGER NOT NULL,
     "user_name" TEXT NOT NULL,
     "score" INTEGER NOT NULL,
     "hs_date" TEXT NOT NULL,

@@ -10,6 +10,34 @@ KeyEventsAlternative = function(bot, maze) {
 		return hasEnergy;
     }
 
+	var getTurnInfo = function(direction, endDir) {	
+		var ct = 0;
+		endDir = Directions.get(endDir);
+		while (!direction.equals(endDir)) {
+			direction = Compass.rotate(TURN.RIGHT, direction);
+			++ct;
+		}
+		console.log('past loop');
+		if (ct < 3)
+			return { turn: TURN.RIGHT, numTurns: ct };
+		else
+			return { turn: TURN.LEFT, numTurns: 1 };
+	}
+
+	// makes calls to bot turn functions based on getTurnInfoInfo
+	var doTurn = function(turnInfo) {
+		var result = {success: null, msg: ""}
+		for (var x = 0; x < turnInfo.numTurns; x++) {
+			result.success = hasEnergy(Constants.EnergyCosts.TURN);
+			if (result.success) {
+				result.msg += 'Turned ' + turnInfo.turn.substring(5).toLowerCase() + "\n";
+				bot.turn(turnInfo.turn);
+			}
+		}
+		result.msg = result.msg.trim();
+		return result;
+	}
+
 	this.events = function(e) {
 		if (Globals.animationPlaying) return;
 		var success = true; // whether bot had enough energy to make the move
@@ -24,7 +52,6 @@ KeyEventsAlternative = function(bot, maze) {
 		if (goog.userAgent.MAC && charCode == goog.events.KeyCodes.QUESTION_MARK && !keyCode) {
 			keyCode = goog.events.KeyCodes.SLASH;
 		}
-        console.log(Directions.get('NORTH'), bot.getDirection());
 		switch (keyCode) {
 			// Bot Directions
 			// Forward
@@ -45,13 +72,10 @@ KeyEventsAlternative = function(bot, maze) {
                                 msg += '.. Blocked!';
                         }
                     } else {
-                        while (!bot.getDirection().equals(Directions.get('NORTH'))) {
-                            success = hasEnergy(Constants.EnergyCosts.TURN);
-                            if (success) {
-                                msg += 'Turned right.';
-                                bot.turn(TURN.RIGHT);
-                            }
-                        }
+						var turnInfo = getTurnInfo(bot.getDirection(), 'NORTH');
+						var result = doTurn(turnInfo);
+						msg += result.msg;
+						success = result.success;
                     }
 				}
 			break;
@@ -65,13 +89,10 @@ KeyEventsAlternative = function(bot, maze) {
                                 msg += '.. Blocked!';
                         }
                     } else {
-                        while (!bot.getDirection().equals(Directions.get('SOUTH'))) {
-                            success = hasEnergy(Constants.EnergyCosts.TURN);
-                            if (success) {
-                                msg += 'Turned right.';
-                                bot.turn(TURN.RIGHT);
-                            }
-                        }
+						var turnInfo = getTurnInfo(bot.getDirection(), 'SOUTH');
+						var result = doTurn(turnInfo);
+						msg += result.msg;
+						success = result.success;
                     }
 			break;
 			// Turn Right
@@ -92,13 +113,10 @@ KeyEventsAlternative = function(bot, maze) {
                                 msg += '.. Blocked!';
                         }
                     } else {
-                        while (!bot.getDirection().equals(Directions.get('EAST'))) {
-                            success = hasEnergy(Constants.EnergyCosts.TURN);
-                            if (success) {
-                                msg += 'Turned right.';
-                                bot.turn(TURN.RIGHT);
-                            }
-                        }
+						var turnInfo = getTurnInfo(bot.getDirection(), 'EAST');
+						var result = doTurn(turnInfo);
+						msg += result.msg;
+						success = result.success;
                     }
 				}
 			break;
@@ -120,13 +138,10 @@ KeyEventsAlternative = function(bot, maze) {
                                 msg += '.. Blocked!';
                         }
                     } else {
-                        while (!bot.getDirection().equals(Directions.get('WEST'))) {
-                            success = hasEnergy(Constants.EnergyCosts.TURN);
-                            if (success) {
-                                msg += 'Turned left.';
-                                bot.turn(TURN.LEFT);
-                            }
-                        }
+						var turnInfo = getTurnInfo(bot.getDirection(), 'WEST');
+						var result = doTurn(turnInfo);
+						msg += result.msg;
+						success = result.success;
                     }
 				}
 			break;
@@ -202,7 +217,7 @@ KeyEventsAlternative = function(bot, maze) {
 		if (!success) {
 			msg = 'Not enough energy!';
 		}
-		console.log(msg);
+		//console.log(msg);
 		if (msg.length > 0) {
 			var oldTxt = Globals.logLabel.getText();
 			Globals.logLabel.setText(oldTxt + "\n" + msg);
@@ -211,17 +226,14 @@ KeyEventsAlternative = function(bot, maze) {
 				console.log(Globals.logContainer.getSize().height);
 				var msgs = Globals.logLabel.getText();
 				msgs = msgs.split('\n');
-				msgs = msgs.slice(1);
+				
+				// remove X number of messages from beggining of console
+				// http://stackoverflow.com/questions/7481099/regex-match-newline-in-textarea
+				var noMsgsToSplice = msg.split(/[\n\r]/g).length;
+				msgs = msgs.slice(noMsgsToSplice);
 				Globals.logLabel.setText(msgs.join('\n'));
 			}
 		}
-		//console.log(
-		//	'keyCode: ' + e.keyCode +
-		//	', charCode: ' + e.charCode +
-		//	', repeat: ' + e.repeat +
-		//	', target: ' + e.target +a
-		//	', native event: ' + e.getBrowserEvent().type);
-		//console.log(msg);
 	}
 	
 	function scaleMaze(x) {

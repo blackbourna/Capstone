@@ -368,8 +368,15 @@ Bot = function (maze, mazeSprite, director) {
     lime.scheduleManager.schedule(updateTimer, null);
     
     var keyhandler = new goog.events.KeyHandler(document);
-    var keyevents = new KeyEventsAlternative(self, maze).events;
-    //var keyevents = new KeyEvents(self, maze).events;
+    var keyevents = null;
+    switch (Globals.ControlScheme) {
+		case 0:
+			keyevents = new KeyEvents(self, maze).events;
+			break;
+		case 1:
+			keyevents = new KeyEventsAlternative(self, maze).events;
+			break;
+	}
 	goog.events.listen(keyhandler, 'key', keyevents);
 
     // set up initial position
