@@ -31,7 +31,9 @@ KeyEventsAlternative = function(bot, maze) {
 			result.success = hasEnergy(Constants.EnergyCosts.TURN);
 			if (result.success) {
 				result.msg += 'Turned ' + turnInfo.turn.substring(5).toLowerCase() + "\n";
-				bot.turn(turnInfo.turn);
+				lime.scheduleManager.callAfter(function() {
+					bot.turn(turnInfo.turn);
+				}, this, 1000 * x);
 			}
 		}
 		result.msg = result.msg.trim();

@@ -197,7 +197,7 @@ Bot = function (maze, mazeSprite, director) {
 				energy -= Constants.EnergyCosts.TURN_AROUND;
 			break;
 		}
-		updateDirection(rotate, 0.001);
+		updateDirection(rotate, null);
 		return true;
 	}
 	// @dir = LOOK.AHEAD, etc.
