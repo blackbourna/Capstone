@@ -252,7 +252,7 @@ Bot = function (maze, mazeSprite, director) {
 	this.sprint = function() {
 		addHistory('SPRINT');
 		var blocked = false;
-		for (var x = 0; x < Constants.bot.SPRINT_DISTANCE; x++) {
+		for (var x = 0; x < Constants.Bot.SPRINT_DISTANCE; x++) {
 			if (isOpen(sum(position, direction))) {
 					position = sum(position, direction);
 					addOpen(position);

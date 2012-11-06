@@ -219,7 +219,7 @@ KeyEventsAlternative = function(bot, maze) {
 		if (!success) {
 			msg = 'Not enough energy!';
 		}
-		//console.log(msg);
+		console.log(msg);
 		if (msg.length > 0) {
 			var oldTxt = Globals.logLabel.getText();
 			Globals.logLabel.setText(oldTxt + "\n" + msg);
