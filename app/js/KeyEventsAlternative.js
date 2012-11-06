@@ -26,23 +26,22 @@ KeyEventsAlternative = function(bot, maze) {
 
 	// makes calls to bot turn functions based on getTurnInfoInfo
 	var doTurn = function(turnInfo) {
-		var result = {success: null, msg: ""}
+		var result = {has_energy: null, msg: ""}
 		for (var x = 0; x < turnInfo.numTurns; x++) {
-			result.success = hasEnergy(Constants.EnergyCosts.TURN);
-			if (result.success) {
+			result.has_energy = hasEnergy(Constants.EnergyCosts.TURN);
+			if (result.has_energy) {
 				result.msg += 'Turned ' + turnInfo.turn.substring(5).toLowerCase() + "\n";
 				lime.scheduleManager.callAfter(function() {
 					bot.turn(turnInfo.turn);
 				}, this, 1000 * x);
 			}
 		}
-		result.msg = result.msg.trim();
 		return result;
 	}
 
 	this.events = function(e) {
 		if (Globals.animationPlaying) return;
-		var success = true; // whether bot had enough energy to make the move
+		var has_energy = true; // whether bot had enough energy to make the move
 		var sum = goog.math.Coordinate.sum; // for lazy typists
 		var keyCodes = goog.events.KeyCodes;
 		
@@ -60,15 +59,15 @@ KeyEventsAlternative = function(bot, maze) {
 			case keyCodes.UP:
 				if (e.event_.shiftKey) {
                     if (Globals.easyMode) break;
-					success = hasEnergy(Constants.EnergyCosts.LOOK);
-					if (success) {
+					has_energy = hasEnergy(Constants.EnergyCosts.LOOK);
+					if (has_energy) {
 						msg = 'Looked ahead.';
 						bot.look(LOOK.AHEAD);
 					}
 				} else {
                     if (bot.getDirection().equals(Directions.get('NORTH'))) {
-                        success = hasEnergy(Constants.EnergyCosts.MOVE);
-                        if (success) {
+                        has_energy = hasEnergy(Constants.EnergyCosts.MOVE);
+                        if (has_energy) {
                             msg = 'Moved forward.';
                             if (!bot.move(MOVE.FORWARD))
                                 msg += '.. Blocked!';
@@ -77,15 +76,15 @@ KeyEventsAlternative = function(bot, maze) {
 						var turnInfo = getTurnInfo(bot.getDirection(), 'NORTH');
 						var result = doTurn(turnInfo);
 						msg += result.msg;
-						success = result.success;
+						has_energy = result.has_energy;
                     }
 				}
 			break;
 			// Back
 			case keyCodes.DOWN:
                     if (bot.getDirection().equals(Directions.get('SOUTH'))) {
-                        success = hasEnergy(Constants.EnergyCosts.MOVE);
-                        if (success) {
+                        has_energy = hasEnergy(Constants.EnergyCosts.MOVE);
+                        if (has_energy) {
                             msg = 'Moved forward.';
                             if (!bot.move(MOVE.FORWARD))
                                 msg += '.. Blocked!';
@@ -94,22 +93,22 @@ KeyEventsAlternative = function(bot, maze) {
 						var turnInfo = getTurnInfo(bot.getDirection(), 'SOUTH');
 						var result = doTurn(turnInfo);
 						msg += result.msg;
-						success = result.success;
+						has_energy = result.has_energy;
                     }
 			break;
 			// Turn Right
 			case keyCodes.RIGHT:
 				if (e.event_.shiftKey) {
                     if (Globals.easyMode) break;
-					success = hasEnergy(Constants.EnergyCosts.LOOK);
-					if (success) {
+					has_energy = hasEnergy(Constants.EnergyCosts.LOOK);
+					if (has_energy) {
 						msg = 'Looked right.';
 						bot.look(LOOK.RIGHT);
 					}
 				} else {
                     if (bot.getDirection().equals(Directions.get('EAST'))) {
-                        success = hasEnergy(Constants.EnergyCosts.MOVE);
-                        if (success) {
+                        has_energy = hasEnergy(Constants.EnergyCosts.MOVE);
+                        if (has_energy) {
                             msg = 'Moved forward.';
                             if (!bot.move(MOVE.FORWARD))
                                 msg += '.. Blocked!';
@@ -118,7 +117,7 @@ KeyEventsAlternative = function(bot, maze) {
 						var turnInfo = getTurnInfo(bot.getDirection(), 'EAST');
 						var result = doTurn(turnInfo);
 						msg += result.msg;
-						success = result.success;
+						has_energy = result.has_energy;
                     }
 				}
 			break;
@@ -126,15 +125,15 @@ KeyEventsAlternative = function(bot, maze) {
 			case keyCodes.LEFT:
 				if (e.event_.shiftKey) {
                     if (Globals.easyMode) break;
-					success = hasEnergy(Constants.EnergyCosts.LOOK);
-					if (success) {
+					has_energy = hasEnergy(Constants.EnergyCosts.LOOK);
+					if (has_energy) {
 						msg = 'Looked left.';
 						bot.look(LOOK.LEFT);
 					}
 				} else {
                     if (bot.getDirection().equals(Directions.get('WEST'))) {
-                        success = hasEnergy(Constants.EnergyCosts.MOVE);
-                        if (success) {
+                        has_energy = hasEnergy(Constants.EnergyCosts.MOVE);
+                        if (has_energy) {
                             msg = 'Moved forward.';
                             if (!bot.move(MOVE.FORWARD))
                                 msg += '.. Blocked!';
@@ -143,7 +142,7 @@ KeyEventsAlternative = function(bot, maze) {
 						var turnInfo = getTurnInfo(bot.getDirection(), 'WEST');
 						var result = doTurn(turnInfo);
 						msg += result.msg;
-						success = result.success;
+						has_energy = result.has_energy;
                     }
 				}
 			break;
@@ -170,59 +169,64 @@ KeyEventsAlternative = function(bot, maze) {
 			break;
 			// Sprint forward
 			case keyCodes.SPACE:
-				success = hasEnergy(Constants.EnergyCosts.SPRINT);
-				if (success) {
+				has_energy = hasEnergy(Constants.EnergyCosts.SPRINT);
+				if (has_energy) {
                     var sprint = bot.sprint();
-					msg = 'Sprinted forward ' + sprint + ' steps ' + (sprint == Constants.bot.SPRINT_DISTANCE ? '' : ' but hit wall!');
+					msg = 'Sprinted ' + sprint + ' steps ' + (sprint == Constants.Bot.SPRINT_DISTANCE ? '' : ' and hit a wall!');
 				}
 			break;
 			// Rotate
 			case keyCodes.CTRL:
-				if (hasEnergy(Constants.EnergyCosts.TURN_AROUND)) {
+				has_energy = hasEnergy(Constants.EnergyCosts.TURN_AROUND);
+				if (has_energy) {
 					msg = 'Turned 180 degrees.';
 					bot.turn(TURN.AROUND);
 				}
 			break;
 			// Scan
 			case keyCodes.ENTER:
-				if (hasEnergy(Constants.EnergyCosts.ENERGY_SCAN)) {
+				has_energy = hasEnergy(Constants.EnergyCosts.ENERGY_SCAN);
+				if (has_energy) {
 					var scan = bot.scanForRecharger();
 					msg = 'Scanned, ' + ((scan >= 0) ? scan + ' cells away' : ' not in range.');
 				}
 			break;
 			case keyCodes.MAC_ENTER:
-				if (hasEnergy(Constants.EnergyCosts.ENERGY_SCAN)) {
+				has_energy = hasEnergy(Constants.EnergyCosts.ENERGY_SCAN);
+				if (has_energy) {
 					var scan = bot.scanForRecharger();
 					msg = 'Scanned, ' + ((scan >= 0) ? scan + ' cells away' : ' not in range.');
 				}
 			break;
 			// Pick up recharger
 			case keyCodes.BACKSLASH:
-				if (hasEnergy(Constants.EnergyCosts.ENERGY_PICKUP)) {
+				has_energy = hasEnergy(Constants.EnergyCosts.ENERGY_PICKUP);
+				if (has_energy) {
 					msg = 'Try to pick up energy...' + ((bot.pickUpRecharger()) ? ' got it!' : ' not there!');
 				}
 			break;
 			// Look far ahead
 			case keyCodes.SLASH:
                 if (Globals.easyMode) break;
-				success = hasEnergy(Constants.EnergyCosts.LOOK_AHEAD);
-				if (success) {
-					msg = 'Looked far ahead. ' + bot.lookFarAhead() + ' open spaces.';
+                has_energy = hasEnergy(Constants.EnergyCosts.LOOK_AHEAD);
+				if (has_energy) {
+					msg = 'Looked far ahead ' + bot.lookFarAhead().toString().trim() + ' spaces.';
 				}
 			break;
 			case keyCodes.ESC: // cheater!
 				//bot.drawMaze();
 			break;
 			default:
-				success = true;
+				has_energy = true;
 		}
-		if (!success) {
+		if (!has_energy) {
 			msg = 'Not enough energy!';
 		}
 		console.log(msg);
 		if (msg.length > 0) {
 			var oldTxt = Globals.logLabel.getText();
-			Globals.logLabel.setText(oldTxt + "\n" + msg);
+			msg = msg.trim();
+			Globals.logLabel.setText(oldTxt.trim() + "\n" + msg);
 			if (Globals.logLabel.getSize().height > Globals.logContainer.getSize().height) {
 				console.log(Globals.logLabel.getSize().height);
 				console.log(Globals.logContainer.getSize().height);

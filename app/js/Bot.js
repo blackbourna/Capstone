@@ -228,7 +228,7 @@ Bot = function (maze, mazeSprite, director) {
 				}
 			break;
 			default: // fixes some redraw issues for some reason
-				energy -= Constants.EnergyCosts.LOOK;
+				//energy -= Constants.EnergyCosts.LOOK;
 				return true;
 		}
 		energy -= Constants.EnergyCosts.LOOK;
@@ -242,6 +242,7 @@ Bot = function (maze, mazeSprite, director) {
 		var ct = 0;
 		while (isOpen(cell)) {
 			ct++;
+			addOpen(cell);
 			cell = sum(cell, direction);
 		}
 		addWall(cell);
