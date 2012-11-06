@@ -33,7 +33,7 @@ KeyEventsAlternative = function(bot, maze) {
 				result.msg += 'Turned ' + turnInfo.turn.substring(5).toLowerCase() + "\n";
 				lime.scheduleManager.callAfter(function() {
 					bot.turn(turnInfo.turn);
-				}, this, 1000 * x);
+				}, this, Constants.Bot.ANIMATION_SPEED * 1000 * x);
 			}
 		}
 		return result;
@@ -210,7 +210,8 @@ KeyEventsAlternative = function(bot, maze) {
                 if (Globals.easyMode) break;
                 has_energy = hasEnergy(Constants.EnergyCosts.LOOK_AHEAD);
 				if (has_energy) {
-					msg = 'Looked far ahead ' + bot.lookFarAhead().toString().trim() + ' spaces.';
+					// labelmulti has a bug where concatenation has to be finessed at times, hence the unusual string concatenation here
+					msg = "Looked far ahead" + " "  + bot.lookFarAhead().toString().trim() + " " + ' spaces.';
 				}
 			break;
 			case keyCodes.ESC: // cheater!

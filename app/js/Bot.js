@@ -37,14 +37,26 @@ Bot = function (maze, mazeSprite, director) {
     // private functions
     var updateDirection = function(x, speed) {
 		var rotate = new lime.animation.RotateBy(x);
-        if (speed) rotate.setDuration(speed);
+        if (speed) {
+			rotate.setDuration(speed)
+		} else {
+			rotate.setDuration(0.0001);
+			//rotate.setDuration(Constants.Bot.ANIMATION_SPEED);
+		}
 		Globals.waitForAnimationEndEvent(rotate);
 		
 		self.sprite.runAction(rotate);
     }
     var updatePosition = function(speed) {
 		addOpen(position);
-		var moveTo = new lime.animation.MoveTo(getScreenPosition()).setDuration(speed ? speed : 0.1);
+		var moveTo = new lime.animation.MoveTo(getScreenPosition());
+		
+        if (speed) {
+			moveTo.setDuration(speed)
+		} else {
+			moveTo.setDuration(0.00001);
+			//moveTo.setDuration(Constants.Bot.ANIMATION_SPEED);
+		}
 		Globals.waitForAnimationEndEvent(moveTo);
 		self.sprite.runAction(moveTo);
     }
@@ -74,8 +86,8 @@ Bot = function (maze, mazeSprite, director) {
         if (maze.get(cell) == Cell.GOAL) return; // don't overwrite goal cells
 		if (cellHasBeenMarked(cell, true)) return;
 		var sprite = new lime.Sprite().setFill(img);
-		var width = sprite.getSize().width;
-		var height = sprite.getSize().height;		
+		var width = Constants.Graphics.CELL_DIMENSIONS.x;
+		var height = Constants.Graphics.CELL_DIMENSIONS.y;
 		var coord = new goog.math.Coordinate(width * cell.x*1 + width/2, height * cell.y*1 + height/2);
 		sprite.setPosition(coord);
 		mazeSprite.appendChild(sprite);
@@ -97,7 +109,7 @@ Bot = function (maze, mazeSprite, director) {
     
     var hitWall = function(cell) {
 		var topCornerPlus5 = new Point(Constants.Graphics.TOP_CORNER.x + 5, Constants.Graphics.TOP_CORNER.y +5)
-		var durTime = 0.05;
+		var durTime = Constants.Bot.ANIMATION_SPEED / 5;
 		// this is why javascript could use a tuple type!
 		var sequence = 	new lime.animation.Sequence(
 			new lime.animation.MoveTo(topCornerPlus5).setDuration(durTime),
@@ -107,8 +119,23 @@ Bot = function (maze, mazeSprite, director) {
 			new lime.animation.MoveTo(topCornerPlus5).setDuration(durTime),
 			new lime.animation.MoveTo(Constants.Graphics.TOP_CORNER).setDuration(durTime)
 		);
-		mazeSprite.runAction(sequence);
+		
 		addWall(cell);
+		
+		// add hit circle
+		if (!Utils.validatePoint(cell)) return;
+		var width = Constants.Graphics.CELL_DIMENSIONS.x;
+		var height = Constants.Graphics.CELL_DIMENSIONS.y;
+		
+		{ // this block may be removed in favour of just using an image!
+			var circle = new lime.Circle().setFill("#FF0000").setSize(width/2, height/2).setOpacity(0.33);
+			var coord = new goog.math.Coordinate(width * cell.x*1 + width/2, height * cell.y*1 + height/2);
+			circle.setPosition(coord);
+			mazeSprite.appendChild(circle);
+			mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
+		}
+		
+		mazeSprite.runAction(sequence);
     }
     
     var isOpen = function(cell) {
@@ -264,7 +291,7 @@ Bot = function (maze, mazeSprite, director) {
 			}
 		}
 		energy -= (blocked) ? Constants.EnergyCosts.SPRINT_BLOCKED : Constants.EnergyCosts.SPRINT;
-		updatePosition(0.25);
+		updatePosition();
 		return x;
 	}
 	
@@ -279,10 +306,11 @@ Bot = function (maze, mazeSprite, director) {
 		var foundIt = maze.pickUpRecharger(position);
 		if (foundIt) {
 			energy += Constants.EnergyCosts.ENERGY_GAINED;
+			var speed = Constants.Bot.ANIMATION_SPEED * 2;
 			var sequence = 	new lime.animation.Sequence(
 				// add sound
-				new lime.animation.ScaleTo(1.5).setDuration(.5),
-				new lime.animation.ScaleTo(1).setDuration(.5)
+				new lime.animation.ScaleTo(1.5).setDuration(speed),
+				new lime.animation.ScaleTo(1).setDuration(speed)
 			);
 			Globals.waitForAnimationEndEvent(sequence);
 			self.sprite.runAction(sequence);

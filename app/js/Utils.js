@@ -42,16 +42,6 @@ Utils = {
 				//error
 			}
 		});
-		// remove this test obj!
-        if (!maze) {
-            timer = 123;
-            history = ['test'];
-            name='abc';
-            energy= 650;
-            maze = {};
-            maze.seed = 123;
-            maze.type='gr';
-        }
         var postData = {"name": name, "mazeSeed": maze.seed, "mazeType": maze.type, "energy": energy, "timer": timer, "history": history};
 		request.send('./highscore.php', "POST", null, postData);
     }

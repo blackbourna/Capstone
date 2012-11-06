@@ -5,7 +5,9 @@ Globals = {
 	waitForAnimationEndEvent: function(anim) {
 		Globals.animationPlaying = true;
 		goog.events.listen(anim,lime.animation.Event.STOP, function(){
-			Globals.animationPlaying = false;
+			lime.scheduleManager.scheduleWithDelay(function() {
+				Globals.animationPlaying = false;
+            }, null, 100);
 		});
 	},
 	Audio: {

@@ -1,3 +1,3 @@
 goog.provide('HighScoreScene');
-HighScoreScene = function() {
+HighScoreScene = function(director) {
 }

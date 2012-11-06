@@ -2,9 +2,6 @@ goog.provide('GameMenu');
 goog.require('MazeLoader');
 goog.require('MazeMenu');
 
-// remove this!
-goog.require('HighScoreInputScene');
-
 GameMenu=function(director) {
 	var director = director;
 	var self = this;
@@ -32,17 +29,23 @@ GameMenu=function(director) {
 		});
 		scene.appendChild(helpButton);
 
-		var highscoreButton = new lime.GlossyButton('High Scores').setPosition(500, 600).setSize(500, 50);
+		var highscoreButton = new lime.GlossyButton('View High Scores').setPosition(500, 600).setSize(500, 50);
 		goog.events.listen(highscoreButton, ['mousedown','touchstart'], function(e) {
 			new HighScoreScene(director);
 		});
 		scene.appendChild(highscoreButton);
         
-		var highscoreButton = new lime.GlossyButton('Enter Highscore').setPosition(500, 700).setSize(500, 50);
-		goog.events.listen(highscoreButton, ['mousedown','touchstart'], function(e) {
+		//var optionsButton = new lime.GlossyButton('Enter Highscore').setPosition(500, 700).setSize(500, 50);
+		//goog.events.listen(highscoreButton, ['mousedown','touchstart'], function(e) {
+		//	new OptionsScene(director);
+		//});
+		//scene.appendChild(optionsButton);
+        
+		var highscoretestButton = new lime.GlossyButton('Enter Highscore').setPosition(500, 700).setSize(500, 50);
+		goog.events.listen(highscoretestButton, ['mousedown','touchstart'], function(e) {
 			new HighScoreInputScene(director);
 		});
-		scene.appendChild(highscoreButton);
+		scene.appendChild(highscoretestButton);
 
 		return scene;
 	}

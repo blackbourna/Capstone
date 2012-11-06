@@ -27,7 +27,7 @@ Constants.Graphics = {
 
 Constants.Bot = {
     SPRINT_DISTANCE: 5,
-    ANIMATION_SPEED: 250
+    ANIMATION_SPEED: 250/1000
 }
 
 Constants.EnergyCosts = {

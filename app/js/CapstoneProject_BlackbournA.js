@@ -9,6 +9,8 @@ goog.require('Bot');
 goog.require('Cell');
 goog.require('Maze');
 goog.require('Constants');
+goog.require('HighScoreScene');
+goog.require('HighScoreInputScene');
 
 // basics
 goog.require('lime.Director');
@@ -16,7 +18,7 @@ goog.require('lime.Scene');
 goog.require('lime.GlossyButton');
 goog.require('lime.Label');
 goog.require('lime.LabelMulti');
-
+goog.require('lime.Circle');
 // probably will use this for zooming
 //goog.require('lime.Layer');
 
