@@ -46,7 +46,7 @@ MazeMenu=function(director) {
 		
 		var goBack = new lime.GlossyButton('Go Back').setPosition(500, 700).setSize(500, 50).setColor('#FF0000');
 		goog.events.listen(goBack, ['mousedown','touchstart'], function(e) {
-			director.popScene();
+			director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
 		});
 		scene.appendChild(goBack);
 		

@@ -40,8 +40,7 @@ Bot = function (maze, mazeSprite, director) {
         if (speed) {
 			rotate.setDuration(speed)
 		} else {
-			rotate.setDuration(0.0001);
-			//rotate.setDuration(Constants.Bot.ANIMATION_SPEED);
+			rotate.setDuration(self.controlScheme == 1 ? 0.00001 : Constants.Bot.ANIMATION_SPEED);
 		}
 		Globals.waitForAnimationEndEvent(rotate);
 		
@@ -54,8 +53,7 @@ Bot = function (maze, mazeSprite, director) {
         if (speed) {
 			moveTo.setDuration(speed)
 		} else {
-			moveTo.setDuration(0.00001);
-			//moveTo.setDuration(Constants.Bot.ANIMATION_SPEED);
+			moveTo.setDuration((this.controlScheme == 1) ? 0.00001 : Constants.Bot.ANIMATION_SPEED);
 		}
 		Globals.waitForAnimationEndEvent(moveTo);
 		self.sprite.runAction(moveTo);
@@ -224,7 +222,7 @@ Bot = function (maze, mazeSprite, director) {
 				energy -= Constants.EnergyCosts.TURN_AROUND;
 			break;
 		}
-		updateDirection(rotate, null);
+		updateDirection(rotate);
 		return true;
 	}
 	// @dir = LOOK.AHEAD, etc.
@@ -289,6 +287,7 @@ Bot = function (maze, mazeSprite, director) {
                 hitWall(sum(position, direction));
 				break;
 			}
+			if (mazeEvents()) break;
 		}
 		energy -= (blocked) ? Constants.EnergyCosts.SPRINT_BLOCKED : Constants.EnergyCosts.SPRINT;
 		updatePosition();
@@ -358,7 +357,7 @@ Bot = function (maze, mazeSprite, director) {
 		return msg;
 	}
 	
-	this.dispose = function(doPop) {
+	this.dispose = function() {
 		lime.scheduleManager.unschedule(mazeEvents, null);
         lime.scheduleManager.unschedule(updateTimer, null);
         Globals.logLabel = null;
@@ -366,26 +365,40 @@ Bot = function (maze, mazeSprite, director) {
 		console.log(history);
 	}
 	
-    // setup keyhandler and game events
+	this.suicide = function() {
+		energy = 0;
+	}
+	
+    // setup keyhandler and game events, returns true if game has ended
 	var mazeEvents = function (dt) {
 		var gameDone = false;
 		if (energy <= 0) {
-			alert('noooo!');
-			lime.scheduleManager.scheduleWithDelay(function() {
-                self.dispose(true);
-            }, null, 1000);
-			gameDone = true;
+			self.dispose();
+			noty({
+				text: 'Out of energy', 
+				layout: 'center',
+				callback: {
+					onClose: function() {
+						director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
+					}
+				}
+			});
+			return true;
 		}
 		if (maze.get(position) == Cell.GOAL) { // maze solved!
-			lime.scheduleManager.scheduleWithDelay(function() {
-                self.dispose(false);
-                new HighScoreInputScene(director, maze, energy, timer, history);
-            }, null, 1000);
-			gameDone = true;
+			self.dispose();
+			noty({
+				text: 'Solved!', 
+				layout: 'center', 
+				callback: {
+					onClose: function() {
+						new HighScoreInputScene(director, maze, energy, timer, history);
+					}
+				}
+			});
+			return true;
 		}
-		if (gameDone) {
-			self.dispose(true);
-		}
+		return false;
 	};
 	
 	var updateTimer = function(dt) {
@@ -398,7 +411,12 @@ Bot = function (maze, mazeSprite, director) {
     
     var keyhandler = new goog.events.KeyHandler(document);
     var keyevents = null;
-    switch (Globals.ControlScheme) {
+    // select control scheme
+    this.controlScheme = Globals.ControlScheme.hardcoded;
+    if (!Globals.ControlScheme.useHardcoded) {
+		this.controlScheme = Globals.easyMode ? 1 : 0;
+	}
+	switch (this.controlScheme) {
 		case 0:
 			keyevents = new KeyEvents(self, maze).events;
 			break;

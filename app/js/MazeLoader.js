@@ -23,7 +23,7 @@ MazeLoader = function(director) {
 				maze.type = type;
                 maze.seed = data.maze.seed;
                 
-				self.director.replaceScene(new Game(maze, self.director));
+				self.director.replaceScene(new Game(maze, self.director), Globals.transition);
 			} else {
 				//error
 			}

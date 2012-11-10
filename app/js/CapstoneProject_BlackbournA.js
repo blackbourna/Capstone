@@ -55,7 +55,8 @@ goog.require('goog.json');
 // Game entrypoint
 CapstoneProject_BlackbournA.start = function(){
     var director = new lime.Director(document.body, Constants.Graphics.APP_DIMENSIONS.x, Constants.Graphics.APP_DIMENSIONS.y);
-    director.replaceScene(new GameMenu(director).showMenu());
+    Globals.transition = lime.transitions.Dissolve;
+    director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
 };
 
 //this is required for outside access after code is compiled in ADVANCED_COMPILATIONS mode

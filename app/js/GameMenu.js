@@ -12,14 +12,14 @@ GameMenu=function(director) {
 		var startGameButton = new lime.GlossyButton('Start Game').setPosition(500, 300).setSize(500, 50);
 		goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
             Globals.easyMode = false;
-			director.replaceScene(new MazeMenu(director).showMenu());
+			director.replaceScene(new MazeMenu(director).showMenu(), Globals.transition);
 		});
 		scene.appendChild(startGameButton);
 		
 		var startEasyGameButton = new lime.GlossyButton('Start Game - Easy Mode').setPosition(500, 400).setSize(500, 50);
 		goog.events.listen(startEasyGameButton, ['mousedown','touchstart'], function(e) {
 			Globals.easyMode = true;
-			director.replaceScene(new MazeMenu(director).showMenu());
+			director.replaceScene(new MazeMenu(director).showMenu(), Globals.transition);
 		});
 		scene.appendChild(startEasyGameButton);
 

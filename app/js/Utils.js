@@ -37,7 +37,7 @@ Utils = {
 			if (request.isSuccess()){
 				var data = request.getResponseJson();
                 console.log(data);
-				//director.replaceScene(new GameMenu.showMenu(director));
+				//director.replaceScene(new GameMenu.showMenu(director), Globals.transition);
 			} else {
 				//error
 			}

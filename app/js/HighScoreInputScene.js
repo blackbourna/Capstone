@@ -63,5 +63,5 @@ HighScoreInputScene = function(director, maze, energy, timer, history) {
     });
     scene.appendChild(startGameButton);
     
-    director.replaceScene(scene);
+    director.replaceScene(scene, Globals.transition);
 }

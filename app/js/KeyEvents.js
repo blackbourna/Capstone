@@ -155,8 +155,17 @@ KeyEvents = function(bot, maze) {
 					msg = "Looked far ahead" + " "  + bot.lookFarAhead().toString().trim() + " " + ' spaces.';
 				}
 			break;
-			case keyCodes.ESC: // cheater!
+			case keyCodes.ESC: // cheats/debug
 				//bot.drawMaze();
+			break;
+			case keyCodes.F1: // HELP
+				
+			break;
+			case keyCodes.F2: // debugging
+				if (!Globals.Debug.debug) break;
+				if (e.event_.shiftKey) {
+					bot.suicide();
+				}
 			break;
 			default:
 				has_energy = true;

@@ -54,7 +54,7 @@ Game = function(maze, director) {
 		.setColor('#FF0000');
 	goog.events.listen(goBack, ['mousedown','touchstart'], function(e) {
 		bot.dispose();
-        director.replaceScene(new GameMenu(director).showMenu());
+        director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
 	});
 	scene.appendChild(goBack);
 	

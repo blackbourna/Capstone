@@ -1,5 +1,4 @@
 goog.provide('Globals');
-
 Globals = {
 	animationPlaying: false,
 	waitForAnimationEndEvent: function(anim) {
@@ -16,12 +15,16 @@ Globals = {
 			audio.play();
 		}
 	},
-	ControlScheme: 1,
+	ControlScheme: {
+		useHardcoded: false, // if useHardcoded = false, Darkness mode uses scheme 0 and Easy mode uses scheme 1
+		hardcoded: 1 // use this scheme if useHardcoded = true
+	},
 	Debug: {
-		
+		debug: true
 	},
     hudLabel: null,
 	logContainer:null,
     logLabel: null,
-    easyMode: false
+    easyMode: false,
+    transition: null // set this in CapstoneProject_BlackbournA
 }
