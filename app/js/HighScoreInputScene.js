@@ -16,11 +16,12 @@ HighScoreInputScene = function(director, maze, energy, timer, history) {
 		.setFontWeight('bold')
 		.setFontSize(72)
 		.setSize(1024, 256);
+	
 	// remove this test obj!
 	if (!maze) {
 		timer = 123;
 		history = ['test'];
-		name='abc';
+		var name='abc';
 		energy= 650;
 		maze = {};
 		maze.seed = 123;
@@ -43,7 +44,7 @@ HighScoreInputScene = function(director, maze, energy, timer, history) {
         var txt = highScoreInputLabel.getText();
         if (e.keyCode == goog.events.KeyCodes.BACKSPACE) {
             if (txt.length > 0) {
-                txt = txt.substring(0, txt.length - 2);
+                txt = txt.substring(0, txt.length - 1);
             }
         } else if (/^[A-Z0-9 ]$/.test(String.fromCharCode(e.keyCode)) && txt.length < 20) { // http://stackoverflow.com/questions/2450641/validating-alphabetic-only-string-in-javascript
             txt = txt + String.fromCharCode(e.keyCode);
@@ -55,7 +56,10 @@ HighScoreInputScene = function(director, maze, energy, timer, history) {
     
     var startGameButton = new lime.GlossyButton('Submit').setPosition(500, 512).setSize(500, 50);
     goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
-        Utils.submitHighScore(maze, energy, timer, history, scene);
+		if (highScoreInputLabel.getText()) {
+			name = highScoreInputLabel.getText();
+		}
+        Utils.submitHighScore(name, maze, energy, timer, history, scene)
     });
     scene.appendChild(startGameButton);
     

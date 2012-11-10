@@ -43,6 +43,15 @@ Utils = {
 			}
 		});
         var postData = {"name": name, "mazeSeed": maze.seed, "mazeType": maze.type, "energy": energy, "timer": timer, "history": history};
-		request.send('./highscore.php', "POST", null, postData);
+        var queryString = "?";
+        // apparently closure does not provide a urlencode function, however the 
+        // highscore input won't accept anything but letters and spaces so the input
+        // should be valid
+        for (var d in postData) {
+			queryString += d + "=" + postData[d] + "&";
+		}
+		queryString = queryString.substring(0, queryString.length - 1); // remove trailing &
+        console.log(postData);
+		request.send('./highscore.php'+queryString, "GET", postData);
     }
 }
