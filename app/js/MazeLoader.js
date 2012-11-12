@@ -20,8 +20,8 @@ MazeLoader = function(director) {
 				maze.goal = new Point(parseInt(data.goal.x), parseInt(data.goal.y));
 				maze.start = new Point(parseInt(data.start.x), parseInt(data.start.y));
 				maze.startDir = Directions.get(data.start.dir);
-				maze.type = type;
-                maze.seed = data.maze.seed;
+				maze.type = data.type;
+                maze.seed = data.seed;
                 
 				self.director.replaceScene(new Game(maze, self.director), Globals.transition);
 			} else {

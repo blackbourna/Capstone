@@ -1,12 +1,13 @@
 <?php
 $types = array('CB', 'GR', 'NS', 'RG', 'PR', 'FM');
 try {
-	//if (!$_GET['key'] == 'abcdef') {
-	//	echo 'Invalid key';
-	//	return;
-	//}
+	if (!$_GET['key'] == '8987645aafc5247fd7efc39b357b8955') {
+		echo 'Invalid key';
+		return;
+	}
 	$dbh = new PDO('sqlite://'.dirname(__FILE__).'/db/amazebot.sqlite');
 	$sql = <<<SQLSTR
+PRAGMA legacy_file_format = TRUE;
 PRAGMA foreign_keys=OFF;
 DROP TABLE IF EXISTS "maze";
 DROP TABLE IF EXISTS "highscore";
@@ -22,21 +23,12 @@ CREATE TABLE "highscore" (
 );
 COMMIT;
 SQLSTR;
-	$dbh->exec($sql);
-	$sql = "select date('now', 'start of month', '+1 month', '-1 days')";
-	$result = $dbh->query($sql)->fetch(PDO::FETCH_NUM);
-	
-	$year = substr($result[0], 0, 4);
-	$month = substr($result[0], 5, 2);
-	$end_date = substr($result[0], 8);
-	
-	//for ($d = 1; $d <= $end_date; $d++) {
-	//	$seed = rand(0, 999999999);
-	//	$type = $types[rand(0, count($types) - 1)];
-	//	$sql = "INSERT INTO 'maze' values (null, )";
-	//}
-	//for ($x = 1; $x < )
+    $dbh->beginTransaction();
+	var_dump($dbh->exec($sql));
+    var_dump($dbh->errorInfo());
+    $dbh->commit();
 } catch (PDOException $e) {
 	echo $e->getMessage();
+    var_dump($dbh->errorInfo());
 }
 ?>

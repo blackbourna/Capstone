@@ -61,6 +61,7 @@ class MazeReader {
         
         //seed
         $maze->seed = $seed;
+        $maze->type = $type;
         //return json array
         
 		echo json_encode($maze);
