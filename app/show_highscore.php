@@ -1,6 +1,7 @@
 <?php
+require_once('dbconnect.php');
 try {
-    $dbh = new PDO('sqlite://'.dirname(__FILE__).'/db/amazebot.sqlite');
+    $dbh = get_PDO_connection();
     $sql = "select * from highscore";
     $result = $dbh->query($sql);
     foreach ($result as $r) {

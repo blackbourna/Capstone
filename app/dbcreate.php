@@ -1,11 +1,12 @@
 <?php
+require_once('dbconnect.php');
 $types = array('CB', 'GR', 'NS', 'RG', 'PR', 'FM');
 try {
 	if (!$_GET['key'] == '8987645aafc5247fd7efc39b357b8955') {
 		echo 'Invalid key';
 		return;
 	}
-	$dbh = new PDO('sqlite://'.dirname(__FILE__).'/db/amazebot.sqlite');
+	$dbh = get_PDO_connection();
 	$sql = <<<SQLSTR
 PRAGMA legacy_file_format = TRUE;
 PRAGMA foreign_keys=OFF;
