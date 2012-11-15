@@ -23,13 +23,10 @@ class Maze {}
 class MazeReader {
 	function __construct() {
 		$types = array('CB', 'GR', 'NS', 'RG', 'PR', 'FM');
-		$type = '';
+		$type = 'CB';
 		if (isset($_GET['type'])) {
 			$type = $_GET['type'];
 		}
-		if (!in_array($type, $types))
-			$type = 'CB';
-		
 		$this->readMazeFile($type);
 	}
 
