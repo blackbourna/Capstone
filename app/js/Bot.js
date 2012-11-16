@@ -38,6 +38,7 @@ Bot = function (maze, mazeSprite, director) {
     var sfx_step = new Audio(Constants.Assets.AUDIO_PATH + 'step.wav');
     var sfx_turn = new Audio(Constants.Assets.AUDIO_PATH + 'turn.wav');
     var sfx_wallhit = new Audio(Constants.Assets.AUDIO_PATH + 'wallhit.wav');
+    var sfx_music = new Audio(Constants.Assets.AUDIO_PATH + 'music.wav');
 
     var markedCells = new Array();
     var history = new Array();
@@ -108,6 +109,7 @@ Bot = function (maze, mazeSprite, director) {
     }
     
     var cellHasBeenMarked = function(cell, doMark) {
+		if (!Utils.validatePoint(cell)) return true;
 		var alreadyMarked = false;
 		for (var c in markedCells) {
 			if (Point.equals(cell, markedCells[c])) {
@@ -147,7 +149,7 @@ Bot = function (maze, mazeSprite, director) {
 			mazeSprite.appendChild(circle);
 			mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
 		}
-		Globals.Audio.stopThenPlay(sfx_hitwall);
+		Globals.Audio.stopThenPlay(sfx_wallhit);
 		mazeSprite.runAction(sequence);
     }
     
@@ -245,6 +247,7 @@ Bot = function (maze, mazeSprite, director) {
 		addHistory(dir);
 		switch(dir) {
 			case LOOK.AHEAD:
+				Globals.Audio.stopThenPlay(sfx_look_f);
 				if (isOpen(sum(position, direction))) {
 					addOpen(sum(position, direction));
 				} else { // hit wall
@@ -253,6 +256,7 @@ Bot = function (maze, mazeSprite, director) {
 			break;
 			case LOOK.RIGHT:
 				var dir = Compass.rotate(TURN.RIGHT, direction);
+				Globals.Audio.stopThenPlay(sfx_look_r);
 				if (isOpen(sum(position, dir))) {
 					addOpen(sum(position, dir));
 				} else { // hit wall
@@ -261,6 +265,7 @@ Bot = function (maze, mazeSprite, director) {
 			break;
 			case LOOK.LEFT:
 				var dir = Compass.rotate(TURN.LEFT, direction);
+				Globals.Audio.stopThenPlay(sfx_look_l);
 				if (isOpen(sum(position, dir))) {
 					addOpen(sum(position, dir));
 				} else { // hit wall
@@ -272,7 +277,6 @@ Bot = function (maze, mazeSprite, director) {
 				return true;
 		}
 		energy -= Constants.EnergyCosts.LOOK;
-		Globals.Audio.stopThenPlay(sfx_look);
 		return true;
 	}
 	this.lookFarAhead = function() {
@@ -380,6 +384,7 @@ Bot = function (maze, mazeSprite, director) {
 	this.dispose = function() {
 		lime.scheduleManager.unschedule(mazeEvents, null);
         lime.scheduleManager.unschedule(updateTimer, null);
+        lime.scheduleManager.unschedule(musicLoopEvent, null);
         Globals.logLabel = null;
 		goog.events.unlisten(keyhandler, 'key', keyevents);
 		console.log(history);
@@ -465,6 +470,14 @@ Bot = function (maze, mazeSprite, director) {
 		updatePosition(0.0001);
 		mazeSprite.appendChild(self.sprite);
 	});
+	
+	var musicLoopEvent = function() {
+		Globals.Audio.stopThenPlay(sfx_music);
+	};
+	
+	//$(sfx_music).bind('canplaythrough', function() {
+	//	lime.scheduleManager.scheduleWithDelay(musicLoopEvent, this, 1700);
+	//});
 	
 	// initial set up of HUD and Log
 	Globals.logLabel.setText('Welcome!');
