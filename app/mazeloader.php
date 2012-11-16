@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/New_York');
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
@@ -22,13 +23,10 @@ class Maze {}
 class MazeReader {
 	function __construct() {
 		$types = array('CB', 'GR', 'NS', 'RG', 'PR', 'FM');
-		$type = '';
+		$type = 'CB';
 		if (isset($_GET['type'])) {
 			$type = $_GET['type'];
 		}
-		if (!in_array($type, $types))
-			$type = 'CB';
-		
 		$this->readMazeFile($type);
 	}
 
@@ -61,6 +59,7 @@ class MazeReader {
         
         //seed
         $maze->seed = $seed;
+        $maze->type = $type;
         //return json array
         
 		echo json_encode($maze);

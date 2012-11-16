@@ -17,6 +17,7 @@ Bot = function (maze, mazeSprite, director) {
     var direction = Directions.get('NORTH');
     var energy = Constants.EnergyCosts.START_ENERGY;
     var maze = maze;
+    console.log(maze);
 	var mazeSprite = mazeSprite;
 	var director = director;
     // for lazy typists    
