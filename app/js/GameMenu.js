@@ -35,7 +35,7 @@ GameMenu=function(director) {
 		});
 		scene.appendChild(highscoreButton);
         
-		//var optionsButton = new lime.GlossyButton('Enter Highscore').setPosition(500, 700).setSize(500, 50);
+		//var optionsButton = new lime.GlossyButton('Options').setPosition(500, 700).setSize(500, 50);
 		//goog.events.listen(highscoreButton, ['mousedown','touchstart'], function(e) {
 		//	new OptionsScene(director);
 		//});
