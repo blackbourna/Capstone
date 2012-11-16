@@ -13,8 +13,8 @@ Maze = function(energyPt) {
     this.startDir = null;
 
 	var radarSpeed = 0.25;
-	var radar1 = new Audio(Constants.Assets.AUDIO_PATH + 'radar1.wav');
-	var radar2 = new Audio(Constants.Assets.AUDIO_PATH + 'radar2.wav');
+	var sfx_scan1 = new Audio(Constants.Assets.AUDIO_PATH + 'scan1.wav');
+	var sfx_scan2 = new Audio(Constants.Assets.AUDIO_PATH + 'scan2.wav');
 	
 	var recharger = energyPt;
 	
@@ -109,7 +109,7 @@ Maze = function(energyPt) {
 						new lime.animation.FadeTo(0).setDuration(sequenceSpeed)
 					);
 					lime.scheduleManager.scheduleWithDelay(function (dt) {
-						Globals.Audio.stopThenPlay(radar1); // use raw HTML5 for audio, limejs has terrible audio support
+						Globals.Audio.stopThenPlay(sfx_scan1); // use raw HTML5 for audio, limejs has terrible audio support
 					}, null, radarSpeed * 1000 * i, 1);
 				} else {
 					// flash 3 times. limejs doesn't have any list-style animation collections,
@@ -127,9 +127,9 @@ Maze = function(energyPt) {
 						new lime.animation.FadeTo(0).setDuration(sequenceSpeed)
 					);
 					lime.scheduleManager.scheduleWithDelay(function (dt) {
-						Globals.Audio.stopThenPlay(radar1);
+						Globals.Audio.stopThenPlay(sfx_scan1);
 						lime.scheduleManager.scheduleWithDelay(function (dt) { // high pitched "you've found it" notification
-							Globals.Audio.stopThenPlay(radar2);
+							Globals.Audio.stopThenPlay(sfx_scan2);
 						}, null, radarSpeed * 1000, 3);
 					}, null, radarSpeed * 1000 * i, 1);
 				}

@@ -24,9 +24,21 @@ Bot = function (maze, mazeSprite, director) {
     var sum = goog.math.Coordinate.sum;
     var difference = goog.math.Coordinate.difference;
     
+    // audio resources
+    var sfx_180 = new Audio(Constants.Assets.AUDIO_PATH + '180.wav');
+    var sfx_goal = new Audio(Constants.Assets.AUDIO_PATH + 'goal.wav');
+    var sfx_look_f = new Audio(Constants.Assets.AUDIO_PATH + 'look_f.wav');
+    var sfx_lookfar = new Audio(Constants.Assets.AUDIO_PATH + 'lookfar.wav');
+    var sfx_look_l = new Audio(Constants.Assets.AUDIO_PATH + 'look_l.wav');
+    var sfx_look_r = new Audio(Constants.Assets.AUDIO_PATH + 'look_r.wav');
+    var sfx_outofenergy = new Audio(Constants.Assets.AUDIO_PATH + 'outofenergy.wav');
+    var sfx_pickupfail = new Audio(Constants.Assets.AUDIO_PATH + 'pickupfail.wav');
+    var sfx_pickupsuccess = new Audio(Constants.Assets.AUDIO_PATH + 'pickupsuccess.wav');
+    var sfx_sprint = new Audio(Constants.Assets.AUDIO_PATH + 'sprint.wav');
     var sfx_step = new Audio(Constants.Assets.AUDIO_PATH + 'step.wav');
-    var sfx_look = new Audio(Constants.Assets.AUDIO_PATH + 'look.wav');
-    var sfx_turn = null;
+    var sfx_turn = new Audio(Constants.Assets.AUDIO_PATH + 'turn.wav');
+    var sfx_wallhit = new Audio(Constants.Assets.AUDIO_PATH + 'wallhit.wav');
+
     var markedCells = new Array();
     var history = new Array();
     var timer = 0.0;
@@ -45,6 +57,7 @@ Bot = function (maze, mazeSprite, director) {
 		}
 		Globals.waitForAnimationEndEvent(rotate);
 		
+		Globals.Audio.stopThenPlay(sfx_turn);
 		self.sprite.runAction(rotate);
     }
     var updatePosition = function(speed) {
@@ -57,6 +70,7 @@ Bot = function (maze, mazeSprite, director) {
 			moveTo.setDuration((this.controlScheme == 1) ? 0.00001 : Constants.Bot.ANIMATION_SPEED);
 		}
 		Globals.waitForAnimationEndEvent(moveTo);
+		Globals.Audio.stopThenPlay(sfx_step);
 		self.sprite.runAction(moveTo);
     }
     var getScreenPosition = function() {
@@ -133,7 +147,7 @@ Bot = function (maze, mazeSprite, director) {
 			mazeSprite.appendChild(circle);
 			mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
 		}
-		
+		Globals.Audio.stopThenPlay(sfx_hitwall);
 		mazeSprite.runAction(sequence);
     }
     
@@ -272,6 +286,7 @@ Bot = function (maze, mazeSprite, director) {
 			cell = sum(cell, direction);
 		}
 		addWall(cell);
+		Globals.Audio.stopThenPlay(sfx_lookfar);
 		return ct;
 	}
 	
@@ -279,6 +294,7 @@ Bot = function (maze, mazeSprite, director) {
 	this.sprint = function() {
 		addHistory('SPRINT');
 		var blocked = false;
+		Globals.Audio.stopThenPlay(sfx_sprint);
 		for (var x = 0; x < Constants.Bot.SPRINT_DISTANCE; x++) {
 			if (isOpen(sum(position, direction))) {
 					position = sum(position, direction);
@@ -313,7 +329,10 @@ Bot = function (maze, mazeSprite, director) {
 				new lime.animation.ScaleTo(1).setDuration(speed)
 			);
 			Globals.waitForAnimationEndEvent(sequence);
+			Globals.Audio.stopThenPlay(sfx_pickupsuccess);
 			self.sprite.runAction(sequence);
+		} else {
+			Globals.Audio.stopThenPlay(sfx_pickupfail);
 		}
 		return foundIt;
 	}
@@ -374,6 +393,7 @@ Bot = function (maze, mazeSprite, director) {
 	var mazeEvents = function (dt) {
 		var gameDone = false;
 		if (energy <= 0) {
+			Globals.Audio.stopThenPlay(sfx_outofenergy);
 			self.dispose();
 			noty({
 				text: 'Out of energy', 
@@ -387,6 +407,7 @@ Bot = function (maze, mazeSprite, director) {
 			return true;
 		}
 		if (maze.get(position) == Cell.GOAL) { // maze solved!
+			Globals.Audio.stopThenPlay(sfx_goal);
 			self.dispose();
 			noty({
 				text: 'Solved!', 
@@ -437,9 +458,13 @@ Bot = function (maze, mazeSprite, director) {
 		self.sprite.runAction(new lime.animation.RotateBy(rotate).setDuration(0));
     }
 
-    addOpen(position);
-    updatePosition(0.0001);
-    mazeSprite.appendChild(this.sprite);
+	// wait for audio resources to preload
+	$(sfx_outofenergy).bind('canplaythrough', function() {
+		$(sfx_outofenergy).unbind('canplaythrough');
+		addOpen(position);
+		updatePosition(0.0001);
+		mazeSprite.appendChild(self.sprite);
+	});
 	
 	// initial set up of HUD and Log
 	Globals.logLabel.setText('Welcome!');
