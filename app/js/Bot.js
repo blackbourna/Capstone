@@ -17,7 +17,6 @@ Bot = function (maze, mazeSprite, director) {
     var direction = Directions.get('NORTH');
     var energy = Constants.EnergyCosts.START_ENERGY;
     var maze = maze;
-    console.log(maze);
 	var mazeSprite = mazeSprite;
 	var director = director;
     // for lazy typists    
@@ -382,11 +381,12 @@ Bot = function (maze, mazeSprite, director) {
 	}
 	
 	this.dispose = function() {
-		lime.scheduleManager.unschedule(mazeEvents, null);
-        lime.scheduleManager.unschedule(updateTimer, null);
-        lime.scheduleManager.unschedule(musicLoopEvent, null);
-        Globals.logLabel = null;
+		console.log("Disposing bot");
+		lime.scheduleManager.unschedule(mazeEvents, this);
+        lime.scheduleManager.unschedule(updateTimer, this);
+        //lime.scheduleManager.unschedule(musicLoopEvent, this);
 		goog.events.unlisten(keyhandler, 'key', keyevents);
+        Globals.logLabel = null;
 		console.log(history);
 	}
 	
@@ -433,8 +433,8 @@ Bot = function (maze, mazeSprite, director) {
 		self.updateOutput();
 	}
 
-    lime.scheduleManager.schedule(mazeEvents, null);
-    lime.scheduleManager.schedule(updateTimer, null);
+    lime.scheduleManager.schedule(mazeEvents, this);
+    lime.scheduleManager.schedule(updateTimer, this);
     
     var keyhandler = new goog.events.KeyHandler(document);
     var keyevents = null;
@@ -471,13 +471,13 @@ Bot = function (maze, mazeSprite, director) {
 		mazeSprite.appendChild(self.sprite);
 	});
 	
-	var musicLoopEvent = function() {
-		Globals.Audio.stopThenPlay(sfx_music);
-	};
+	//var musicLoopEvent = function() {
+	//	Globals.Audio.stopThenPlay(sfx_music);
+	//};
 	
-	//$(sfx_music).bind('canplaythrough', function() {
-	//	lime.scheduleManager.scheduleWithDelay(musicLoopEvent, this, 1700);
-	//});
+	$(sfx_music).bind('canplaythrough', function() {
+		lime.scheduleManager.scheduleWithDelay(musicLoopEvent, self, 1700);
+	});
 	
 	// initial set up of HUD and Log
 	Globals.logLabel.setText('Welcome!');

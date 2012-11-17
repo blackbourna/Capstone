@@ -17,7 +17,6 @@ KeyEventsAlternative = function(bot, maze) {
 			direction = Compass.rotate(TURN.RIGHT, direction);
 			++ct;
 		}
-		console.log('past loop');
 		if (ct < 3)
 			return { turn: TURN.RIGHT, numTurns: ct };
 		else
@@ -232,14 +231,14 @@ KeyEventsAlternative = function(bot, maze) {
 		if (!has_energy) {
 			msg = 'Not enough energy!';
 		}
-		console.log(msg);
+		//console.log(msg);
 		if (msg.length > 0) {
 			var oldTxt = Globals.logLabel.getText();
 			msg = msg.trim();
 			Globals.logLabel.setText(oldTxt.trim() + "\n" + msg);
 			if (Globals.logLabel.getSize().height > Globals.logContainer.getSize().height) {
-				console.log(Globals.logLabel.getSize().height);
-				console.log(Globals.logContainer.getSize().height);
+				//console.log(Globals.logLabel.getSize().height);
+				//console.log(Globals.logContainer.getSize().height);
 				var msgs = Globals.logLabel.getText();
 				msgs = msgs.split('\n');
 				
