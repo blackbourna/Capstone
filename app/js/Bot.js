@@ -217,7 +217,7 @@ Bot = function (maze, mazeSprite, director) {
 		Globals.Audio.stopThenPlay(sfx_step);
 		return !blocked;
 	}
-	// @dir = e.g. TURN.RIGHT
+	// @dir = e.g. TURN.RIGHTAWS
 	this.turn = function(dir) {
 		addHistory(dir);
 		var rotate = 0;
@@ -393,6 +393,10 @@ Bot = function (maze, mazeSprite, director) {
 	this.suicide = function() {
 		energy = 0;
 	}
+    
+    this.showHelp = function() {
+        director.pushScene(new HelpScene(director).show());
+    };
 	
     // setup keyhandler and game events, returns true if game has ended
 	var mazeEvents = function (dt) {
@@ -403,6 +407,7 @@ Bot = function (maze, mazeSprite, director) {
 			noty({
 				text: 'Out of energy', 
 				layout: 'center',
+                type: 'error',
 				callback: {
 					onClose: function() {
 						director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
@@ -416,7 +421,8 @@ Bot = function (maze, mazeSprite, director) {
 			self.dispose();
 			noty({
 				text: 'Solved!', 
-				layout: 'center', 
+				layout: 'center',
+                type: 'success',
 				callback: {
 					onClose: function() {
 						new HighScoreInputScene(director, maze, energy, timer, history);
@@ -472,7 +478,7 @@ Bot = function (maze, mazeSprite, director) {
 	});
 	
 	var musicLoopEvent = function() {
-		Globals.Audio.stopThenPlay(sfx_music);
+		AWSGlobals.Audio.stopThenPlay(sfx_music);
 	};
 	
 	//$(sfx_music).bind('canplaythrough', function() {
