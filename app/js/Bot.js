@@ -44,7 +44,7 @@ Bot = function (maze, mazeSprite, director) {
     var history = new Array();
     var timer = 0.0;
     var autolook = new Array();
-    
+    var ANIM_SPEED = self.controlScheme == 1 ? 0.00001 : Constants.Bot.ANIMATION_SPEED;
     // public variables
 	this.sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'bot.png');
 	
@@ -54,7 +54,7 @@ Bot = function (maze, mazeSprite, director) {
         if (speed) {
 			rotate.setDuration(speed)
 		} else {
-			rotate.setDuration(self.controlScheme == 1 ? 0.00001 : Constants.Bot.ANIMATION_SPEED);
+			rotate.setDuration(ANIM_SPEED);
 		}
 		Globals.waitForAnimationEndEvent(rotate);
 		
@@ -68,7 +68,7 @@ Bot = function (maze, mazeSprite, director) {
         if (speed) {
 			moveTo.setDuration(speed)
 		} else {
-			moveTo.setDuration((this.controlScheme == 1) ? 0.00001 : Constants.Bot.ANIMATION_SPEED);
+			moveTo.setDuration(ANIM_SPEED);
 		}
 		Globals.waitForAnimationEndEvent(moveTo);
 		Globals.Audio.stopThenPlay(sfx_step);
@@ -104,6 +104,8 @@ Bot = function (maze, mazeSprite, director) {
 		var height = Constants.Graphics.CELL_DIMENSIONS.y;
 		var coord = new goog.math.Coordinate(width * cell.x*1 + width/2, height * cell.y*1 + height/2);
 		sprite.setPosition(coord);
+        sprite.setOpacity(0);
+        sprite.runAction(new lime.animation.FadeTo(1).setDuration(ANIM_SPEED));
 		mazeSprite.appendChild(sprite);
 		mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
     }
