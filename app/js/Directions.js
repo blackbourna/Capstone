@@ -28,3 +28,15 @@ Directions.getName = function(x) {
 		return 'WEST';
 	}
 }
+
+Directions.getAngle = function(x) {
+	if (x.equals(Directions.get('NORTH'))) {
+		return 0;
+	} else if (x.equals(Directions.get('EAST'))) {
+		return 90;
+	} else if (x.equals(Directions.get('SOUTH'))) {
+		return 180;
+	} else if (x.equals(Directions.get('WEST'))) {
+		return 270;
+	}
+}

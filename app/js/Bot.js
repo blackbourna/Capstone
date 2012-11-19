@@ -50,7 +50,7 @@ Bot = function (maze, mazeSprite, director) {
 	
     // private functions
     var updateDirection = function(x, speed) {
-		var rotate = new lime.animation.RotateBy(x);
+		var rotate = new lime.animation.RotateTo(Directions.getAngle(x));
         if (speed) {
 			rotate.setDuration(speed)
 		} else {
@@ -467,8 +467,8 @@ Bot = function (maze, mazeSprite, director) {
 		do { // sprite starts facing north
 			rotate += 90;
 			direction = Compass.rotate(TURN.LEFT, direction);
-		} while (!direction.equals(maze.startDir));
-		self.sprite.runAction(new lime.animation.RotateBy(rotate).setDuration(0));
+		}
+        updateDirection();
     }
 
 	// wait for audio resources to preload
