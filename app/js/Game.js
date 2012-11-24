@@ -1,6 +1,9 @@
 //set main namespace
 goog.provide('Game');
-
+/*
+I Andrew Blackbourn, 000129408 certify that this material is my original work. No other person's work has been used without due acknowledgement. I have not made my work available to anyone else.
+Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBSD License"). See README.md for details.
+*/
 goog.require('Constants');
 goog.require('Globals');
 

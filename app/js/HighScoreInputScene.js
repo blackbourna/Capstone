@@ -1,4 +1,8 @@
 goog.provide('HighScoreInputScene');
+/*
+I Andrew Blackbourn, 000129408 certify that this material is my original work. No other person's work has been used without due acknowledgement. I have not made my work available to anyone else.
+Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBSD License"). See README.md for details.
+*/
 HighScoreInputScene = function(director, maze, energy, timer, history) {
     var scene = new lime.Scene();
     var highScoreLabel = new lime.Label()
