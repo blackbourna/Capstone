@@ -1,12 +1,15 @@
 goog.provide('Globals');
 Globals = {
 	animationPlaying: false,
-	waitForAnimationEndEvent: function(anim) {
+	waitForAnimationEndEvent: function(anim, option_function) {
 		Globals.animationPlaying = true;
 		goog.events.listen(anim,lime.animation.Event.STOP, function(){
 			lime.scheduleManager.scheduleWithDelay(function() {
 				Globals.animationPlaying = false;
-            }, null, 100);
+				if (option_function) {
+					option_function();
+				}
+            }, null, 10, 1);
 		});
 	},
 	Audio: {

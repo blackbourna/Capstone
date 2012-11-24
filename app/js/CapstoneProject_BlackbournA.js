@@ -31,6 +31,7 @@ goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.MoveTo');
 goog.require('lime.animation.MoveBy');
 goog.require('lime.animation.RotateBy');
+goog.require('lime.animation.RotateTo');
 
 // fill effects
 goog.require('lime.fill.LinearGradient');

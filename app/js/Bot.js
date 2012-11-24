@@ -17,7 +17,6 @@ Bot = function (maze, mazeSprite, director) {
     var direction = Directions.get('NORTH');
     var energy = Constants.EnergyCosts.START_ENERGY;
     var maze = maze;
-    console.log(maze);
 	var mazeSprite = mazeSprite;
 	var director = director;
     // for lazy typists    
@@ -56,7 +55,14 @@ Bot = function (maze, mazeSprite, director) {
 		} else {
 			rotate.setDuration(ANIM_SPEED);
 		}
-		Globals.waitForAnimationEndEvent(rotate);
+		Globals.waitForAnimationEndEvent(rotate, function() {
+			if (!self.sprite.getRotation() % 90 == 0 ) {
+				console.log('attempt to fix angle: ' + self.sprite.getRotation());
+				new lime.animation.RotateTo(
+					Directions.getAngle(direction)
+				);
+			}
+		});
 		
 		Globals.Audio.stopThenPlay(sfx_turn);
 		self.sprite.runAction(rotate);
@@ -384,9 +390,9 @@ Bot = function (maze, mazeSprite, director) {
 	}
 	
 	this.dispose = function() {
-		lime.scheduleManager.unschedule(mazeEvents, null);
-        lime.scheduleManager.unschedule(updateTimer, null);
-        lime.scheduleManager.unschedule(musicLoopEvent, null);
+		lime.scheduleManager.unschedule(mazeEvents, this);
+        lime.scheduleManager.unschedule(updateTimer, this);
+        lime.scheduleManager.unschedule(musicLoopEvent, this);
         Globals.logLabel = null;
 		goog.events.unlisten(keyhandler, 'key', keyevents);
 		console.log(history);
@@ -441,8 +447,8 @@ Bot = function (maze, mazeSprite, director) {
 		self.updateOutput();
 	}
 
-    lime.scheduleManager.schedule(mazeEvents, null);
-    lime.scheduleManager.schedule(updateTimer, null);
+    lime.scheduleManager.schedule(mazeEvents, this);
+    lime.scheduleManager.schedule(updateTimer, this);
     
     var keyhandler = new goog.events.KeyHandler(document);
     var keyevents = null;
@@ -468,7 +474,7 @@ Bot = function (maze, mazeSprite, director) {
 			rotate += 90;
 			direction = Compass.rotate(TURN.LEFT, direction);
 		} while (!direction.equals(maze.startDir));
-		self.sprite.runAction(new lime.animation.RotateBy(rotate).setDuration(0));
+		self.sprite.runAction(new lime.animation.RotateTo(rotate).setDuration(0));
     }
 
 	// wait for audio resources to preload
@@ -480,9 +486,9 @@ Bot = function (maze, mazeSprite, director) {
 	});
 	
 	var musicLoopEvent = function() {
-		AWSGlobals.Audio.stopThenPlay(sfx_music);
+		Globals.Audio.stopThenPlay(sfx_music);
 	};
-	
+	//
 	//$(sfx_music).bind('canplaythrough', function() {
 	//	lime.scheduleManager.scheduleWithDelay(musicLoopEvent, this, 1700);
 	//});

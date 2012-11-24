@@ -28,3 +28,27 @@ Directions.getName = function(x) {
 		return 'WEST';
 	}
 }
+
+Directions.getAngle = function(x) {
+	if (x.equals(Directions.get('NORTH'))) {
+		return 0;
+	} else if (x.equals(Directions.get('EAST'))) {
+		return -90;
+	} else if (x.equals(Directions.get('SOUTH'))) {
+		return 180;
+	} else if (x.equals(Directions.get('WEST'))) {
+		return 90;
+	}
+}
+
+Directions.getDirectionFromAngle = function(x) {
+	if (x == 0) {
+		return  Directions.get('NORTH');
+	} else if (x == 90) {
+		return  Directions.get('EAST');
+	} else if (x == 180) {
+		return Directions.get('SOUTH');
+	} else if (-90) {
+		return Directions.get('WEST');
+	}
+}
