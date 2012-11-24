@@ -18,7 +18,9 @@ KeyEventsAlternative = function(bot, maze) {
 			++ct;
 		}
 		console.log('past loop');
-		if (ct < 3)
+		if (ct == 2)
+			return { turn: TURN.AROUND, numTurns: 1 };
+		else if (ct < 3)
 			return { turn: TURN.RIGHT, numTurns: ct };
 		else
 			return { turn: TURN.LEFT, numTurns: 1 };
@@ -33,7 +35,7 @@ KeyEventsAlternative = function(bot, maze) {
 				result.msg += 'Turned ' + turnInfo.turn.substring(5).toLowerCase() + "\n";
 				lime.scheduleManager.callAfter(function() {
 					bot.turn(turnInfo.turn);
-				}, this, Constants.Bot.ANIMATION_SPEED * 1000 * x);
+				}, this, Constants.Bot.ANIMATION_SPEED * 1000 * x + 10);
 			}
 		}
 		return result;
