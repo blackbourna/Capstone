@@ -462,18 +462,26 @@ Bot = function (maze, mazeSprite, director) {
 	goog.events.listen(keyhandler, 'key', keyevents);
 
     // set up initial position
-	var rotate = 0;
-	do { // sprite starts facing north
-		rotate += 90;
-		direction = Compass.rotate(TURN.LEFT, direction);
-	}
+    {
+		var rotate = 0;
+		do { // sprite starts facing north
+			rotate += 90;
+			direction = Compass.rotate(TURN.LEFT, direction);
+		}
+        updateDirection();
+    }
+
 	// wait for audio resources to preload
-	//$(sfx_outofenergy).bind('canplaythrough', function() {
-	//	$(sfx_outofenergy).unbind('canplaythrough');
-	//	addOpen(position);
-	//	updatePosition(0.0001);
-	//	mazeSprite.appendChild(self.sprite);
-	//});
+	$(sfx_outofenergy).bind('canplaythrough', function() {
+		$(sfx_outofenergy).unbind('canplaythrough');
+		addOpen(position);
+		updatePosition(0.0001);
+		mazeSprite.appendChild(self.sprite);
+	});
+	
+	var musicLoopEvent = function() {
+		AWSGlobals.Audio.stopThenPlay(sfx_music);
+	};
 	
 	//var musicLoopEvent = function() {
 	//	Globals.Audio.stopThenPlay(sfx_music);
