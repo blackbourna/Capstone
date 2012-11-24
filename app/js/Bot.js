@@ -40,7 +40,7 @@ Bot = function (maze, mazeSprite, director) {
     var sfx_music = new Audio(Constants.Assets.AUDIO_PATH + 'music.wav');
 
     var markedCells = new Array();
-    var history = new Array();
+    var history = [];
     var timer = 0.0;
     var autolook = new Array();
     var ANIM_SPEED = self.controlScheme == 1 ? 0.00001 : Constants.Bot.ANIMATION_SPEED;
@@ -131,6 +131,7 @@ Bot = function (maze, mazeSprite, director) {
     }
     
     var hitWall = function(cell) {
+		Globals.Audio.stopThenPlay(sfx_wallhit);
 		var topCornerPlus5 = new Point(Constants.Graphics.TOP_CORNER.x + 5, Constants.Graphics.TOP_CORNER.y +5)
 		var durTime = Constants.Bot.ANIMATION_SPEED / 5;
 		// this is why javascript could use a tuple type!
@@ -157,7 +158,6 @@ Bot = function (maze, mazeSprite, director) {
 			mazeSprite.appendChild(circle);
 			mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
 		}
-		Globals.Audio.stopThenPlay(sfx_wallhit);
 		mazeSprite.runAction(sequence);
     }
     
@@ -189,7 +189,8 @@ Bot = function (maze, mazeSprite, director) {
 	}
 	
 	var addHistory = function(move) {
-		history.push({action: move, time: timer});
+		history.push([move, timer]);
+		//history.push({action: move, time: timer});
 	}
     
     // public functions
