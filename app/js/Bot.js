@@ -43,17 +43,17 @@ Bot = function (maze, mazeSprite, director) {
     var history = new Array();
     var timer = 0.0;
     var autolook = new Array();
-    
+    var ANIM_SPEED = self.controlScheme == 1 ? 0.00001 : Constants.Bot.ANIMATION_SPEED;
     // public variables
 	this.sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'bot.png');
 	
     // private functions
     var updateDirection = function(x, speed) {
-		var rotate = new lime.animation.RotateBy(x);
+		var rotate = new lime.animation.RotateTo(Directions.getAngle(x));
         if (speed) {
 			rotate.setDuration(speed)
 		} else {
-			rotate.setDuration(self.controlScheme == 1 ? 0.00001 : Constants.Bot.ANIMATION_SPEED);
+			rotate.setDuration(ANIM_SPEED);
 		}
 		Globals.waitForAnimationEndEvent(rotate);
 		
@@ -67,7 +67,7 @@ Bot = function (maze, mazeSprite, director) {
         if (speed) {
 			moveTo.setDuration(speed)
 		} else {
-			moveTo.setDuration((this.controlScheme == 1) ? 0.00001 : Constants.Bot.ANIMATION_SPEED);
+			moveTo.setDuration(ANIM_SPEED);
 		}
 		Globals.waitForAnimationEndEvent(moveTo);
 		Globals.Audio.stopThenPlay(sfx_step);
@@ -103,6 +103,8 @@ Bot = function (maze, mazeSprite, director) {
 		var height = Constants.Graphics.CELL_DIMENSIONS.y;
 		var coord = new goog.math.Coordinate(width * cell.x*1 + width/2, height * cell.y*1 + height/2);
 		sprite.setPosition(coord);
+        sprite.setOpacity(0);
+        sprite.runAction(new lime.animation.FadeTo(1).setDuration(ANIM_SPEED));
 		mazeSprite.appendChild(sprite);
 		mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
     }
@@ -216,7 +218,7 @@ Bot = function (maze, mazeSprite, director) {
 		Globals.Audio.stopThenPlay(sfx_step);
 		return !blocked;
 	}
-	// @dir = e.g. TURN.RIGHT
+	// @dir = e.g. TURN.RIGHTAWS
 	this.turn = function(dir) {
 		addHistory(dir);
 		var rotate = 0;
@@ -393,6 +395,10 @@ Bot = function (maze, mazeSprite, director) {
 	this.suicide = function() {
 		energy = 0;
 	}
+    
+    this.showHelp = function() {
+        director.pushScene(new HelpScene(director).show());
+    };
 	
     // setup keyhandler and game events, returns true if game has ended
 	var mazeEvents = function (dt) {
@@ -403,6 +409,7 @@ Bot = function (maze, mazeSprite, director) {
 			noty({
 				text: 'Out of energy', 
 				layout: 'center',
+                type: 'error',
 				callback: {
 					onClose: function() {
 						director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
@@ -416,7 +423,8 @@ Bot = function (maze, mazeSprite, director) {
 			self.dispose();
 			noty({
 				text: 'Solved!', 
-				layout: 'center', 
+				layout: 'center',
+                type: 'success',
 				callback: {
 					onClose: function() {
 						new HighScoreInputScene(director, maze, energy, timer, history);
@@ -454,30 +462,25 @@ Bot = function (maze, mazeSprite, director) {
 	goog.events.listen(keyhandler, 'key', keyevents);
 
     // set up initial position
-    {
-		var rotate = 0;
-		do { // sprite starts facing north
-			rotate += 90;
-			direction = Compass.rotate(TURN.LEFT, direction);
-		} while (!direction.equals(maze.startDir));
-		self.sprite.runAction(new lime.animation.RotateBy(rotate).setDuration(0));
-    }
-
+	var rotate = 0;
+	do { // sprite starts facing north
+		rotate += 90;
+		direction = Compass.rotate(TURN.LEFT, direction);
+	}
 	// wait for audio resources to preload
-	$(sfx_outofenergy).bind('canplaythrough', function() {
-		$(sfx_outofenergy).unbind('canplaythrough');
-		addOpen(position);
-		updatePosition(0.0001);
-		mazeSprite.appendChild(self.sprite);
-	});
+	//$(sfx_outofenergy).bind('canplaythrough', function() {
+	//	$(sfx_outofenergy).unbind('canplaythrough');
+	//	addOpen(position);
+	//	updatePosition(0.0001);
+	//	mazeSprite.appendChild(self.sprite);
+	//});
 	
 	//var musicLoopEvent = function() {
 	//	Globals.Audio.stopThenPlay(sfx_music);
 	//};
-	
-	$(sfx_music).bind('canplaythrough', function() {
-		lime.scheduleManager.scheduleWithDelay(musicLoopEvent, self, 1700);
-	});
+	//$(sfx_music).bind('canplaythrough', function() {
+	//	lime.scheduleManager.scheduleWithDelay(musicLoopEvent, self, 1700);
+	//});
 	
 	// initial set up of HUD and Log
 	Globals.logLabel.setText('Welcome!');

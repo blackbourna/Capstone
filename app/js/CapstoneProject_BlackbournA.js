@@ -11,6 +11,7 @@ goog.require('Maze');
 goog.require('Constants');
 goog.require('HighScoreScene');
 goog.require('HighScoreInputScene');
+goog.require('HelpScene');
 
 // basics
 goog.require('lime.Director');

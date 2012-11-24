@@ -214,10 +214,11 @@ KeyEventsAlternative = function(bot, maze) {
 				}
 			break;
 			case keyCodes.ESC: // cheats/debug
-				//bot.drawMaze();
+                if (Globals.debug)
+                    bot.drawMaze();
 			break;
-			case keyCodes.F1: // HELP
-				
+			case keyCodes.H: // HELP
+				bot.showHelp();
 			break;
 			case keyCodes.F2: // debugging
 				if (!Globals.Debug.debug) break;
