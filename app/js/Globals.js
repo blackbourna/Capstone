@@ -14,9 +14,11 @@ Globals = {
 	},
 	Audio: {
 		stopThenPlay: function(audio) {
+            if (!Globals.Audio.enabled) return;
 			audio.currentTime = 0;
 			audio.play();
-		}
+		},
+        enabled: false
 	},
 	ControlScheme: {
 		useHardcoded: false, // if useHardcoded = false, Darkness mode uses scheme 0 and Easy mode uses scheme 1

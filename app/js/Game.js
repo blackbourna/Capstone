@@ -8,7 +8,7 @@ Game = function(maze, director) {
     // Setup visuals
     var scene = new lime.Scene();
     var director = director;
-    
+    scene.setRenderer(lime.Renderer.DOM); // lime.Renderer.CANVAS/lime.Renderer.DOM
     // Background
     var backgroundGradient = new lime.fill.LinearGradient();
     backgroundGradient.addColorStop(0, '#ABCDEF');

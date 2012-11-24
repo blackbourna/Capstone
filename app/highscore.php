@@ -21,14 +21,17 @@ try {
 
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
-    var_dump($dbh->errorInfo());
+    $errorinfo = $dbh->errorInfo();
+    die(json_encode($errorinfo[0] == '00000' ? "true" : "false")); // error code 0 = successful transaction
 } catch (PDOException $e) {
-    echo "PDO Exception: ";
-    echo $e->getMessage();
-    var_dump($e);
+    //echo "PDO Exception: ";
+    //echo $e->getMessage();
+    //var_dump($e);
+    die(json_encode('false'));
 } catch (Exception $e) {
-    echo "General Exception: ";
-    echo $e->getMessage();
-    var_dump($e);
+    //echo "General Exception: ";
+    //echo $e->getMessage();
+    //var_dump($e);
+    die(json_decode('false'));
 }
 ?>

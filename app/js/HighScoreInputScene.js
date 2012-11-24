@@ -59,7 +59,7 @@ HighScoreInputScene = function(director, maze, energy, timer, history) {
 		if (highScoreInputLabel.getText()) {
 			name = highScoreInputLabel.getText();
 		}
-        Utils.submitHighScore(name, maze, energy, timer, history, scene)
+        Utils.submitHighScore(name, maze, energy, timer, history, director)
     });
     scene.appendChild(startGameButton);
     

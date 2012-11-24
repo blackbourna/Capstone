@@ -7,7 +7,6 @@ MazeMenu=function(director) {
 	this.showMenu = function() {
 		var scene = new lime.Scene();
 		
-		scene.setRenderer(lime.Renderer.CANVAS);
 		var CBButton = new lime.GlossyButton('Circuit Board').setPosition(500, 100).setSize(500, 50).setColor('#ABCDEF');
 		goog.events.listen(CBButton, ['mousedown','touchstart'], function(e) {
 			new MazeLoader(director).getMaze('CB');

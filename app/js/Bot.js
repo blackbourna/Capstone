@@ -132,8 +132,8 @@ Bot = function (maze, mazeSprite, director) {
     
     var hitWall = function(cell) {
 		Globals.Audio.stopThenPlay(sfx_wallhit);
-		var topCornerPlus5 = new Point(Constants.Graphics.TOP_CORNER.x + 5, Constants.Graphics.TOP_CORNER.y +5)
-		var durTime = Constants.Bot.ANIMATION_SPEED / 5;
+		var topCornerPlus5 = new Point(Constants.Graphics.TOP_CORNER.x + 10, Constants.Graphics.TOP_CORNER.y + 10)
+		var durTime = Constants.Bot.ANIMATION_SPEED/2;
 		// this is why javascript could use a tuple type!
 		var sequence = 	new lime.animation.Sequence(
 			new lime.animation.MoveTo(topCornerPlus5).setDuration(durTime),
@@ -143,7 +143,7 @@ Bot = function (maze, mazeSprite, director) {
 			new lime.animation.MoveTo(topCornerPlus5).setDuration(durTime),
 			new lime.animation.MoveTo(Constants.Graphics.TOP_CORNER).setDuration(durTime)
 		);
-		
+		mazeSprite.runAction(sequence);
 		addWall(cell);
 		
 		// add hit circle
@@ -151,14 +151,13 @@ Bot = function (maze, mazeSprite, director) {
 		var width = Constants.Graphics.CELL_DIMENSIONS.x;
 		var height = Constants.Graphics.CELL_DIMENSIONS.y;
 		
-		{ // this block may be removed in favour of just using an image!
+		{
 			var circle = new lime.Circle().setFill("#FF0000").setSize(width/2, height/2).setOpacity(0.33);
 			var coord = new goog.math.Coordinate(width * cell.x*1 + width/2, height * cell.y*1 + height/2);
 			circle.setPosition(coord);
 			mazeSprite.appendChild(circle);
 			mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
 		}
-		mazeSprite.runAction(sequence);
     }
     
     var isOpen = function(cell) {
@@ -320,7 +319,7 @@ Bot = function (maze, mazeSprite, director) {
 			if (mazeEvents()) break;
 		}
 		energy -= (blocked) ? Constants.EnergyCosts.SPRINT_BLOCKED : Constants.EnergyCosts.SPRINT;
-		updatePosition();
+        updatePosition(Constants.Bot.ANIMATION_SPEED * x / 2);
 		return x;
 	}
 	
@@ -429,7 +428,7 @@ Bot = function (maze, mazeSprite, director) {
 			Globals.Audio.stopThenPlay(sfx_goal);
 			self.dispose();
 			noty({
-				text: 'Solved!', 
+				text: 'Solved! Good job!', 
 				layout: 'center',
                 type: 'success',
 				callback: {

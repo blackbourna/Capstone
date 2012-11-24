@@ -30,14 +30,22 @@ Utils = {
 		var time = minutes+':'+seconds;
 		return time;
 	},
-    submitHighScore: function(name, maze, energy, timer, history, scene) {
+    submitHighScore: function(name, maze, energy, timer, history, director) {
 		var request = new goog.net.XhrIo();
 		goog.events.listen(request, 'complete', function(){
 			//request complete
 			if (request.isSuccess()){
-				var data = request.getResponseJson();
-                console.log(data);
-				//director.replaceScene(new GameMenu.showMenu(director), Globals.transition);
+                    var success = request.getResponseJson() == "true";
+                    noty({
+                        text: (success) ? 'Thanks for playing!' : 'There was a problem submitting your highscore. Please contact the system administrator.', 
+                        layout: 'center',
+                        type: (success) ? 'success' : 'error',
+                        callback: {
+                            onClose: function() {
+                                director.replaceScene(new MazeMenu(director).showMenu(), Globals.transition);
+                            }
+                        }
+                    });
 			} else {
 				//error
 			}

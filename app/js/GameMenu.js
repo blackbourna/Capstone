@@ -7,21 +7,20 @@ GameMenu=function(director) {
 	var self = this;
 	this.showMenu = function() {
 		var scene = new lime.Scene();
-		scene.setRenderer(lime.Renderer.CANVAS);
 		
-		var startGameButton = new lime.GlossyButton('Start Game').setPosition(500, 300).setSize(500, 50);
-		goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
-            Globals.easyMode = false;
-			director.replaceScene(new MazeMenu(director).showMenu(), Globals.transition);
-		});
-		scene.appendChild(startGameButton);
-		
-		var startEasyGameButton = new lime.GlossyButton('Start Game - Easy Mode').setPosition(500, 400).setSize(500, 50);
+		var startEasyGameButton = new lime.GlossyButton('Start Game - Easy Mode').setPosition(500, 300).setSize(500, 50);
 		goog.events.listen(startEasyGameButton, ['mousedown','touchstart'], function(e) {
 			Globals.easyMode = true;
 			director.replaceScene(new MazeMenu(director).showMenu(), Globals.transition);
 		});
 		scene.appendChild(startEasyGameButton);
+        
+		var startGameButton = new lime.GlossyButton('Start Game').setPosition(500, 400).setSize(500, 50);
+		goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
+            Globals.easyMode = false;
+			director.replaceScene(new MazeMenu(director).showMenu(), Globals.transition);
+		});
+		scene.appendChild(startGameButton);
 
 		var helpButton = new lime.GlossyButton('Instructions').setPosition(500, 500).setSize(500, 50);
 		goog.events.listen(helpButton, ['mousedown','touchstart'], function(e) {
@@ -41,9 +40,10 @@ GameMenu=function(director) {
 		//});
 		//scene.appendChild(optionsButton);
         
-		var highscoretestButton = new lime.GlossyButton('Enter Highscore').setPosition(500, 700).setSize(500, 50);
+		var highscoretestButton = new lime.GlossyButton('Sound is ' + (Globals.Audio.enabled ? "on":"off")).setPosition(500, 700).setSize(500, 50);
 		goog.events.listen(highscoretestButton, ['mousedown','touchstart'], function(e) {
-			new HighScoreInputScene(director);
+            Globals.Audio.enabled = !Globals.Audio.enabled;
+			highscoretestButton.setText('Sound is ' + (Globals.Audio.enabled ? "on":"off"));
 		});
 		scene.appendChild(highscoretestButton);
 
