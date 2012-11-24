@@ -17,7 +17,7 @@ Maze = function(energyPt) {
 	var sfx_scan2 = new Audio(Constants.Assets.AUDIO_PATH + 'scan2.wav');
 	
 	var recharger = energyPt;
-	
+	var rechargerSprite;
     this.init = function(mazeSprite) {
         // set maze size constants
 		for (var x = this.goal.y; x < this.goal.y + 4; x++) {
@@ -61,7 +61,7 @@ Maze = function(energyPt) {
 			mazeString += '\n';
 		}
         // add recharger
-        var rechargerSprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'energy.png');
+        rechargerSprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'energy.png');
         var width = rechargerSprite.getSize().width;
         var height = rechargerSprite.getSize().height;		
         var coord = new goog.math.Coordinate(width * recharger.x*1 + width/2, height * recharger.y*1 + height/2);
@@ -153,6 +153,10 @@ Maze = function(energyPt) {
 		mazeSprite.appendChild(label);
 		label.runAction(new lime.animation.FadeTo(1).setDuration(i * radarSpeed));
 		return distance;
+    }
+    
+    this.getRechargerSprite = function() {
+        return rechargerSprite;
     }
     
     this.pickUpRecharger = function(position) {

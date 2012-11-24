@@ -10,7 +10,7 @@ goog.require('Compass');
 goog.require('KeyEvents');
 goog.require('KeyEventsAlternative');
 
-Bot = function (maze, mazeSprite, director) {
+Bot = function (maze, mazeSprite, director, rechargerSprite) {
 	// private variables
     var self = this;
     var position = maze.start;
@@ -113,6 +113,13 @@ Bot = function (maze, mazeSprite, director) {
         sprite.setOpacity(0);
         sprite.runAction(new lime.animation.FadeTo(1).setDuration(ANIM_SPEED));
 		mazeSprite.appendChild(sprite);
+        fixZIndex();
+        console.log(rechargerSprite);
+    }
+    
+    var fixZIndex = function() {
+        if (rechargerSprite) // only shown in easy mode
+            mazeSprite.setChildIndex(rechargerSprite, mazeSprite.getNumberOfChildren() - 2);
 		mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
     }
     
@@ -156,15 +163,15 @@ Bot = function (maze, mazeSprite, director) {
 			var coord = new goog.math.Coordinate(width * cell.x*1 + width/2, height * cell.y*1 + height/2);
 			circle.setPosition(coord);
 			mazeSprite.appendChild(circle);
-			mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
+			fixZIndex();
 		}
     }
-    
+    // @returns true if cell is open, false otherwise
     var isOpen = function(cell) {
 		var cellState = maze.get(cell);
 		return cellState == Cell.OPEN || cellState == Cell.GOAL;
     }
-    
+    // autolooks in any directions that are currently toggled to ON
     var doAutoLook = function() {
 		for (var key in autolook) {
 			var cell = null;
@@ -186,16 +193,19 @@ Bot = function (maze, mazeSprite, director) {
 			}
 		}
 	}
-	
+	// add a move to the bot's history
 	var addHistory = function(move) {
 		history.push([move, timer]);
 		//history.push({action: move, time: timer});
 	}
     
     // public functions
+    // @returns the bot's position
     this.getPosition = function() {return position;}
     
+    // Makes a move forward/back
     // @dir = e.g. MOVE.FORWARD, MOVE.BACKWARD
+    // @returns true if the move was successful, false if blocked
 	this.move = function(dir) {
 		addHistory(dir);
 		blocked = false;

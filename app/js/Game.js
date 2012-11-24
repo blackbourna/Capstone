@@ -73,7 +73,7 @@ Game = function(maze, director) {
 	}
     
     // Add Bot
-    var bot = new Bot(maze, mazeContainer, director);
+    var bot = new Bot(maze, mazeContainer, director, maze.getRechargerSprite());
 
     // set current scene active
     return scene;
