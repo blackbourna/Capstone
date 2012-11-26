@@ -28,8 +28,8 @@ Maze = function(energyPt) {
 				this.maze[x][y] = Cell.GOAL;
 				var cell = new goog.math.Coordinate(y, x);
 				var sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'goal.png');
-				var width = sprite.getSize().width;
-				var height = sprite.getSize().height;		
+				var width = Constants.Graphics.CELL_DIMENSIONS.x;
+				var height = Constants.Graphics.CELL_DIMENSIONS.y;		
 				var coord = new goog.math.Coordinate(width * cell.x*1 + width/2, height * cell.y*1 + height/2);
 				sprite.setPosition(coord);
 				mazeSprite.appendChild(sprite);
@@ -54,8 +54,8 @@ Maze = function(energyPt) {
 				var wall = new goog.math.Coordinate(y, x);
 				if (this.maze[x][y] == '#') {
 					var wallSprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'wall.png');
-					var width = wallSprite.getSize().width;
-					var height = wallSprite.getSize().height;		
+					var width = Constants.Graphics.CELL_DIMENSIONS.x;
+					var height = Constants.Graphics.CELL_DIMENSIONS.y;		
 					var coord = new goog.math.Coordinate(width * wall.x*1 + width/2, height * wall.y*1 + height/2);
 					wallSprite.setPosition(coord);
 					mazeSprite.appendChild(wallSprite);
@@ -65,8 +65,8 @@ Maze = function(energyPt) {
 		}
         // add recharger
         rechargerSprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'energy.png');
-        var width = rechargerSprite.getSize().width;
-        var height = rechargerSprite.getSize().height;		
+        var width = Constants.Graphics.CELL_DIMENSIONS.x;
+        var height = Constants.Graphics.CELL_DIMENSIONS.y;		
         var coord = new goog.math.Coordinate(width * recharger.x*1 + width/2, height * recharger.y*1 + height/2);
         rechargerSprite.setPosition(coord);
         mazeSprite.appendChild(rechargerSprite);
