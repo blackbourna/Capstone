@@ -6,10 +6,10 @@ Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBS
 require_once('dbconnect.php');
 try {
     $hs_date = date('r');
-    if ($_REQUEST[easyMode] !== "true") {
-        $_REQUEST[easyMode] = 1;
+    if ($_REQUEST[easyMode] !== true) {
+        $_REQUEST[easyMode] = "1";
     } else {
-        $_REQUEST[easyMode] = 0;
+        $_REQUEST[easyMode] = "0";
     }
     //var_dump($_REQUEST);
     $dbh = get_PDO_connection();

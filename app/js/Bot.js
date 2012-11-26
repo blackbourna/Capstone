@@ -61,7 +61,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 		}
 		Globals.waitForAnimationEndEvent(rotate, function() {
 			if (!self.sprite.getRotation() % 90 == 0 ) {
-				console.log('attempt to fix angle: ' + self.sprite.getRotation());
+				//console.log('attempt to fix angle: ' + self.sprite.getRotation());
 				new lime.animation.RotateTo(
 					Directions.getAngle(direction)
 				);
@@ -118,7 +118,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
         sprite.runAction(new lime.animation.FadeTo(1).setDuration(ANIM_SPEED));
 		mazeSprite.appendChild(sprite);
         fixZIndex();
-        console.log(rechargerSprite);
+        //console.log(rechargerSprite);
     }
     
     var fixZIndex = function() {
@@ -409,7 +409,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
         lime.scheduleManager.unschedule(musicLoopEvent, this);
         Globals.logLabel = null;
 		goog.events.unlisten(keyhandler, 'key', keyevents);
-		console.log(history);
+		//console.log(history);
 	}
 	
 	this.suicide = function() {

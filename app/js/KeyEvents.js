@@ -176,13 +176,13 @@ KeyEvents = function(bot, maze) {
 		if (!has_energy) {
 			msg = 'Not enough energy!';
 		}
-		console.log(msg);
+		//console.log(msg);
 		if (msg.length > 0) {
 			var oldTxt = Globals.logLabel.getText();
 			Globals.logLabel.setText(oldTxt + "\n" + msg);
 			if (Globals.logLabel.getSize().height > Globals.logContainer.getSize().height) {
-				console.log(Globals.logLabel.getSize().height);
-				console.log(Globals.logContainer.getSize().height);
+				//console.log(Globals.logLabel.getSize().height);
+				//console.log(Globals.logContainer.getSize().height);
 				var msgs = Globals.logLabel.getText();
 				msgs = msgs.split('\n');
 				msgs = msgs.slice(1);

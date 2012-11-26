@@ -35,25 +35,8 @@ Utils = {
 	},
     submitHighScore: function(name, maze, energy, timer, history, director) {
 		var request = new goog.net.XhrIo();
-		goog.events.listen(request, 'complete', function(){
-			//request complete
-			if (request.isSuccess()){
-                    var success = request.getResponseJson() == "true";
-                    noty({
-                        text: (success) ? 'Thanks for playing!' : 'There was a problem submitting your highscore. Please contact the system administrator.', 
-                        layout: 'center',
-                        type: (success) ? 'success' : 'error',
-                        callback: {
-                            onClose: function() {
-                                director.replaceScene(new MazeMenu(director).showMenu(), Globals.transition);
-                            }
-                        }
-                    });
-			} else {
-				//error
-			}
-		});
         var postData = {"name": name, "mazeSeed": maze.seed, "mazeType": maze.type, "energy": energy, "timer": timer, "history": JSON.stringify(history), easyMode: Globals.easyMode};
+        console.log(postData);
         var queryString = "?";
         // apparently closure does not provide a urlencode function, however the 
         // highscore input won't accept anything but letters and spaces so the input
@@ -62,7 +45,25 @@ Utils = {
 			queryString += d + "=" + postData[d] + "&";
 		}
 		queryString = queryString.substring(0, queryString.length - 1); // remove trailing &
-        console.log(postData);
-		request.send('./highscore.php'+queryString, "GET", postData);
+        
+        $.ajax({
+            type: 'POST',
+            url: './highscore.php',
+            data: postData,
+            success: function(data){
+                var success = data == "true";
+                noty({
+                    text: (success) ? 'Thanks for playing!' : 'There was a problem submitting your highscore. Please contact the system administrator.', 
+                    layout: 'center',
+                    type: (success) ? 'success' : 'error',
+                    callback: {
+                        onClose: function() {
+                            director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
+                        }
+                    }
+                });
+            },
+            dataType: 'json'
+        });
     }
 }

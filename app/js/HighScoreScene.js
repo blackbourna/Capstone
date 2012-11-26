@@ -12,7 +12,6 @@ HighScoreScene = function(director) {
         //request complete
         if (request.isSuccess()){
             var data = request.getResponseJson();
-            console.log(data);
             var yHeight = 0;
             var header = new lime.Label("Highscores")
                 .setPosition(250, yHeight)
