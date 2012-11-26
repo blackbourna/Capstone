@@ -6,7 +6,7 @@ Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBS
 require_once('dbconnect.php');
 try {
     $dbh = get_PDO_connection();
-    $sql = "select * from highscore order by maze_id DESC, type, score desc";
+    $sql = "select * from highscore order by maze_id DESC, type, score desc limit 10";
     $result = $dbh->query($sql);
     $highscores = array();
     foreach ($result as $r) {
@@ -22,9 +22,7 @@ try {
     foreach ($highscores as $key => $value) {
         $groupedHighscores[$value['date']][] = $value;
     }
-    ?><pre><?
-    die(print_r($groupedHighscores, true));
-    ?></pre><?
+    die(json_encode($groupedHighscores));
 } catch (PDOException $e) {
     echo $e->getMessage();
 }

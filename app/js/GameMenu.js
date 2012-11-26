@@ -37,12 +37,6 @@ GameMenu=function(director) {
 		});
 		scene.appendChild(highscoreButton);
         
-		//var optionsButton = new lime.GlossyButton('Options').setPosition(500, 700).setSize(500, 50);
-		//goog.events.listen(highscoreButton, ['mousedown','touchstart'], function(e) {
-		//	new OptionsScene(director);
-		//});
-		//scene.appendChild(optionsButton);
-        
 		var highscoretestButton = new lime.GlossyButton('Sound is ' + (Globals.Audio.enabled ? "on":"off")).setPosition(500, 700).setSize(500, 50);
 		goog.events.listen(highscoretestButton, ['mousedown','touchstart'], function(e) {
             Globals.Audio.enabled = !Globals.Audio.enabled;
