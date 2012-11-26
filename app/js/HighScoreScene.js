@@ -28,7 +28,6 @@ HighScoreScene = function(director) {
                 .setAnchorPoint(0, 0)
                 .setDirection(lime.ui.Scroller.Direction.VERTICAL);
             for (var day in data) {
-                console.log(day);
                 scroller.appendChild(
                     new lime.Label(day)
                         .setPosition(0, yHeight)
@@ -79,8 +78,10 @@ HighScoreScene = function(director) {
                     yHeight += 30;
                 }
                 addRow("User Name", "Score", "Maze Type", "Easy Mode");
-                for (var highscore in data[day]) {
-                    addRow(data[day][highscore].user_name, data[day][highscore].score, data[day][highscore].type, data[day][highscore].easy_mode == 1 ? "X" : "");
+                for (var mazeType in data[day]) {
+                    for (var highscore in data[day][mazeType]) {
+                        addRow(data[day][mazeType][highscore].user_name, data[day][mazeType][highscore].score, mazeType, data[day][mazeType][highscore].easy_mode == 1 ? "X" : "");
+                    }
                 }
             }
             scene.appendChild(scroller);

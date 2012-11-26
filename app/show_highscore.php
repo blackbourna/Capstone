@@ -20,7 +20,7 @@ try {
     }
     $groupedHighscores = array();
     foreach ($highscores as $key => $value) {
-        $groupedHighscores[$value['date']][] = $value;
+        $groupedHighscores[$value['date']][$value['type']][] = $value;
     }
     die(json_encode($groupedHighscores));
 } catch (PDOException $e) {
