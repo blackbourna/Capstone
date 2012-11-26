@@ -13,8 +13,9 @@ try {
     }
     //var_dump($_REQUEST);
     $dbh = get_PDO_connection();
-    $sql = "INSERT INTO highscore (`maze_id`, `easy_mode`, `user_name`, `score`, `hs_date`, `history`) VALUES(
+    $sql = "INSERT INTO highscore (`maze_id`, `type`, `easy_mode`, `user_name`, `score`, `hs_date`, `history`) VALUES(
         $_REQUEST[mazeSeed],
+        '$_REQUEST[mazeType]',
         $_REQUEST[easyMode],
         '$_REQUEST[name]',
         $_REQUEST[energy],
@@ -28,14 +29,14 @@ try {
     $errorinfo = $dbh->errorInfo();
     die(json_encode($errorinfo[0] == '00000' ? "true" : "false")); // error code 0 = successful transaction
 } catch (PDOException $e) {
-    //echo "PDO Exception: ";
-    //echo $e->getMessage();
-    //var_dump($e);
+    echo "PDO Exception: ";
+    echo $e->getMessage();
+    var_dump($e);
     die(json_encode('false'));
 } catch (Exception $e) {
-    //echo "General Exception: ";
-    //echo $e->getMessage();
-    //var_dump($e);
+    echo "General Exception: ";
+    echo $e->getMessage();
+    var_dump($e);
     die(json_decode('false'));
 }
 ?>

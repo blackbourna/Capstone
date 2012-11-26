@@ -6,11 +6,25 @@ Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBS
 require_once('dbconnect.php');
 try {
     $dbh = get_PDO_connection();
-    $sql = "select * from highscore";
+    $sql = "select * from highscore order by maze_id DESC, type, score desc";
     $result = $dbh->query($sql);
+    $highscores = array();
     foreach ($result as $r) {
-        var_dump($r);
+        $highscores[] = array(
+            'date' => date('l F jS Y', $r['maze_id']),
+            'easy_mode' => $r['easy_mode'],
+            'type' => $r['type'],
+            'user_name' => $r['user_name'],
+            'score' => $r['score']
+        );
     }
+    $groupedHighscores = array();
+    foreach ($highscores as $key => $value) {
+        $groupedHighscores[$value['date']][] = $value;
+    }
+    ?><pre><?
+    die(print_r($groupedHighscores, true));
+    ?></pre><?
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
