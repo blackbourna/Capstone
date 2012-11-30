@@ -39,48 +39,48 @@ HighScoreScene = function(director) {
                 );
                 yHeight += 50;
                 
-                function addRow(user_name, score, type, easy_mode){ // add header labels
-                    var lblName = new lime.Label(user_name)
+                function addRow(user_name, score, type, easy_mode, is_header){ // add header labels
+					var labels = new Array();
+                    labels['user_name'] = new lime.Label(user_name)
                         .setPosition(0, yHeight)
                         .setAlign('left')
                         .setFontSize(24)
-                        .setFontWeight(200)
                         .setAnchorPoint(0, 0)
                         .setSize(Constants.Graphics.APP_DIMENSIONS.x, 50);
-                    scroller.appendChild(lblName);
                     
-                    var lblScore = new lime.Label(score)
+                    labels['score'] = new lime.Label(score)
                         .setPosition(Constants.Graphics.APP_DIMENSIONS.x/3, yHeight)
                         .setAlign('left')
                         .setFontSize(24)
-                        .setFontWeight(200)
                         .setAnchorPoint(0, 0)
                         .setSize(Constants.Graphics.APP_DIMENSIONS.x, 50);
-                    scroller.appendChild(lblScore);
                     
-                    var lblType = new lime.Label(type)
+                    labels['type'] = new lime.Label(type)
                         .setPosition(Constants.Graphics.APP_DIMENSIONS.x/2, yHeight)
                         .setAlign('left')
                         .setFontSize(24)
-                        .setFontWeight(200)
                         .setAnchorPoint(0, 0)
                         .setSize(Constants.Graphics.APP_DIMENSIONS.x, 50);
-                    scroller.appendChild(lblType);
                     
-                    var lblEasy = new lime.Label(easy_mode)
+                    labels['easy_mode'] = new lime.Label(easy_mode)
                         .setPosition(Constants.Graphics.APP_DIMENSIONS.x/1.5, yHeight)
                         .setAlign('left')
                         .setFontSize(24)
-                        .setFontWeight(200)
                         .setAnchorPoint(0, 0)
                         .setSize(Constants.Graphics.APP_DIMENSIONS.x, 50);
-                    scroller.appendChild(lblEasy);
+
+					for (var l in labels) {
+						if (is_header){
+							labels[l].setFontWeight(700)
+						}
+						scroller.appendChild(labels[l]);
+					}
                     yHeight += 30;
                 }
-                addRow("User Name", "Score", "Maze Type", "Easy Mode");
+                addRow("User Name", "Score", "Maze Type", "Easy Mode", true);
                 for (var mazeType in data[day]) {
                     for (var highscore in data[day][mazeType]) {
-                        addRow(data[day][mazeType][highscore].user_name, data[day][mazeType][highscore].score, mazeType, data[day][mazeType][highscore].easy_mode == 1 ? "X" : "");
+                        addRow(data[day][mazeType][highscore].user_name, data[day][mazeType][highscore].score, mazeType, data[day][mazeType][highscore].easy_mode == 1 ? "X" : "", false);
                     }
                 }
             }

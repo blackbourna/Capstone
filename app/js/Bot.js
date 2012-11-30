@@ -356,6 +356,8 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			);
 			Globals.waitForAnimationEndEvent(sequence);
 			Globals.Audio.stopThenPlay(sfx_pickupsuccess);
+			if (rechargerSprite)
+				rechargerSprite.runAction(new lime.animation.FadeTo(0).setDuration(Constants.Bot.ANIMATION_SPEED));
 			self.sprite.runAction(sequence);
 		} else {
 			Globals.Audio.stopThenPlay(sfx_pickupfail);
