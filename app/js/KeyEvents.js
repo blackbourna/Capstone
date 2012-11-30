@@ -161,10 +161,10 @@ KeyEvents = function(bot, maze) {
 			case keyCodes.ESC: // cheats/debug
 				//bot.drawMaze();
 			break;
-			case keyCodes.F1: // HELP
-				
+			case keyCodes.H: // HELP
+				bot.showHelp();
 			break;
-			case keyCodes.F2: // debugging
+			case keyCodes.T: // debugging, shift+t to suicide
 				if (!Globals.Debug.debug) break;
 				if (e.event_.shiftKey) {
 					bot.suicide();

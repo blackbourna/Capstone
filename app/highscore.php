@@ -27,7 +27,7 @@ try {
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
     $errorinfo = $dbh->errorInfo();
-    die(json_encode($errorinfo[0] == '00000' ? "true" : "false")); // error code 0 = successful transaction
+    die(json_encode($errorinfo[0] == '00000' ? 'true' : 'false')); // error code 0 = successful transaction
 } catch (PDOException $e) {
     echo "PDO Exception: ";
     echo $e->getMessage();

@@ -10,34 +10,69 @@ GameMenu=function(director) {
 	var self = this;
 	this.showMenu = function() {
 		var scene = new lime.Scene();
+		Utils.addBackgroundToScene(scene);
 		
-		var startEasyGameButton = new lime.GlossyButton('Start Game - Easy Mode').setPosition(500, 300).setSize(500, 50);
+		var splash = new lime.Sprite()
+			.setFill(Constants.Assets.IMAGE_PATH + "splash.png")
+			.setSize(840, 434)
+			.setAnchorPoint(0, 0)
+			.setPosition(75, 0);
+		scene.appendChild(splash);
+		
+		var btnSize = {x: 500, y: 50};
+		var btnPos = {x: 500, y: 425};
+		var btnInterval = 75;
+		
+		var startEasyGameButton = new lime.GlossyButton('Start Game - Easy Mode')
+			.setPosition(btnPos.x, btnPos.y)
+			.setSize(btnSize.x, btnSize.y)
+			.setColor("#4e5e6e");
 		goog.events.listen(startEasyGameButton, ['mousedown','touchstart'], function(e) {
 			Globals.easyMode = true;
 			director.replaceScene(new MazeMenu(director).showMenu(), Globals.transition);
 		});
 		scene.appendChild(startEasyGameButton);
         
-		var startGameButton = new lime.GlossyButton('Start Game').setPosition(500, 400).setSize(500, 50);
+        btnPos.y += btnInterval;
+        
+		var startGameButton = new lime.GlossyButton('Start Game')
+			.setPosition(btnPos.x, btnPos.y)
+			.setSize(btnSize.x, btnSize.y)
+			.setColor("#3e4e5e");
 		goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
             Globals.easyMode = false;
 			director.replaceScene(new MazeMenu(director).showMenu(), Globals.transition);
 		});
 		scene.appendChild(startGameButton);
 
-		var helpButton = new lime.GlossyButton('Instructions').setPosition(500, 500).setSize(500, 50);
+		btnPos.y += btnInterval;
+
+		var helpButton = new lime.GlossyButton('Instructions')
+			.setPosition(btnPos.x, btnPos.y)
+			.setSize(btnSize.x, btnSize.y)
+			.setColor("#2d3e4e");
 		goog.events.listen(helpButton, ['mousedown','touchstart'], function(e) {
-			
+			new HelpScene(director).show();
 		});
 		scene.appendChild(helpButton);
-
-		var highscoreButton = new lime.GlossyButton('View High Scores').setPosition(500, 600).setSize(500, 50);
+		
+		btnPos.y += btnInterval;
+		
+		var highscoreButton = new lime.GlossyButton('View High Scores')
+			.setPosition(btnPos.x, btnPos.y)
+			.setSize(btnSize.x, btnSize.y)
+			.setColor("#1c2e3e");
 		goog.events.listen(highscoreButton, ['mousedown','touchstart'], function(e) {
 			new HighScoreScene(director);
 		});
 		scene.appendChild(highscoreButton);
         
-		var highscoretestButton = new lime.GlossyButton('Sound is ' + (Globals.Audio.enabled ? "on":"off")).setPosition(500, 700).setSize(500, 50);
+        btnPos.y += btnInterval;
+        
+		var highscoretestButton = new lime.GlossyButton('Sound is ' + (Globals.Audio.enabled ? "on":"off"))
+			.setPosition(btnPos.x, btnPos.y)
+			.setSize(btnSize.x, btnSize.y)
+			.setColor("#0b1d2e");
 		goog.events.listen(highscoretestButton, ['mousedown','touchstart'], function(e) {
             Globals.Audio.enabled = !Globals.Audio.enabled;
 			highscoretestButton.setText('Sound is ' + (Globals.Audio.enabled ? "on":"off"));

@@ -65,5 +65,20 @@ Utils = {
             },
             dataType: 'json'
         });
-    }
+    },
+    addBackgroundToScene: function (scene) {
+		var bgSize = 127;
+		var bgInterval = 125;
+
+		for (var x = 0; x < Constants.Graphics.APP_DIMENSIONS.x; x += 125) {
+			for (var y = 0; y < Constants.Graphics.APP_DIMENSIONS.x; y += 125) {
+				var bgSprite = new lime.Sprite()
+					.setSize(bgSize, bgSize)
+					.setFill(Constants.Assets.IMAGE_PATH+"background.png")
+					.setAnchorPoint(0, 0)
+					.setPosition(x, y);
+				scene.appendChild(bgSprite);
+			}
+		}
+	}
 }

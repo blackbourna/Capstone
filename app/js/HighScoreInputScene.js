@@ -5,6 +5,7 @@ Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBS
 */
 HighScoreInputScene = function(director, maze, energy, timer, history) {
     var scene = new lime.Scene();
+	Utils.addBackgroundToScene(scene);
     var highScoreLabel = new lime.Label()
 		.setAnchorPoint(0, 0)
 		.setPosition(0, 64)

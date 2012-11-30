@@ -348,7 +348,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 		var foundIt = maze.pickUpRecharger(position);
 		if (foundIt) {
 			energy += Constants.EnergyCosts.ENERGY_GAINED;
-			var speed = Constants.Bot.ANIMATION_SPEED * 2;
+			var speed = Constants.Bot.ANIMATION_SPEED * 5;
 			var sequence = 	new lime.animation.Sequence(
 				// add sound
 				new lime.animation.ScaleTo(1.5).setDuration(speed),

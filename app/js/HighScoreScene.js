@@ -7,6 +7,7 @@ Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBS
 HighScoreScene = function(director) {
     
     var scene = new lime.Scene();
+	Utils.addBackgroundToScene(scene);
     var request = new goog.net.XhrIo();
     goog.events.listen(request, 'complete', function(){
         //request complete
@@ -14,7 +15,7 @@ HighScoreScene = function(director) {
             var data = request.getResponseJson();
             var yHeight = 0;
             var header = new lime.Label("Highscores")
-                .setPosition(250, yHeight)
+                .setPosition(350, yHeight)
                 .setAlign('left')
                 .setFontSize(48)
                 .setFontWeight(700)
@@ -24,7 +25,7 @@ HighScoreScene = function(director) {
             yHeight += 50;
             var scroller = new lime.ui.Scroller()
                 .setSize(Constants.Graphics.APP_DIMENSIONS.x, Constants.Graphics.APP_DIMENSIONS.y - 150 )
-                .setPosition(0, yHeight)
+                .setPosition(100, yHeight)
                 .setAnchorPoint(0, 0)
                 .setDirection(lime.ui.Scroller.Direction.VERTICAL);
             for (var day in data) {
@@ -85,7 +86,7 @@ HighScoreScene = function(director) {
                 }
             }
             scene.appendChild(scroller);
-            var goBack = new lime.GlossyButton('Go Back').setAnchorPoint(0, 0).setPosition(500, Constants.Graphics.APP_DIMENSIONS.y - 50).setSize(500, 50).setColor('#FF0000');
+            var goBack = new lime.GlossyButton('Go Back').setAnchorPoint(0, 0).setPosition(500, Constants.Graphics.APP_DIMENSIONS.y - 50).setSize(500, 50).setColor('#ed4753');
             goog.events.listen(goBack, ['mousedown','touchstart'], function(e) {
                 director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
             });
