@@ -60,7 +60,8 @@ Utils = {
                         onClose: function() {
                             director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
                         }
-                    }
+                    },
+                    modal: true
                 });
             },
             dataType: 'json'
