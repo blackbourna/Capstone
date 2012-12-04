@@ -33,7 +33,7 @@ Utils = {
 		var time = minutes+':'+seconds;
 		return time;
 	},
-    submitHighScore: function(name, maze, energy, timer, history, director) {
+    submitHighScore: function(name, maze, energy, timer, history, director, hsInputScene) {
 		var request = new goog.net.XhrIo();
         var postData = {"name": name, "mazeSeed": maze.seed, "mazeType": maze.type, "energy": energy, "timer": timer, "history": JSON.stringify(history), easyMode: Globals.easyMode};
         console.log(postData);
@@ -55,13 +55,17 @@ Utils = {
                 noty({
                     text: (success) ? 'Thanks for playing!' : 'There was a problem submitting your highscore. Please contact the system administrator.', 
                     layout: 'center',
+                    dismissQueue: false,
                     type: (success) ? 'success' : 'error',
+                    modal: true,
                     callback: {
+                        afterShow: function() {
+                            hsInputScene.btnEnabled = !success;
+                        },
                         onClose: function() {
                             director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
                         }
-                    },
-                    modal: true
+                    }
                 });
             },
             dataType: 'json'

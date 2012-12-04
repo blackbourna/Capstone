@@ -6,6 +6,9 @@ Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBS
 HighScoreInputScene = function(director, maze, energy, timer, history) {
     var scene = new lime.Scene();
 	Utils.addBackgroundToScene(scene);
+    var self = this;
+    self.btnEnabled = true;
+    
     var highScoreLabel = new lime.Label()
 		.setAnchorPoint(0, 0)
 		.setPosition(0, 64)
@@ -61,10 +64,10 @@ HighScoreInputScene = function(director, maze, energy, timer, history) {
     
     var startGameButton = new lime.GlossyButton('Submit').setPosition(500, 512).setSize(500, 50);
     goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
-		if (highScoreInputLabel.getText()) {
-			name = highScoreInputLabel.getText();
+        var name = highScoreInputLabel.getText().trim();
+		if (name.length > 0 && self.btnEnabled) {
+            Utils.submitHighScore(name, maze, energy, timer, history, director, self)
 		}
-        Utils.submitHighScore(name, maze, energy, timer, history, director)
     });
     scene.appendChild(startGameButton);
     
