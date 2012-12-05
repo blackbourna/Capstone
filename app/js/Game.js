@@ -25,7 +25,7 @@ Game = function(maze, director) {
     Globals.logContainer = new lime.RoundedRect()
 		.setSize(225, 450)
 		.setFill(new lime.fill.LinearGradient()
-			.addColorStop(0, '#2d3f4f')
+			.addColorStop(0, '#3e4e5e')
 			.addColorStop(450, '#4f8adb'))
 		.setPosition(10, 50)
 		.setAnchorPoint(0, 0)
@@ -40,7 +40,7 @@ Game = function(maze, director) {
     hudContainer = new lime.RoundedRect()
 		.setSize(225, 100)
 		.setFill(new lime.fill.LinearGradient()
-			.addColorStop(0, '#2d3f4f')
+			.addColorStop(0, '#3e4e5e')
 			.addColorStop(100, '#4f8adb'))
 		.setPosition(10, 550)
 		.setAnchorPoint(0, 0)
@@ -57,7 +57,10 @@ Game = function(maze, director) {
 		.setPosition(125, 700)
 		.setSize(200, 40)
 		.setColor('#ed4753');
+
 	goog.events.listen(goBack, ['mousedown','touchstart'], function(e) {
+		// this is null when the bot has automatically called dispose, meaning that the You Win/Lose dialog is open, shouldn't be allowed to go back in this case
+		if (Globals.logLabel == null) return;
 		bot.dispose();
         director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
 	});

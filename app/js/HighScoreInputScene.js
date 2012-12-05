@@ -9,6 +9,16 @@ HighScoreInputScene = function(director, maze, energy, timer, history) {
     var self = this;
     self.btnEnabled = true;
     
+    var bgRect = new lime.RoundedRect()
+		.setSize(Constants.Graphics.APP_DIMENSIONS.x - 100, Constants.Graphics.APP_DIMENSIONS.y - 100)
+		.setFill(new lime.fill.LinearGradient()
+			.addColorStop(0, '#3e4e5e')
+			.addColorStop(Constants.Graphics.APP_DIMENSIONS.y - 100, '#4f8adb'))
+		.setPosition(50, 50)
+		.setAnchorPoint(0, 0)
+		.setRadius(30);
+	scene.appendChild(bgRect);
+    
     var highScoreLabel = new lime.Label()
 		.setAnchorPoint(0, 0)
 		.setPosition(0, 64)

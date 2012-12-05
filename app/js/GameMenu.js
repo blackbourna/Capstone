@@ -26,7 +26,7 @@ GameMenu=function(director) {
 		var startEasyGameButton = new lime.GlossyButton('Start Game - Easy Mode')
 			.setPosition(btnPos.x, btnPos.y)
 			.setSize(btnSize.x, btnSize.y)
-			.setColor("#4e5e6e");
+			.setColor("#5f6f7f");
 		goog.events.listen(startEasyGameButton, ['mousedown','touchstart'], function(e) {
 			Globals.easyMode = true;
 			director.replaceScene(new MazeMenu(director).showMenu(), Globals.transition);
@@ -38,7 +38,7 @@ GameMenu=function(director) {
 		var startGameButton = new lime.GlossyButton('Start Game')
 			.setPosition(btnPos.x, btnPos.y)
 			.setSize(btnSize.x, btnSize.y)
-			.setColor("#3e4e5e");
+			.setColor("#4f5f6f");
 		goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
             Globals.easyMode = false;
 			director.replaceScene(new MazeMenu(director).showMenu(), Globals.transition);
@@ -50,7 +50,7 @@ GameMenu=function(director) {
 		var helpButton = new lime.GlossyButton('Instructions')
 			.setPosition(btnPos.x, btnPos.y)
 			.setSize(btnSize.x, btnSize.y)
-			.setColor("#2d3e4e");
+			.setColor("#3e4e5e");
 		goog.events.listen(helpButton, ['mousedown','touchstart'], function(e) {
 			new HelpScene(director).show();
 		});
@@ -61,7 +61,7 @@ GameMenu=function(director) {
 		var highscoreButton = new lime.GlossyButton('View High Scores')
 			.setPosition(btnPos.x, btnPos.y)
 			.setSize(btnSize.x, btnSize.y)
-			.setColor("#1c2e3e");
+			.setColor("#2f3f4f");
 		goog.events.listen(highscoreButton, ['mousedown','touchstart'], function(e) {
 			new HighScoreScene(director);
 		});
@@ -72,7 +72,7 @@ GameMenu=function(director) {
 		var highscoretestButton = new lime.GlossyButton('Sound is ' + (Globals.Audio.enabled ? "on":"off"))
 			.setPosition(btnPos.x, btnPos.y)
 			.setSize(btnSize.x, btnSize.y)
-			.setColor("#0b1d2e");
+			.setColor("#1f2f3f");
 		goog.events.listen(highscoretestButton, ['mousedown','touchstart'], function(e) {
             Globals.Audio.enabled = !Globals.Audio.enabled;
 			highscoretestButton.setText('Sound is ' + (Globals.Audio.enabled ? "on":"off"));

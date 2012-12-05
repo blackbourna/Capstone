@@ -429,9 +429,10 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			Globals.Audio.stopThenPlay(sfx_outofenergy);
 			self.dispose();
 			noty({
-				text: 'Out of energy', 
+				text: 'Out of energy<br />Click here to return to the main menu!', 
 				layout: 'center',
                 type: 'error',
+                modal: true,
 				callback: {
 					onClose: function() {
 						director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
@@ -444,9 +445,10 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			Globals.Audio.stopThenPlay(sfx_goal);
 			self.dispose();
 			noty({
-				text: 'Solved! Good job!', 
+				text: 'Solved! Good job!<br />Click here to continue', 
 				layout: 'center',
                 type: 'success',
+                modal: true,
 				callback: {
 					onClose: function() {
 						new HighScoreInputScene(director, maze, energy, timer, history);

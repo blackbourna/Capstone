@@ -53,7 +53,7 @@ Utils = {
             success: function(data){
                 var success = data == "true";
                 noty({
-                    text: (success) ? 'Thanks for playing!' : 'There was a problem submitting your highscore. Please contact the system administrator.', 
+                    text: ((success) ? 'Thanks for playing!' : 'There was a problem submitting your highscore. Please contact the system administrator.') + "<br />Click here to continue", 
                     layout: 'center',
                     dismissQueue: false,
                     type: (success) ? 'success' : 'error',
