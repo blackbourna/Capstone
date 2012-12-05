@@ -24,10 +24,21 @@ HighScoreScene = function(director) {
             scene.appendChild(header);
             yHeight += 50;
             var scroller = new lime.ui.Scroller()
-                .setSize(Constants.Graphics.APP_DIMENSIONS.x, Constants.Graphics.APP_DIMENSIONS.y - 150 )
+                .setSize(Constants.Graphics.APP_DIMENSIONS.x, Constants.Graphics.APP_DIMENSIONS.y - 150)
                 .setPosition(100, yHeight)
                 .setAnchorPoint(0, 0)
                 .setDirection(lime.ui.Scroller.Direction.VERTICAL);
+                
+			var bgRect = new lime.RoundedRect()
+				.setSize(Constants.Graphics.APP_DIMENSIONS.x - 100, Constants.Graphics.APP_DIMENSIONS.y - 150)
+				.setFill(new lime.fill.LinearGradient()
+					.addColorStop(0, '#3e4e5e')
+					.addColorStop(Constants.Graphics.APP_DIMENSIONS.y - 100, '#4f8adb'))
+				.setPosition(50, yHeight)
+				.setAnchorPoint(0, 0)
+				.setRadius(30);
+			scene.appendChild(bgRect);
+                
             for (var day in data) {
                 scroller.appendChild(
                     new lime.Label(day)
@@ -85,6 +96,7 @@ HighScoreScene = function(director) {
                     }
                 }
             }
+            
             scene.appendChild(scroller);
             var goBack = new lime.GlossyButton('Go Back').setAnchorPoint(0, 0).setPosition(500, Constants.Graphics.APP_DIMENSIONS.y - 50).setSize(500, 50).setColor('#ed4753');
             goog.events.listen(goBack, ['mousedown','touchstart'], function(e) {
