@@ -45,7 +45,7 @@ MazeMenu=function(director) {
 		});
 		scene.appendChild(FMButton);
 		
-		var goBack = new lime.GlossyButton('Go Back').setPosition(500, 700).setSize(500, 50).setColor('#1f2f3f');
+		var goBack = new lime.GlossyButton('Go Back').setPosition(500, 700).setSize(500, 50).setColor('#ed4753');
 		goog.events.listen(goBack, ['mousedown','touchstart'], function(e) {
 			director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
 		});

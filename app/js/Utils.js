@@ -38,9 +38,6 @@ Utils = {
         var postData = {"name": name, "mazeSeed": maze.seed, "mazeType": maze.type, "energy": energy, "timer": timer, "history": JSON.stringify(history), easyMode: Globals.easyMode};
         console.log(postData);
         var queryString = "?";
-        // apparently closure does not provide a urlencode function, however the 
-        // highscore input won't accept anything but letters and spaces so the input
-        // should be valid
         for (var d in postData) {
 			queryString += d + "=" + postData[d] + "&";
 		}

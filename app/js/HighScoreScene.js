@@ -92,7 +92,9 @@ HighScoreScene = function(director) {
                 addRow("User Name", "Score", "Maze Type", "Easy Mode", true);
                 for (var mazeType in data[day]) {
                     for (var highscore in data[day][mazeType]) {
-                        addRow(data[day][mazeType][highscore].user_name, data[day][mazeType][highscore].score, mazeType, data[day][mazeType][highscore].easy_mode == 1 ? "X" : "", false);
+						console.log(data[day][mazeType][highscore].easy_mode);
+						console.log(data[day][mazeType][highscore].easy_mode == 1);
+                        addRow(data[day][mazeType][highscore].user_name, data[day][mazeType][highscore].score, mazeType, (data[day][mazeType][highscore].easy_mode == 1) ? "X" : "", false);
                     }
                 }
             }

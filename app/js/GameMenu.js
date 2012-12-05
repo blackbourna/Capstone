@@ -1,6 +1,7 @@
 goog.provide('GameMenu');
 goog.require('MazeLoader');
 goog.require('MazeMenu');
+goog.require('AboutScene');
 /*
 I Andrew Blackbourn, 000129408 certify that this material is my original work. No other person's work has been used without due acknowledgement. I have not made my work available to anyone else.
 Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBSD License"). See README.md for details.
@@ -78,6 +79,15 @@ GameMenu=function(director) {
 			highscoretestButton.setText('Sound is ' + (Globals.Audio.enabled ? "on":"off"));
 		});
 		scene.appendChild(highscoretestButton);
+
+		var aboutButton = new lime.GlossyButton('About this Game')
+			.setPosition(btnPos.x + 400, btnPos.y)
+			.setSize(btnSize.x/3, btnSize.y)
+			.setColor("#ed4753");
+		goog.events.listen(aboutButton, ['mousedown','touchstart'], function(e) {
+			director.replaceScene(new AboutScene(director));
+		});
+		scene.appendChild(aboutButton);
 
 		return scene;
 	}
