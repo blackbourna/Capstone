@@ -1,4 +1,4 @@
-//set main namespace
+ //set main namespace
 goog.provide('Game');
 
 goog.require('lime.fill.Frame');
@@ -65,6 +65,16 @@ Game = function(maze, director) {
         director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
 	});
 	scene.appendChild(goBack);
+	
+	var helpLabel = new lime.Label('Press `H` for help')
+		.setAnchorPoint(0, 0)
+		.setPosition(25, 740)
+		.setFontSize(18)
+		.setSize(1000, 1000)
+		.setAlign('left')
+		.setFontColor('#FFFFFF')
+		.setFontWeight(700);
+	scene.appendChild(helpLabel);
 	
     // Eternal Darkness
     var mazeContainer = new lime.Sprite()

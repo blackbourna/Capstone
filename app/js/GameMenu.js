@@ -53,7 +53,7 @@ GameMenu=function(director) {
 			.setSize(btnSize.x, btnSize.y)
 			.setColor("#3e4e5e");
 		goog.events.listen(helpButton, ['mousedown','touchstart'], function(e) {
-			new HelpScene(director).show();
+			director.pushScene(new HelpScene(director).show());
 		});
 		scene.appendChild(helpButton);
 		
