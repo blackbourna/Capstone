@@ -7,8 +7,9 @@ HelpScene = function(director) {
     this.show = function() {
         var scene = new lime.Scene();
 		Utils.addBackgroundToScene(scene);
+		var fill = Constants.Assets.IMAGE_PATH + (Globals.easyMode ? 'easy_mode.png' : 'hard_mode.png');
         var helpSprite = new lime.Sprite()
-            .setFill(Constants.Assets.IMAGE_PATH + 'help.png')
+            .setFill(fill)
             .setAnchorPoint(0, 0)
             .setPosition(0, 0)
             .setSize(1014, 585);
