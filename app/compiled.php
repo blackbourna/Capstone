@@ -16,6 +16,7 @@
 			$.noty.consumeAlert({layout: 'center', type: 'success', dismissQueue: true});
 		});
 	</script>
+    <link rel="shortcut icon" href="assets/sprites/favicon.ico" />
 </head>
 
 <body onload="CapstoneProject_BlackbournA.start()"></body>

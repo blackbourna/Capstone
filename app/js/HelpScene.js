@@ -16,11 +16,16 @@ HelpScene = function(director) {
 		scene.appendChild(rect);
 		var fill = Constants.Assets.IMAGE_PATH + (Globals.easyMode ? 'easy_mode.png' : 'hard_mode.png');
         var helpSprite = new lime.Sprite()
+            .setFill(Constants.Assets.IMAGE_PATH + 'costMenu.png')
+            .setAnchorPoint(0, 0)
+            .setPosition(Constants.Graphics.APP_DIMENSIONS.x - 400, Constants.Graphics.APP_DIMENSIONS.x - 338)
+            .setSize(400, 338);
+        scene.appendChild(helpSprite);
+        var costMenuSprite = new lime.Sprite()
             .setFill(fill)
             .setAnchorPoint(0, 0)
             .setPosition(40, 50)
             .setSize(950, 585);
-        scene.appendChild(helpSprite);
         goog.events.listen(scene, ['mousedown', 'keydown'], function() {
             director.popScene();
         });
