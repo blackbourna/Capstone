@@ -34,6 +34,7 @@ Game = function(maze, director) {
 	Globals.logLabel = new lime.LabelMulti('')
         .setAnchorPoint(0, 0)
         .setPosition(10, 10)
+        .setSize(225, 450)
         .setAlign('left');
     Globals.logContainer.appendChild(Globals.logLabel);
     
@@ -49,6 +50,7 @@ Game = function(maze, director) {
     Globals.hudLabel = new lime.LabelMulti('Hello!')
         .setAnchorPoint(0, 0)
         .setPosition(10, 10)
+        .setSize(225, 100)
         .setAlign('left');
     hudContainer.appendChild(Globals.hudLabel);
     

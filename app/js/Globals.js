@@ -22,14 +22,14 @@ Globals = {
 			audio.currentTime = 0;
 			audio.play();
 		},
-        enabled: false
+        enabled: true
 	},
 	ControlScheme: {
 		useHardcoded: false, // if useHardcoded = false, Darkness mode uses scheme 0 and Easy mode uses scheme 1
 		hardcoded: 1 // use this scheme if useHardcoded = true
 	},
 	Debug: {
-		debug: true
+		debug: false
 	},
     hudLabel: null,
 	logContainer:null,
