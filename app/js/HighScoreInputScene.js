@@ -46,7 +46,8 @@ HighScoreInputScene = function(director, maze, energy, timer, history) {
 		maze.type='gr';
 	}
     scene.appendChild(highScoreInputLabel);
-    var stats = "Maze Id: " + " " + maze.seed + " " + maze.type + "\n";
+    var stats = "Maze Id: " + " " + maze.seed + " \n";
+    stats += "Maze Type: " + maze.type + " \n";
     stats += "Final Energy: " + " " + energy + " " +  "\n";
     stats += "Time: " + " " + Utils.getFormattedTime(timer) + " ";
     var statsLabel = new lime.LabelMulti()

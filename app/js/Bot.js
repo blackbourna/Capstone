@@ -383,9 +383,9 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
     }
     
 	this.updateOutput = function (){
-		Globals.hudLabel.setText('Bot Energy: ' + this.getEnergy() + '\n' +
-			'Direction: ' + Directions.getName(direction) + '\n' + 
-			'Position: ' + position.x + ', ' + position.y + '\n' +
+		Globals.hudLabel.setText('Bot Energy: ' + this.getEnergy() + ' \n' +
+			'Direction: ' + Directions.getName(direction) + ' \n' + 
+			'Position: ' + position.x + ', ' + position.y + ' \n' +
 			'Time: ' + Utils.getFormattedTime(timer) //(timer/1000.0).toFixed(3)
 		);
 	}
