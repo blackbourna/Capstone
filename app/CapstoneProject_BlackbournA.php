@@ -16,7 +16,17 @@
 			$.noty.consumeAlert({layout: 'center', type: 'success', dismissQueue: true});
 		});
 	</script>
+    <meta property="og:title" content="The Rock"/>
+    <meta property="og:type" content="game"/>
+    <meta property="og:url" content="http://capstone-blackbourna.dotcloud.com/?c=c"/>
+    <meta property="og:image" content="http://capstone-blackbourna.dotcloud.com/assets/sprites/"/>
+    <meta property="og:site_name" content="Amazebot Online"/>
+    <meta property="og:description"
+          content="Fun for the whole family! Run through a maze using a complex control scheme and impress all of your friends!!!"/>
     <link rel="shortcut icon" href="assets/sprites/favicon.ico" />
+	<style>
+		body {background-color: #000;}
+	</style>
 </head>
 
 <body onload="CapstoneProject_BlackbournA.start()"></body>
