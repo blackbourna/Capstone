@@ -5,6 +5,20 @@ Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBS
 */
 HighScoreInputScene = function(director, maze, energy, timer, history) {
     var scene = new lime.Scene();
+	Utils.addBackgroundToScene(scene);
+    var self = this;
+    self.btnEnabled = true;
+    
+    var bgRect = new lime.RoundedRect()
+		.setSize(Constants.Graphics.APP_DIMENSIONS.x - 100, Constants.Graphics.APP_DIMENSIONS.y - 100)
+		.setFill(new lime.fill.LinearGradient()
+			.addColorStop(0, '#3e4e5e')
+			.addColorStop(Constants.Graphics.APP_DIMENSIONS.y - 100, '#4f8adb'))
+		.setPosition(50, 50)
+		.setAnchorPoint(0, 0)
+		.setRadius(30);
+	scene.appendChild(bgRect);
+    
     var highScoreLabel = new lime.Label()
 		.setAnchorPoint(0, 0)
 		.setPosition(0, 64)
@@ -32,8 +46,8 @@ HighScoreInputScene = function(director, maze, energy, timer, history) {
 		maze.type='gr';
 	}
     scene.appendChild(highScoreInputLabel);
-    var stats = "Maze Id: " + " " + maze.seed + "\n";
-    stats += "Maze Type: " + " " + maze.type + "\n";
+    var stats = "Maze Id: " + " " + maze.seed + " \n";
+    stats += "Maze Type: " + maze.type + " \n";
     stats += "Final Energy: " + " " + energy + " " +  "\n";
     stats += "Time: " + " " + Utils.getFormattedTime(timer) + " ";
     var statsLabel = new lime.LabelMulti()
@@ -60,10 +74,10 @@ HighScoreInputScene = function(director, maze, energy, timer, history) {
     
     var startGameButton = new lime.GlossyButton('Submit').setPosition(500, 512).setSize(500, 50);
     goog.events.listen(startGameButton, ['mousedown','touchstart'], function(e) {
-		if (highScoreInputLabel.getText()) {
-			name = highScoreInputLabel.getText();
+        var name = highScoreInputLabel.getText().trim();
+		if (name.length > 0 && self.btnEnabled) {
+            Utils.submitHighScore(name, maze, energy, timer, history, director, self)
 		}
-        Utils.submitHighScore(name, maze, energy, timer, history, director)
     });
     scene.appendChild(startGameButton);
     

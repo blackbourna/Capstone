@@ -33,14 +33,11 @@ Utils = {
 		var time = minutes+':'+seconds;
 		return time;
 	},
-    submitHighScore: function(name, maze, energy, timer, history, director) {
+    submitHighScore: function(name, maze, energy, timer, history, director, hsInputScene) {
 		var request = new goog.net.XhrIo();
         var postData = {"name": name, "mazeSeed": maze.seed, "mazeType": maze.type, "energy": energy, "timer": timer, "history": JSON.stringify(history), easyMode: Globals.easyMode};
         console.log(postData);
         var queryString = "?";
-        // apparently closure does not provide a urlencode function, however the 
-        // highscore input won't accept anything but letters and spaces so the input
-        // should be valid
         for (var d in postData) {
 			queryString += d + "=" + postData[d] + "&";
 		}
@@ -53,10 +50,15 @@ Utils = {
             success: function(data){
                 var success = data == "true";
                 noty({
-                    text: (success) ? 'Thanks for playing!' : 'There was a problem submitting your highscore. Please contact the system administrator.', 
+                    text: ((success) ? 'Thanks for playing!' : 'There was a problem submitting your highscore. Please contact the system administrator.') + "<br />Click here to continue", 
                     layout: 'center',
+                    dismissQueue: false,
                     type: (success) ? 'success' : 'error',
+                    modal: true,
                     callback: {
+                        afterShow: function() {
+                            hsInputScene.btnEnabled = !success;
+                        },
                         onClose: function() {
                             director.replaceScene(new GameMenu(director).showMenu(), Globals.transition);
                         }
@@ -65,5 +67,20 @@ Utils = {
             },
             dataType: 'json'
         });
-    }
+    },
+    addBackgroundToScene: function (scene) {
+		var bgSize = 127;
+		var bgInterval = 125;
+
+		for (var x = 0; x < Constants.Graphics.APP_DIMENSIONS.x; x += 125) {
+			for (var y = 0; y < Constants.Graphics.APP_DIMENSIONS.x; y += 125) {
+				var bgSprite = new lime.Sprite()
+					.setSize(bgSize, bgSize)
+					.setFill(Constants.Assets.IMAGE_PATH+"background.png")
+					.setAnchorPoint(0, 0)
+					.setPosition(x, y);
+				scene.appendChild(bgSprite);
+			}
+		}
+	}
 }

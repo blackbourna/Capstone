@@ -4,6 +4,6 @@ I Andrew Blackbourn, 000129408 certify that this material is my original work. N
 Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBSD License"). See README.md for details.
 */
 function get_PDO_connection() {
-	return new PDO('sqlite://'.dirname(__FILE__).'/db/amazebot.sqlite');
+	return new PDO('sqlite:db/amazebot.sqlite');
 }
 ?>

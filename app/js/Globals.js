@@ -17,19 +17,20 @@ Globals = {
 		});
 	},
 	Audio: {
-		stopThenPlay: function(audio) {
+		// Global function to play audio if enabled (originally would reuse audio objects but some versions of Chrome has issues with this)
+		play: function(audio) {
             if (!Globals.Audio.enabled) return;
-			audio.currentTime = 0;
+            audio.currentTime = 0;
 			audio.play();
 		},
-        enabled: false
+        enabled: true
 	},
 	ControlScheme: {
 		useHardcoded: false, // if useHardcoded = false, Darkness mode uses scheme 0 and Easy mode uses scheme 1
 		hardcoded: 1 // use this scheme if useHardcoded = true
 	},
 	Debug: {
-		debug: true
+		debug: false
 	},
     hudLabel: null,
 	logContainer:null,
