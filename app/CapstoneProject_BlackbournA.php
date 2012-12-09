@@ -2,7 +2,7 @@
 
 <html>
 <head>
-	<title>CapstoneProject_BlackbournA</title>
+	<title>AmazeBot Online</title>
 	<script type="text/javascript" src="../../../closure/closure/goog/base.js"></script>
 	<script type="text/javascript" src="js/CapstoneProject_BlackbournA.js"></script>
 	<!-- Jquery is needed for noty lib -->
@@ -16,13 +16,15 @@
 			$.noty.consumeAlert({layout: 'center', type: 'success', dismissQueue: true});
 		});
 	</script>
-    <meta property="og:title" content="The Rock"/>
-    <meta property="og:type" content="game"/>
-    <meta property="og:url" content="http://capstone-blackbourna.dotcloud.com/?c=c"/>
-    <meta property="og:image" content="http://capstone-blackbourna.dotcloud.com/assets/sprites/"/>
-    <meta property="og:site_name" content="Amazebot Online"/>
-    <meta property="og:description"
-          content="Fun for the whole family! Run through a maze using a complex control scheme and impress all of your friends!!!"/>
+	      
+	<meta property="og:type" content="website"/>
+	<meta property="og:url" content="http://capstone-blackbourna.dotcloud.com/?c=c"/>
+	<meta property="og:image" content="http://capstone-blackbourna.dotcloud.com/assets/sprites/bot.png"/>
+	<meta property="og:site_name" content="AmazeBot Online"/>
+	<meta property="og:title" content="AmazeBot Online"/>
+	<meta property="og:description" content="Fun for the whole family! Run through a maze using a complex control scheme and impress all of your friends!!!"/>
+	<link rel="image_src" href="http://capstone-blackbourna.dotcloud.com/assets/sprites/bot.png"/>
+	
     <link rel="shortcut icon" href="assets/sprites/favicon.ico" />
 	<style>
 		body {background-color: #000;}

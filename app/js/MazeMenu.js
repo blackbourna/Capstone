@@ -9,6 +9,15 @@ MazeMenu=function(director) {
 	this.showMenu = function() {
 		var scene = new lime.Scene();
 		Utils.addBackgroundToScene(scene);
+		var header = new lime.Label("Select Your Maze Type")
+			.setPosition(Constants.Graphics.APP_DIMENSIONS.x*0.73, 0)
+			.setAlign('left')
+			.setFontSize(48)
+			.setFontWeight(700)
+			.setAnchorPoint(0.5, 0)
+			.setSize(Constants.Graphics.APP_DIMENSIONS.x, 50);
+		scene.appendChild(header);
+		
 		var CBButton = new lime.GlossyButton('Circuit Board').setPosition(500, 100).setSize(500, 50).setColor('#5e6e7e');
 		goog.events.listen(CBButton, ['mousedown','touchstart'], function(e) {
 			new MazeLoader(director).getMaze('CB');

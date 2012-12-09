@@ -17,9 +17,10 @@ Globals = {
 		});
 	},
 	Audio: {
-		stopThenPlay: function(audio) {
+		// Global function to play audio if enabled (originally would reuse audio objects but some versions of Chrome has issues with this)
+		play: function(wav) {
             if (!Globals.Audio.enabled) return;
-			audio.currentTime = 0;
+			var audio = new Audio(wav);
 			audio.play();
 		},
         enabled: true

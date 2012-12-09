@@ -28,20 +28,20 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
     var difference = goog.math.Coordinate.difference;
     
     // audio resources
-    var sfx_180 = new Audio(Constants.Assets.AUDIO_PATH + '180.wav');
-    var sfx_goal = new Audio(Constants.Assets.AUDIO_PATH + 'goal.wav');
-    var sfx_look_f = new Audio(Constants.Assets.AUDIO_PATH + 'look_f.wav');
-    var sfx_lookfar = new Audio(Constants.Assets.AUDIO_PATH + 'lookfar.wav');
-    var sfx_look_l = new Audio(Constants.Assets.AUDIO_PATH + 'look_l.wav');
-    var sfx_look_r = new Audio(Constants.Assets.AUDIO_PATH + 'look_r.wav');
-    var sfx_outofenergy = new Audio(Constants.Assets.AUDIO_PATH + 'outofenergy.wav');
-    var sfx_pickupfail = new Audio(Constants.Assets.AUDIO_PATH + 'pickupfail.wav');
-    var sfx_pickupsuccess = new Audio(Constants.Assets.AUDIO_PATH + 'pickupsuccess.wav');
-    var sfx_sprint = new Audio(Constants.Assets.AUDIO_PATH + 'sprint.wav');
-    var sfx_step = new Audio(Constants.Assets.AUDIO_PATH + 'step.wav');
-    var sfx_turn = new Audio(Constants.Assets.AUDIO_PATH + 'turn.wav');
-    var sfx_wallhit = new Audio(Constants.Assets.AUDIO_PATH + 'wallhit.wav');
-    var sfx_music = new Audio(Constants.Assets.AUDIO_PATH + 'music.wav');
+    var sfx_180 = Constants.Assets.AUDIO_PATH + '180.wav';
+    var sfx_goal = Constants.Assets.AUDIO_PATH + 'goal.wav';
+    var sfx_look_f = Constants.Assets.AUDIO_PATH + 'look_f.wav';
+    var sfx_lookfar = Constants.Assets.AUDIO_PATH + 'lookfar.wav';
+    var sfx_look_l = Constants.Assets.AUDIO_PATH + 'look_l.wav';
+    var sfx_look_r = Constants.Assets.AUDIO_PATH + 'look_r.wav';
+    var sfx_outofenergy = Constants.Assets.AUDIO_PATH + 'outofenergy.wav';
+    var sfx_pickupfail = Constants.Assets.AUDIO_PATH + 'pickupfail.wav';
+    var sfx_pickupsuccess = Constants.Assets.AUDIO_PATH + 'pickupsuccess.wav';
+    var sfx_sprint = Constants.Assets.AUDIO_PATH + 'sprint.wav';
+    var sfx_step = Constants.Assets.AUDIO_PATH + 'step.wav';
+    var sfx_turn = Constants.Assets.AUDIO_PATH + 'turn.wav';
+    var sfx_wallhit = Constants.Assets.AUDIO_PATH + 'wallhit.wav';
+    var sfx_music = Constants.Assets.AUDIO_PATH + 'music.wav';
 
     var markedCells = new Array();
     var history = [];
@@ -68,7 +68,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			}
 		});
 		
-		Globals.Audio.stopThenPlay(sfx_turn);
+		Globals.Audio.play(sfx_turn);
 		self.sprite.runAction(rotate);
     }
     var updatePosition = function(speed) {
@@ -81,7 +81,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			moveTo.setDuration(ANIM_SPEED);
 		}
 		Globals.waitForAnimationEndEvent(moveTo);
-		Globals.Audio.stopThenPlay(sfx_step);
+		Globals.Audio.play(sfx_step);
 		self.sprite.runAction(moveTo);
     }
     var getScreenPosition = function() {
@@ -142,7 +142,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
     }
     
     var hitWall = function(cell) {
-		Globals.Audio.stopThenPlay(sfx_wallhit);
+		Globals.Audio.play(sfx_wallhit);
 		var topCornerPlus5 = new Point(Constants.Graphics.TOP_CORNER.x + 10, Constants.Graphics.TOP_CORNER.y + 10)
 		var durTime = Constants.Bot.ANIMATION_SPEED/2;
 		// this is why javascript could use a tuple type!
@@ -236,7 +236,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			break;
 		}
 		energy -= (blocked) ? Constants.EnergyCosts.MOVE_BLOCKED : Constants.EnergyCosts.MOVE;
-		Globals.Audio.stopThenPlay(sfx_step);
+		Globals.Audio.play(sfx_step);
 		return !blocked;
 	}
 	// @dir = e.g. TURN.RIGHTAWS
@@ -269,7 +269,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 		addHistory(dir);
 		switch(dir) {
 			case LOOK.AHEAD:
-				Globals.Audio.stopThenPlay(sfx_look_f);
+				Globals.Audio.play(sfx_look_f);
 				if (isOpen(sum(position, direction))) {
 					addOpen(sum(position, direction));
 				} else { // hit wall
@@ -278,7 +278,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			break;
 			case LOOK.RIGHT:
 				var dir = Compass.rotate(TURN.RIGHT, direction);
-				Globals.Audio.stopThenPlay(sfx_look_r);
+				Globals.Audio.play(sfx_look_r);
 				if (isOpen(sum(position, dir))) {
 					addOpen(sum(position, dir));
 				} else { // hit wall
@@ -287,7 +287,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			break;
 			case LOOK.LEFT:
 				var dir = Compass.rotate(TURN.LEFT, direction);
-				Globals.Audio.stopThenPlay(sfx_look_l);
+				Globals.Audio.play(sfx_look_l);
 				if (isOpen(sum(position, dir))) {
 					addOpen(sum(position, dir));
 				} else { // hit wall
@@ -312,7 +312,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			cell = sum(cell, direction);
 		}
 		addWall(cell);
-		Globals.Audio.stopThenPlay(sfx_lookfar);
+		Globals.Audio.play(sfx_lookfar);
 		return ct;
 	}
 	
@@ -320,7 +320,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 	this.sprint = function() {
 		addHistory('SPRINT');
 		var blocked = false;
-		Globals.Audio.stopThenPlay(sfx_sprint);
+		Globals.Audio.play(sfx_sprint);
 		for (var x = 0; x < Constants.Bot.SPRINT_DISTANCE; x++) {
 			if (isOpen(sum(position, direction))) {
 					position = sum(position, direction);
@@ -355,12 +355,12 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 				new lime.animation.ScaleTo(1).setDuration(speed)
 			);
 			Globals.waitForAnimationEndEvent(sequence);
-			Globals.Audio.stopThenPlay(sfx_pickupsuccess);
+			Globals.Audio.play(sfx_pickupsuccess);
 			if (rechargerSprite)
 				rechargerSprite.runAction(new lime.animation.FadeTo(0).setDuration(Constants.Bot.ANIMATION_SPEED));
 			self.sprite.runAction(sequence);
 		} else {
-			Globals.Audio.stopThenPlay(sfx_pickupfail);
+			Globals.Audio.play(sfx_pickupfail);
 		}
 		return foundIt;
 	}
@@ -426,7 +426,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 	var mazeEvents = function (dt) {
 		var gameDone = false;
 		if (energy <= 0) {
-			Globals.Audio.stopThenPlay(sfx_outofenergy);
+			Globals.Audio.play(sfx_outofenergy);
 			self.dispose();
 			noty({
 				text: 'Out of energy<br />Click here to return to the main menu!', 
@@ -442,7 +442,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			return true;
 		}
 		if (maze.get(position) == Cell.GOAL) { // maze solved!
-			Globals.Audio.stopThenPlay(sfx_goal);
+			Globals.Audio.play(sfx_goal);
 			self.dispose();
 			noty({
 				text: 'Solved! Good job!<br />Click here to continue', 
@@ -504,7 +504,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 	});
 	
 	var musicLoopEvent = function() {
-		Globals.Audio.stopThenPlay(sfx_music);
+		Globals.Audio.play(sfx_music);
 	};
 	//
 	//$(sfx_music).bind('canplaythrough', function() {
