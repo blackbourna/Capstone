@@ -3,7 +3,7 @@
 
 <html>
 <head>
-	<title>CapstoneProject_BlackbournA</title>
+	<title>AmazeBot Online</title>
 	<script type="text/javascript" src="compiled.js"></script>
 	<!-- Jquery is needed for noty lib -->
 	<script type="text/javascript" src="js/jquery/jquery-1.8.2.min.js"></script>
