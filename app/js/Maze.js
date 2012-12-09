@@ -6,6 +6,10 @@ goog.require('Utils');
 I Andrew Blackbourn, 000129408 certify that this material is my original work. No other person's work has been used without due acknowledgement. I have not made my work available to anyone else.
 Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBSD License"). See README.md for details.
 */
+
+/**
+ * Represents a maze. Also contains code for recharger scan animation and easy mode drawing of complete maze.
+ */
 Maze = function(energyPt) {
     var self = this;
     this.width = Constants.Maze.MAZE_DIMENSIONS.x;
@@ -22,7 +26,7 @@ Maze = function(energyPt) {
 	var recharger = energyPt;
 	var rechargerSprite;
     this.init = function(mazeSprite) {
-        // set maze size constants
+        // set up maze and place goal on screen
 		for (var x = this.goal.y; x < this.goal.y + 4; x++) {
 			for (var y = this.goal.x; y < this.goal.x + 4; y++) {
 				this.maze[x][y] = Cell.GOAL;
@@ -36,7 +40,9 @@ Maze = function(energyPt) {
 			}
 		}
     }
-	
+	// param x - the x coordinate
+    // param y - the y coordinate
+    // @returns the value of a cell
     this.get = function(x, y) {
 		if (typeof x == 'object') {
 			return (Utils.validatePoint(x)) ? this.maze[x.y][x.x] : '#';
@@ -71,7 +77,7 @@ Maze = function(energyPt) {
         rechargerSprite.setPosition(coord);
         mazeSprite.appendChild(rechargerSprite);
     }
-    
+    // recharger scan animation
     this.scanForRecharger = function(position, mazeSprite) {
 		//(int)Math.round(Math.sqrt(dx * dx + dy * dy));
 		Globals.animationPlaying = true;
@@ -100,11 +106,11 @@ Maze = function(energyPt) {
 					}
 				}
 			}
-			for (var s in sprites) {
+			for (var s in sprites) { // loop through collected sprites
 				mazeSprite.appendChild(sprites[s]);
 				var sequence = null;
 				var sequenceSpeed = radarSpeed/3;
-				if (!foundEnergy) {
+				if (!foundEnergy) { // speed up and change sound if the recharger is in the current range of cells
 					sequence = new lime.animation.Sequence(
 						new lime.animation.Delay().setDuration((i - 1)*radarSpeed), 		
 										
@@ -115,7 +121,7 @@ Maze = function(energyPt) {
 						Globals.Audio.play(sfx_scan1); // use raw HTML5 for audio, limejs has terrible audio support
 					}, null, radarSpeed * 1000 * i, 1);
 				} else {
-					// flash 3 times. limejs doesn't have any list-style animation collections,
+					// flash 3 times. limejs doesn't have any appendable animation collections,
 					// and javascript doesn't support tuples... ugly stuff
 					sequence = new lime.animation.Sequence(
 						new lime.animation.Delay().setDuration((i - 1)*radarSpeed),

@@ -4,6 +4,10 @@ goog.provide('Constants');
 I Andrew Blackbourn, 000129408 certify that this material is my original work. No other person's work has been used without due acknowledgement. I have not made my work available to anyone else.
 Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBSD License"). See README.md for details.
 */
+
+/**
+ * Various Constants used for Graphics, Game Speed, Maze Dimensions, etc.
+ */
 // math imports
 goog.require('goog.math.Coordinate');
 goog.require('goog.math.Vec2');

@@ -3,6 +3,10 @@ goog.provide('Bot');
 I Andrew Blackbourn, 000129408 certify that this material is my original work. No other person's work has been used without due acknowledgement. I have not made my work available to anyone else.
 Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBSD License"). See README.md for details.
 */
+
+/**
+ * Class representing the bot. Contains the majority of gameplay functionality
+ */
 goog.require('Constants');
 goog.require('MOVE');
 goog.require('TURN');
@@ -52,6 +56,9 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 	this.sprite = new lime.Sprite().setFill(Constants.Assets.IMAGE_PATH + 'bot.png');
 	
     // private functions
+    /*
+     * Update direction after bot turn
+     */
     var updateDirection = function(x, speed) {
 		var rotate = new lime.animation.RotateBy(x);
         if (speed) {
@@ -71,6 +78,9 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 		Globals.Audio.play(sfx_turn);
 		self.sprite.runAction(rotate);
     }
+    /*
+     * Update position after bot move
+     */
     var updatePosition = function(speed) {
 		addOpen(position);
 		var moveTo = new lime.animation.MoveTo(getScreenPosition());
@@ -84,6 +94,9 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 		Globals.Audio.play(sfx_step);
 		self.sprite.runAction(moveTo);
     }
+    /*
+     * @returns the bot's position in pixels
+     */
     var getScreenPosition = function() {
 		var width = self.sprite.getSize().width;
 		var height = self.sprite.getSize().height;
@@ -95,16 +108,22 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 
 	/*
 	 * Adds a wall
-	 * @params wall - the cell to add the wall
+	 * @params cell - the cell to add the wall
 	 * */
 	var addWall = function(cell) {
 		addCell(cell, Constants.Assets.IMAGE_PATH + 'wall.png');
 	}
-	
+	/*
+	 * Adds an open cell
+	 * @params cell - the cell to add the open cell
+	 * */
     var addOpen = function(cell) {
 		addCell(cell, Constants.Assets.IMAGE_PATH + 'open.png');
     }
-    
+	/*
+	 * Adds a cell
+	 * @params cell - the cell to add
+	 * */
     var addCell = function(cell, img) {
 		if (!Utils.validatePoint(cell)) return;
         if (maze.get(cell) == Cell.GOAL) return; // don't overwrite goal cells
@@ -120,13 +139,17 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
         fixZIndex();
         //console.log(rechargerSprite);
     }
-    
+    /*
+     * Moves a sprite to the front of the DOM to avoid sprites being overlapped
+     */
     var fixZIndex = function() {
         if (rechargerSprite) // only shown in easy mode
             mazeSprite.setChildIndex(rechargerSprite, mazeSprite.getNumberOfChildren() - 2);
 		mazeSprite.setChildIndex(self.sprite, mazeSprite.getNumberOfChildren() - 1);
     }
-    
+    /*
+     * Checks whether a cell has already been drawn to avoid redrawing cells to the DOM
+     */
     var cellHasBeenMarked = function(cell, doMark) {
 		if (!Utils.validatePoint(cell)) return true;
 		var alreadyMarked = false;
@@ -140,7 +163,9 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			markedCells.push(cell);
 		return alreadyMarked;
     }
-    
+    /*
+     * Called when a bot runs into a wall
+     */
     var hitWall = function(cell) {
 		Globals.Audio.play(sfx_wallhit);
 		var topCornerPlus5 = new Point(Constants.Graphics.TOP_CORNER.x + 10, Constants.Graphics.TOP_CORNER.y + 10)
@@ -301,6 +326,9 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 		energy -= Constants.EnergyCosts.LOOK;
 		return true;
 	}
+    /*
+     * Marks cells as open as far as bot can see forward
+     */
 	this.lookFarAhead = function() {
 		addHistory('LOOKFAR');
 		energy -= Constants.EnergyCosts.LOOK_AHEAD;
@@ -316,7 +344,9 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 		return ct;
 	}
 	
-	
+	/*
+     * Moves the bot up to 5 cells ahead unless a wall is hit
+     */
 	this.sprint = function() {
 		addHistory('SPRINT');
 		var blocked = false;
@@ -336,12 +366,17 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
         updatePosition(Constants.Bot.ANIMATION_SPEED * x / 2);
 		return x;
 	}
-	
+	/*
+     * Scan around the bot for the recharger
+     */
 	this.scanForRecharger = function() {
 		addHistory('SCAN');
 		energy -= Constants.EnergyCosts.ENERGY_SCAN;
 		return maze.scanForRecharger(position, mazeSprite);
 	}
+    /*
+     * Bot pick up event
+     */
 	this.pickUpRecharger = function() {
 		addHistory('PICKUP');
 		energy -= Constants.EnergyCosts.ENERGY_PICKUP;
@@ -364,24 +399,35 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 		}
 		return foundIt;
 	}
-	
+	/*
+     * @returns the bot's remaining energy
+     */
 	this.getEnergy = function() {
 		return energy;
 	}
+    /*
+     * Used for debugging, draws the entire maze
+     */
     this.drawMaze = function() {
 		maze.drawMaze(mazeSprite);
     }
-    
-    this.zoom = function(zoomIn) {
-		if (zoomIn) {
-		} else {
-		}
-    }
-    
+    /*
+     * Not implemented
+     */
+    //this.zoom = function(zoomIn) {
+	//	if (zoomIn) {
+	//	} else {
+	//	}
+    //}
+    /*
+     * @returns The bot's current direction
+     */
     this.getDirection = function() {
         return direction;
     }
-    
+    /*
+     * Updates the Bot's heads up display
+     */
 	this.updateOutput = function (){
 		Globals.hudLabel.setText('Bot Energy: ' + this.getEnergy() + ' \n' +
 			'Direction: ' + Directions.getName(direction) + ' \n' + 
@@ -389,7 +435,9 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			'Time: ' + Utils.getFormattedTime(timer) //(timer/1000.0).toFixed(3)
 		);
 	}
-	
+	/*
+     * Toggle autolooking on/off
+     */
 	this.toggleAutoLookDirection = function(dir) {
 		var dirName = dir.substring(5).toLowerCase();
 		var msg = 'Autolook ' + dirName + ' set to';
@@ -404,7 +452,9 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 		}
 		return msg;
 	}
-	
+	/*
+     * Unbinds bot events when game has ended
+     */
 	this.dispose = function() {
 		lime.scheduleManager.unschedule(mazeEvents, this);
         lime.scheduleManager.unschedule(updateTimer, this);
@@ -414,10 +464,15 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 		//console.log(history);
 	}
 	
+    /**
+     * Used for debugging, ends game with 0 energy
+     */
 	this.suicide = function() {
 		energy = 0;
 	}
-    
+    /*
+     * Displays the Help Screen
+     */
     this.showHelp = function() {
         director.pushScene(new HelpScene(director).show());
     };
@@ -459,7 +514,9 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 		}
 		return false;
 	};
-	
+	/*
+     * 
+     */
 	var updateTimer = function(dt) {
 		timer += dt;
 		self.updateOutput();

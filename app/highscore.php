@@ -3,6 +3,9 @@
 I Andrew Blackbourn, 000129408 certify that this material is my original work. No other person's work has been used without due acknowledgement. I have not made my work available to anyone else.
 Source code licensed under 2-clause license ("Simplified BSD License" or "FreeBSD License"). See README.md for details.
 */
+
+// Used to insert a new highscore into the highscore table via ajax
+
 date_default_timezone_set('America/New_York');
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
