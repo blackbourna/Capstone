@@ -18,9 +18,9 @@ Globals = {
 	},
 	Audio: {
 		// Global function to play audio if enabled (originally would reuse audio objects but some versions of Chrome has issues with this)
-		play: function(wav) {
+		play: function(audio) {
             if (!Globals.Audio.enabled) return;
-			var audio = new Audio(wav);
+            audio.currentTime = 0;
 			audio.play();
 		},
         enabled: true

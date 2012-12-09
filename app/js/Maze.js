@@ -16,8 +16,8 @@ Maze = function(energyPt) {
     this.startDir = null;
 
 	var radarSpeed = 0.25;
-	var sfx_scan1 = Constants.Assets.AUDIO_PATH + 'scan1.wav';
-	var sfx_scan2 = Constants.Assets.AUDIO_PATH + 'scan2.wav';
+	var sfx_scan1 = new Audio(Constants.Assets.AUDIO_PATH + 'scan1.wav');
+	var sfx_scan2 = new Audio(Constants.Assets.AUDIO_PATH + 'scan2.wav');
 	
 	var recharger = energyPt;
 	var rechargerSprite;

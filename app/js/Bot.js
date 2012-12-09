@@ -28,20 +28,20 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
     var difference = goog.math.Coordinate.difference;
     
     // audio resources
-    var sfx_180 = Constants.Assets.AUDIO_PATH + '180.wav';
-    var sfx_goal = Constants.Assets.AUDIO_PATH + 'goal.wav';
-    var sfx_look_f = Constants.Assets.AUDIO_PATH + 'look_f.wav';
-    var sfx_lookfar = Constants.Assets.AUDIO_PATH + 'lookfar.wav';
-    var sfx_look_l = Constants.Assets.AUDIO_PATH + 'look_l.wav';
-    var sfx_look_r = Constants.Assets.AUDIO_PATH + 'look_r.wav';
-    var sfx_outofenergy = Constants.Assets.AUDIO_PATH + 'outofenergy.wav';
-    var sfx_pickupfail = Constants.Assets.AUDIO_PATH + 'pickupfail.wav';
-    var sfx_pickupsuccess = Constants.Assets.AUDIO_PATH + 'pickupsuccess.wav';
-    var sfx_sprint = Constants.Assets.AUDIO_PATH + 'sprint.wav';
-    var sfx_step = Constants.Assets.AUDIO_PATH + 'step.wav';
-    var sfx_turn = Constants.Assets.AUDIO_PATH + 'turn.wav';
-    var sfx_wallhit = Constants.Assets.AUDIO_PATH + 'wallhit.wav';
-    var sfx_music = Constants.Assets.AUDIO_PATH + 'music.wav';
+    var sfx_180 =           new Audio(Constants.Assets.AUDIO_PATH + '180.wav');
+    var sfx_goal =          new Audio(Constants.Assets.AUDIO_PATH + 'goal.wav');
+    var sfx_look_f =        new Audio(Constants.Assets.AUDIO_PATH + 'look_f.wav');
+    var sfx_lookfar =       new Audio(Constants.Assets.AUDIO_PATH + 'lookfar.wav');
+    var sfx_look_l =        new Audio(Constants.Assets.AUDIO_PATH + 'look_l.wav');
+    var sfx_look_r =        new Audio(Constants.Assets.AUDIO_PATH + 'look_r.wav');
+    var sfx_outofenergy =   new Audio(Constants.Assets.AUDIO_PATH + 'outofenergy.wav');
+    var sfx_pickupfail =    new Audio(Constants.Assets.AUDIO_PATH + 'pickupfail.wav');
+    var sfx_pickupsuccess = new Audio(Constants.Assets.AUDIO_PATH + 'pickupsuccess.wav');
+    var sfx_sprint =        new Audio(Constants.Assets.AUDIO_PATH + 'sprint.wav');
+    var sfx_step =          new Audio(Constants.Assets.AUDIO_PATH + 'step.wav');
+    var sfx_turn =          new Audio(Constants.Assets.AUDIO_PATH + 'turn.wav');
+    var sfx_wallhit =       new Audio(Constants.Assets.AUDIO_PATH + 'wallhit.wav');
+    var sfx_music =         new Audio(Constants.Assets.AUDIO_PATH + 'music.wav');
 
     var markedCells = new Array();
     var history = [];
