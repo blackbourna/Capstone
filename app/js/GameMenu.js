@@ -53,7 +53,7 @@ GameMenu=function(director) {
 			.setSize(btnSize.x, btnSize.y)
 			.setColor("#3e4e5e");
 		goog.events.listen(helpButton, ['mousedown','touchstart'], function(e) {
-			director.pushScene(new HelpScene(director).show());
+			director.pushScene(new HelpScene(director).show(), Globals.transition);
 		});
 		scene.appendChild(helpButton);
 		
@@ -85,7 +85,7 @@ GameMenu=function(director) {
 			.setSize(btnSize.x/3, btnSize.y)
 			.setColor("#ed4753");
 		goog.events.listen(aboutButton, ['mousedown','touchstart'], function(e) {
-			director.replaceScene(new AboutScene(director));
+			director.replaceScene(new AboutScene(director), Globals.transition);
 		});
 		scene.appendChild(aboutButton);
 
