@@ -29,6 +29,7 @@
 	<style>
 		body {background-color: #000;}
 	</style>
+    <link rel="shortcut icon" href="assets/sprites/splash.png" />
 </head>
 
 <body onload="CapstoneProject_BlackbournA.start()"></body>
