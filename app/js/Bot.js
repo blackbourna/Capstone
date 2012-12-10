@@ -292,9 +292,10 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 	// @dir = LOOK.AHEAD, etc.
 	this.look = function(dir) {
 		addHistory(dir);
+        // no sfx, proved to be problematic on Windows browsers
 		switch(dir) {
 			case LOOK.AHEAD:
-				Globals.Audio.play(sfx_look_f);
+				//Globals.Audio.play(sfx_look_f);
 				if (isOpen(sum(position, direction))) {
 					addOpen(sum(position, direction));
 				} else { // hit wall
@@ -303,7 +304,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			break;
 			case LOOK.RIGHT:
 				var dir = Compass.rotate(TURN.RIGHT, direction);
-				Globals.Audio.play(sfx_look_r);
+				//Globals.Audio.play(sfx_look_r);
 				if (isOpen(sum(position, dir))) {
 					addOpen(sum(position, dir));
 				} else { // hit wall
@@ -312,7 +313,7 @@ Bot = function (maze, mazeSprite, director, rechargerSprite) {
 			break;
 			case LOOK.LEFT:
 				var dir = Compass.rotate(TURN.LEFT, direction);
-				Globals.Audio.play(sfx_look_l);
+				//Globals.Audio.play(sfx_look_l);
 				if (isOpen(sum(position, dir))) {
 					addOpen(sum(position, dir));
 				} else { // hit wall
