@@ -17,7 +17,7 @@
 	</script>
 	<meta property="og:type" content="website"/>
 	<meta property="og:url" content="http://capstone-blackbourna.dotcloud.com/?c=c"/>
-	<meta property="og:image" content="http://capstone-blackbourna.dotcloud.com/assets/sprites/bot.png"/>
+	<meta property="og:image" content="http://capstone-blackbourna.dotcloud.com/assets/sprites/splash.png"/>
 	<meta property="og:site_name" content="AmazeBot Online"/>
 	<meta property="og:title" content="AmazeBot Online"/>
 	<meta property="og:description" content="Fun for the whole family! Run through a maze using a complex control scheme and impress all of your friends!!!"/>
